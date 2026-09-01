@@ -1,4 +1,7 @@
-#page_parser.py
+# ============================================================================
+# File: page_parser.py
+# ============================================================================
+
 from models.page import (
     PageMetadata
 )
@@ -25,6 +28,9 @@ async def analyze_page(
     html_path
 ):
 
+    #
+    # Buttons
+    #
     buttons = await frame.evaluate("""
     () => {
 
@@ -36,11 +42,14 @@ async def analyze_page(
         .map(x =>
             (x.innerText || '').trim()
         )
-        .filter(Boolean)
+        .filter(Boolean);
 
     }
     """)
 
+    #
+    # Labels
+    #
     labels = await frame.evaluate("""
     () => {
 
@@ -52,11 +61,14 @@ async def analyze_page(
         .map(x =>
             x.innerText.trim()
         )
-        .filter(Boolean)
+        .filter(Boolean);
 
     }
     """)
 
+    #
+    # Fields
+    #
     fields = await frame.evaluate("""
     () => {
 
@@ -72,14 +84,17 @@ async def analyze_page(
                 x.name ||
                 x.id ||
                 ''
-            )
+            );
 
         })
-        .filter(Boolean)
+        .filter(Boolean);
 
     }
     """)
 
+    #
+    # Table Headers
+    #
     table_headers = await frame.evaluate("""
     () => {
 
@@ -91,11 +106,14 @@ async def analyze_page(
         .map(x =>
             x.innerText.trim()
         )
-        .filter(Boolean)
+        .filter(Boolean);
 
     }
     """)
 
+    #
+    # Headings
+    #
     headings = await frame.evaluate("""
     () => {
 
@@ -107,11 +125,14 @@ async def analyze_page(
         .map(x =>
             x.innerText.trim()
         )
-        .filter(Boolean)
+        .filter(Boolean);
 
     }
     """)
 
+    #
+    # Visible Descriptions Only
+    #
     descriptions = await frame.evaluate("""
     () => {
 
@@ -120,14 +141,39 @@ async def analyze_page(
                 '.description'
             )
         )
+        .filter(el => {
+
+            const style =
+                window.getComputedStyle(el);
+
+            const rect =
+                el.getBoundingClientRect();
+
+            return (
+                style.display !== 'none' &&
+                style.visibility !== 'hidden' &&
+                rect.width > 0 &&
+                rect.height > 0
+            );
+
+        })
         .map(x =>
             x.innerText.trim()
         )
-        .filter(Boolean)
+        .filter(Boolean);
 
     }
     """)
+    print(f"Description Found: {page_name}")
 
+    for desc in descriptions:
+
+        print(
+            desc[:150]
+        )
+    #
+    # Clean Results
+    #
     buttons = clean_items(
         buttons
     )
@@ -148,6 +194,33 @@ async def analyze_page(
         descriptions
     )
 
+    #
+    # Debug
+    #
+    try:
+
+        body_text = await frame.locator(
+            "body"
+        ).inner_text()
+
+        print(
+            "\n===== BODY PREVIEW ====="
+        )
+
+        print(
+            body_text[:500]
+        )
+
+        print(
+            "\n========================\n"
+        )
+
+    except Exception:
+        pass
+
+    #
+    # Build Metadata
+    #
     return PageMetadata(
 
         category=category,

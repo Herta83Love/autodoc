@@ -1,0 +1,34 @@
+# config/document.yaml
+
+document:
+  title: "SENTRY 管理操作手冊"
+  product_name: "SENTRY"
+  version: "2.4.0"
+  company: "URMAZI"
+  classification: "CONFIDENTIAL"
+
+cover:
+  subtitle: "Administrator Guide"
+
+introduction:
+  purpose: |
+    本文件提供 SENTRY 平台功能說明、
+    操作流程及管理建議，
+    協助系統管理員完成部署、
+    設定與維運工作。
+
+  audience:
+    - 系統管理員
+    - 資安管理員
+    - 維運工程師
+
+  login_guide: |
+    使用瀏覽器開啟系統入口網站，
+    輸入帳號與密碼後登入系統。
+
+  interface_overview: |
+    系統功能依照模組分類顯示於左側選單，
+    管理員可依照功能類別進入各項設定頁面。
+
+footer:
+  copyright: "© URMAZI All Rights Reserved"

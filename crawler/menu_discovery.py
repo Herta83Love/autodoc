@@ -1,3 +1,7 @@
+# ============================================================================
+# File: menu_discovery.py
+# ============================================================================
+
 async def discover_menu_links(page):
 
     menu_items = await page.evaluate("""
@@ -53,8 +57,6 @@ async def discover_menu_links(page):
 
     results = []
 
-    visited = set()
-
     for item in menu_items:
 
         category = (
@@ -84,14 +86,6 @@ async def discover_menu_links(page):
         if not title:
             continue
 
-        if not url:
-            continue
-
-        if url in visited:
-            continue
-
-        visited.add(url)
-
         results.append({
 
             "category": category,
@@ -101,5 +95,17 @@ async def discover_menu_links(page):
             "url": url
 
         })
+
+    #
+    # Debug
+    #
+    print("\n===== MENU =====")
+
+    for item in results:
+
+        print(item)
+
+    print("================\n")
+    print(f"Total menu items: {len(results)}")
 
     return results

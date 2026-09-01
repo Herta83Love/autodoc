@@ -1,4 +1,7 @@
-#page_crawler.py
+# ============================================================================
+# File: page_crawler.py
+# ============================================================================
+
 import asyncio
 
 import crawler.wait_helper
@@ -10,11 +13,12 @@ from crawler.frame_helper import (
 from crawler.screenshot import (
     save_screenshot
 )
-
+from crawler.action_extractor import (
+    extract_actions
+)
 from crawler.html_exporter import (
     save_html
 )
-
 from crawler.page_parser import (
     analyze_page
 )
@@ -64,9 +68,37 @@ async def crawl_pages(
                 f"Category: {category}"
             )
 
+            #
+            # 先取得目前 frame
+            #
+            frame = await get_main_frame(
+                page
+            )
+
+            before_text = ""
+
+            if frame:
+
+                try:
+
+                    before_text = (
+                        await frame.locator(
+                            "body"
+                        ).inner_text()
+                    )[:800]
+
+                except Exception:
+                    pass
+
+            #
+            # 點擊選單
+            #
             await link.click()
 
-            await asyncio.sleep(1)
+            #
+            # 等待 frame
+            #
+            await asyncio.sleep(0.5)
 
             frame = await get_main_frame(
                 page
@@ -80,14 +112,80 @@ async def crawl_pages(
 
                 continue
 
+            #
+            # 等待頁面內容變化
+            #
+            for _ in range(30):
+
+                await asyncio.sleep(0.5)
+
+                try:
+
+                    current_text = (
+                        await frame.locator(
+                            "body"
+                        ).inner_text()
+                    )[:800]
+
+                    if (
+                        current_text
+                        and current_text != before_text
+                    ):
+
+                        print(
+                            "✅ 頁面內容已更新"
+                        )
+
+                        break
+
+                except Exception:
+                    pass
+
+            #
+            # 等待頁面穩定
+            #
             await crawler.wait_helper.wait_frame_ready(
                 frame
             )
+
+            #
+            # 額外等待避免 Vue SPA 尚未完成 render
+            #
+            await crawler.wait_helper.wait_dom_stable(frame)
 
             print(
                 f"Frame URL: {frame.url}"
             )
 
+            #
+            # Debug Body
+            #
+            try:
+
+                body_text = (
+                    await frame.locator(
+                        "body"
+                    ).inner_text()
+                )
+
+                print(
+                    "\n===== BODY PREVIEW ====="
+                )
+
+                print(
+                    body_text[:500]
+                )
+
+                print(
+                    "\n========================\n"
+                )
+
+            except Exception:
+                pass
+
+            #
+            # Debug HTML
+            #
             try:
 
                 html = await frame.content()
@@ -110,6 +208,9 @@ async def crawl_pages(
                     f"Debug HTML保存失敗: {e}"
                 )
 
+            #
+            # Discover Tabs
+            #
             tabs = await discover_tabs(
                 frame
             )
@@ -159,11 +260,50 @@ async def crawl_pages(
 
                             continue
 
+                        before_tab = ""
+
+                        try:
+
+                            before_tab = (
+                                await frame.locator(
+                                    "body"
+                                ).inner_text()
+                            )[:800]
+
+                        except Exception:
+                            pass
+
                         await locator.first.click()
+
+                        #
+                        # 等待 Tab 內容變化
+                        #
+                        for _ in range(20):
+
+                            await asyncio.sleep(0.5)
+
+                            try:
+
+                                current_tab = (
+                                    await frame.locator(
+                                        "body"
+                                    ).inner_text()
+                                )[:800]
+
+                                if (
+                                    current_tab
+                                    and current_tab != before_tab
+                                ):
+                                    break
+
+                            except Exception:
+                                pass
 
                         await crawler.wait_helper.wait_frame_ready(
                             frame
                         )
+
+                        await asyncio.sleep(1)
 
                         screenshot = (
                             await save_screenshot(
@@ -172,13 +312,17 @@ async def crawl_pages(
                             )
                         )
 
+                        print(
+                            f"Screenshot: {screenshot}"
+                        )
+
                         html_file = (
                             await save_html(
                                 frame,
                                 f"{title}_{tab_name}"
                             )
                         )
-
+                        actions = await extract_actions(frame)
                         metadata = (
                             await analyze_page(
 
@@ -197,6 +341,7 @@ async def crawl_pages(
                                 html_file
                             )
                         )
+                        metadata.actions = actions
 
                         results.append(
                             metadata.model_dump()
@@ -230,12 +375,17 @@ async def crawl_pages(
                 )
             )
 
+            print(
+                f"Screenshot: {screenshot}"
+            )
+
             html_file = (
                 await save_html(
                     frame,
                     title
                 )
             )
+            actions = await extract_actions(frame)
 
             metadata = (
                 await analyze_page(
@@ -256,6 +406,7 @@ async def crawl_pages(
                 )
             )
 
+            metadata.actions = actions
             results.append(
                 metadata.model_dump()
             )
@@ -264,7 +415,9 @@ async def crawl_pages(
                 f"✅ 完成: {title}"
             )
 
-            await asyncio.sleep(1)
+            await asyncio.sleep(
+                1
+            )
 
         except Exception as e:
 

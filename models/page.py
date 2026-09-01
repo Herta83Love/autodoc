@@ -1,3 +1,7 @@
+# ============================================================================
+# File: page.py
+# ============================================================================
+
 from typing import Optional
 
 from pydantic import BaseModel
@@ -18,6 +22,8 @@ class PageMetadata(BaseModel):
     screenshot: str
 
     html: str
+    
+    actions: list = []
 
     fields: list[str]
 

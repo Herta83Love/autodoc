@@ -1,3 +1,8 @@
+# ============================================================================
+# File: wait_helper.py
+# ============================================================================
+
+import asyncio
 async def wait_frame_ready(
     frame,
     timeout_ms=30000
@@ -59,3 +64,85 @@ async def wait_frame_ready(
     import asyncio
 
     await asyncio.sleep(5)  
+
+
+
+async def wait_page_content_change(
+    frame,
+    before_text,
+    timeout=15
+):
+
+    for _ in range(timeout * 2):
+
+        try:
+
+            current_text = (
+                await frame.locator(
+                    "body"
+                ).inner_text()
+            )
+
+            if (
+                current_text
+                and current_text != before_text
+            ):
+
+                return
+
+        except Exception:
+            pass
+
+        await asyncio.sleep(0.5)
+
+
+async def wait_dom_stable(
+    frame,
+    stable_rounds=3,
+    interval=1
+):
+
+    previous = None
+
+    stable_count = 0
+
+    for _ in range(60):
+
+        try:
+
+            current = (
+                await frame.locator(
+                    "body"
+                ).inner_text()
+            )
+
+            current = current.strip()
+
+            if current == previous:
+
+                stable_count += 1
+
+            else:
+
+                stable_count = 0
+
+            if stable_count >= stable_rounds:
+
+                print(
+                    "✅ DOM 已穩定"
+                )
+
+                return
+
+            previous = current
+
+        except Exception:
+            pass
+
+        await asyncio.sleep(
+            interval
+        )
+
+    print(
+        "⚠️ DOM 等待逾時"
+    )

@@ -1,7 +1,10 @@
+# ============================================================================
+# File: frame_helper.py
+# ============================================================================
+
 async def get_main_frame(page):
 
-    for frame in page.frames:
-
+    for frame in page.frames:  
         if frame.name == "mainFrame":
 
             return frame

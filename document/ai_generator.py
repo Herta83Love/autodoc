@@ -1,19 +1,19 @@
-import json
+# ============================================================================
+# File: ai_generator.py
+# ============================================================================
 
+import json
 from pathlib import Path
 
 from services.azure_openai_service import (
     generate_manual_content
 )
 
-
-CACHE_VERSION = "v3"
+CACHE_VERSION = "v7"
 
 MODEL_NAME = "gpt-4.1-mini"
 
-CACHE_DIR = Path(
-    "output/ai_cache"
-)
+CACHE_DIR = Path("output/ai_cache")
 
 CACHE_DIR.mkdir(
     parents=True,
@@ -22,7 +22,6 @@ CACHE_DIR.mkdir(
 
 
 def sanitize_filename(filename):
-
     return (
         filename
         .replace("/", "_")
@@ -81,36 +80,19 @@ def load_cache(cache_file):
             encoding="utf-8"
         ) as f:
 
-            cache_data = json.load(
-                f
-            )
+            cache_data = json.load(f)
 
-        #
-        # 新版 Cache 格式
-        #
         if (
-            isinstance(
-                cache_data,
-                dict
-            )
+            isinstance(cache_data, dict)
             and "result" in cache_data
         ):
+            return cache_data["result"]
 
-            return cache_data[
-                "result"
-            ]
-
-        #
-        # 舊版 Cache 相容
-        #
         return cache_data
 
     except Exception as e:
 
-        print(
-            "讀取 AI Cache 失敗"
-        )
-
+        print("讀取 AI Cache 失敗")
         print(e)
 
         return None
@@ -124,15 +106,9 @@ def save_cache(
     try:
 
         cache_data = {
-
-            "version":
-                CACHE_VERSION,
-
-            "model":
-                MODEL_NAME,
-
-            "result":
-                result
+            "version": CACHE_VERSION,
+            "model": MODEL_NAME,
+            "result": result
         }
 
         with open(
@@ -150,20 +126,13 @@ def save_cache(
 
     except Exception as e:
 
-        print(
-            "寫入 AI Cache 失敗"
-        )
-
+        print("寫入 AI Cache 失敗")
         print(e)
 
 
-def generate_manual_section(
-    page
-):
+def generate_manual_section(page):
 
-    cache_file = get_cache_file(
-        page
-    )
+    cache_file = get_cache_file(page)
 
     #
     # Cache Hit
@@ -179,7 +148,6 @@ def generate_manual_section(
         )
 
         if cached_result:
-
             return cached_result
 
     #
@@ -191,12 +159,17 @@ def generate_manual_section(
 
     try:
 
-        result = (
-            generate_manual_content(
-                page,
-                page.get("screenshot_path")
-            )
+        result = generate_manual_content(
+            page,
+            page.get("screenshot")
         )
+
+        save_cache(
+            cache_file,
+            result
+        )
+
+        return result
 
     except Exception as e:
 
@@ -206,21 +179,21 @@ def generate_manual_section(
 
         print(e)
 
-        return {
-
-            "summary":
-                "AI 摘要產生失敗",
-
-            "features": [],
-
-            "steps": [],
-
+        result = {
+            "status": "error",
+            "error": str(e),
+            "purpose": "",
+            "usage_scenarios": [],
+            "key_functions": [],
+            "field_descriptions": [],
+            "operation_steps": [],
+            "best_practices": [],
             "notes": []
         }
 
-    save_cache(
-        cache_file,
-        result
-    )
+        save_cache(
+            cache_file,
+            result
+        )
 
-    return result
+        return result
