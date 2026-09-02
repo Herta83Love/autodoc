@@ -4,9 +4,7 @@
 
 import json
 import asyncio
-from crawler.menu_helper import (
-    expand_all_menus
-)
+import logging
 from playwright.async_api import (
     async_playwright
 )
@@ -40,6 +38,11 @@ from document.manual_generator import (
 ) 
 
 async def run():
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+    )
 
     ensure_directories()
 

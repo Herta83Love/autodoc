@@ -2,6 +2,12 @@
 # File: menu_helper.py
 # ============================================================================
 
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+
 async def expand_all_menus(page):
 
     # 盡可能把所有可展開選單打開
@@ -27,10 +33,18 @@ async def expand_all_menus(page):
 
                 try:
                     await item.click()
-                except:
-                    pass
+                except Exception as exc:
+                    logger.debug(
+                        "選單項目無法展開（selector=%s）：%s",
+                        selector,
+                        exc
+                    )
 
-        except:
-            pass
+        except Exception as exc:
+            logger.debug(
+                "選單 selector 無法查詢（selector=%s）：%s",
+                selector,
+                exc
+            )
 
     await page.wait_for_timeout(3000)

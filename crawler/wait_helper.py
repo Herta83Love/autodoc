@@ -3,6 +3,12 @@
 # ============================================================================
 
 import asyncio
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+
 async def wait_frame_ready(
     frame,
     timeout_ms=30000
@@ -17,8 +23,8 @@ async def wait_frame_ready(
             timeout=timeout_ms
         )
 
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("等待 frame body 顯示失敗：%s", exc)
 
     previous_len = 0
 
@@ -58,10 +64,8 @@ async def wait_frame_ready(
 
             await asyncio.sleep(1)
 
-        except Exception:
-            pass
-
-    import asyncio
+        except Exception as exc:
+            logger.debug("讀取 frame 內容失敗：%s", exc)
 
     await asyncio.sleep(5)  
 
@@ -90,8 +94,8 @@ async def wait_page_content_change(
 
                 return
 
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("等待頁面內容變更時讀取失敗：%s", exc)
 
         await asyncio.sleep(0.5)
 
@@ -136,8 +140,8 @@ async def wait_dom_stable(
 
             previous = current
 
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("等待 DOM 穩定時讀取失敗：%s", exc)
 
         await asyncio.sleep(
             interval

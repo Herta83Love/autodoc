@@ -3,13 +3,14 @@
 # ============================================================================
 
 import json
+import hashlib
 from pathlib import Path
 
 from services.azure_openai_service import (
     generate_manual_content
 )
 
-CACHE_VERSION = "V1"
+CACHE_VERSION = "V2"
 
 MODEL_NAME = "gpt-4.1-mini"
 
@@ -36,6 +37,58 @@ def sanitize_filename(filename):
     )
 
 
+def _update_hash_from_file(hasher, path):
+
+    if not path:
+        return
+
+    file_path = Path(path)
+
+    if not file_path.is_file():
+        return
+
+    with file_path.open("rb") as f:
+
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            hasher.update(chunk)
+
+
+def get_content_fingerprint(page):
+
+    relevant_page_data = {
+        "category": page.get("category"),
+        "page": page.get("page"),
+        "tab": page.get("tab"),
+        "descriptions": page.get("descriptions", []),
+        "headings": page.get("headings", []),
+        "fields": page.get("fields", []),
+        "tables": page.get("tables", []),
+        "actions": [
+            {
+                "label": action.get("label"),
+                "icon": action.get("icon")
+            }
+            for action in page.get("actions", [])
+        ]
+    }
+
+    hasher = hashlib.sha256()
+    hasher.update(
+        json.dumps(
+            relevant_page_data,
+            ensure_ascii=False,
+            sort_keys=True
+        ).encode("utf-8")
+    )
+
+    _update_hash_from_file(hasher, page.get("screenshot"))
+
+    for action in page.get("actions", []):
+        _update_hash_from_file(hasher, action.get("image"))
+
+    return hasher.hexdigest()
+
+
 def get_cache_file(page):
 
     page_name = page.get(
@@ -47,12 +100,14 @@ def get_cache_file(page):
         "tab"
     )
 
+    fingerprint = get_content_fingerprint(page)[:16]
+
     if tab_name:
 
         filename = (
             f"{CACHE_VERSION}_"
             f"{MODEL_NAME}_"
-            f"{page_name}_{tab_name}.json"
+            f"{page_name}_{tab_name}_{fingerprint}.json"
         )
 
     else:
@@ -60,7 +115,7 @@ def get_cache_file(page):
         filename = (
             f"{CACHE_VERSION}_"
             f"{MODEL_NAME}_"
-            f"{page_name}.json"
+            f"{page_name}_{fingerprint}.json"
         )
 
     filename = sanitize_filename(
@@ -180,15 +235,16 @@ def generate_manual_section(page):
         print(e)
 
         result = {
-            "status": "error",
-            "error": str(e),
-            "purpose": "",
-            "usage_scenarios": [],
-            "key_functions": [],
+            "overview": "",
+            "business_value": "",
+            "button_descriptions": [],
+            "page_sections": [],
             "field_descriptions": [],
-            "operation_steps": [],
+            "workflow": [],
             "best_practices": [],
-            "notes": []
+            "restrictions": [],
+            "status": "error",
+            "error": str(e)
         }
 
         save_cache(

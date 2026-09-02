@@ -4,7 +4,7 @@
 
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PageMetadata(BaseModel):
@@ -23,7 +23,7 @@ class PageMetadata(BaseModel):
 
     html: str
     
-    actions: list = []
+    actions: list = Field(default_factory=list)
 
     fields: list[str]
 
@@ -31,6 +31,6 @@ class PageMetadata(BaseModel):
 
     tables: list[list[str]]
 
-    headings: list[str] = []
+    headings: list[str] = Field(default_factory=list)
 
-    descriptions: list[str] = []
+    descriptions: list[str] = Field(default_factory=list)

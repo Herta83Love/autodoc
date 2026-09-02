@@ -10,6 +10,20 @@ document:
 cover:
   subtitle: "Administrator Guide"
 
+publication:
+  notice_title: "出版與使用聲明"
+  change_notice: >-
+    URMAZI 保留修改本文件及其所述產品的權利，恕不另行通知。
+    安裝或使用產品前，請先確認版本資訊、發行說明與最新文件。
+  trademark_notice: >-
+    本文件中的 URMAZI、URMAZI 標誌及相關產品名稱，
+    均為其各自權利人的商標或註冊商標。
+  support_url: "https://urmazi.com/support/"
+
+back_cover:
+  thank_you: "感謝您使用 SENTRY"
+  support_label: "文件與技術支援"
+
 introduction:
   purpose: |
     本文件提供 SENTRY 平台功能說明、

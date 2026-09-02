@@ -2,6 +2,12 @@
 # File: tab_explorer.py
 # ============================================================================
 
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+
 async def discover_tabs(frame):
 
     tabs = []
@@ -50,11 +56,19 @@ async def discover_tabs(frame):
                         "selector": selector
                     })
 
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.debug(
+                        "略過無法解析的 Tab（selector=%s）：%s",
+                        selector,
+                        exc
+                    )
 
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug(
+                "Tab selector 無法查詢（selector=%s）：%s",
+                selector,
+                exc
+            )
 
     unique = {}
 
