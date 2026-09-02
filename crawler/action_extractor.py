@@ -1,5 +1,10 @@
-#action_extractor.py
+# ============================================================================
+# File: action_extractor.py
+# ============================================================================
+
+import os
 from pathlib import Path
+
 
 ICON_DIR = Path("output/icons")
 
@@ -7,7 +12,13 @@ ICON_DIR.mkdir(
     parents=True,
     exist_ok=True
 )
-async def extract_actions(frame):
+
+
+async def extract_actions(
+    frame,
+    page_name,
+    tab_name=None
+):
 
     actions = []
 
@@ -17,7 +28,7 @@ async def extract_actions(frame):
             "button"
         ).all()
 
-        for btn in buttons:
+        for idx, btn in enumerate(buttons):
 
             try:
 
@@ -69,10 +80,15 @@ async def extract_actions(frame):
                 if not label and not icon:
                     continue
 
-                safe_name = (label or f"button_{len(actions)}")
+                safe_page = (
+                    str(page_name)
+                    .replace("/", "_")
+                    .replace("\\", "_")
+                    .replace(" ", "_")
+                )
 
-                safe_name = (
-                    safe_name
+                safe_tab = (
+                    str(tab_name or "")
                     .replace("/", "_")
                     .replace("\\", "_")
                     .replace(" ", "_")
@@ -81,7 +97,7 @@ async def extract_actions(frame):
                 image_path = (
                     ICON_DIR
                     /
-                    f"{safe_name}.png"
+                    f"{safe_page}_{safe_tab}_{idx}.png"
                 )
 
                 try:
@@ -96,11 +112,18 @@ async def extract_actions(frame):
 
                     image_file = None
 
-                actions.append({
-                    "label": label,
-                    "icon": icon,
-                    "image": image_file
-                })
+                if (
+                    image_file
+                    and os.path.exists(
+                        image_file
+                    )
+                ):
+
+                    actions.append({
+                        "label": label,
+                        "icon": icon,
+                        "image": image_file
+                    })
 
             except Exception:
                 pass

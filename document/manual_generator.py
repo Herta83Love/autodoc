@@ -261,26 +261,10 @@ def add_action_section(
         level=5
     )
 
-    desc_map = {}
+    for index, action in enumerate(actions):
 
-    for row in button_descriptions:
-
-        if "：" in row:
-
-            name, desc = row.split(
-                "：",
-                1
-            )
-
-            desc_map[name.strip()] = desc.strip()
-
-    for action in actions:
-
-        image = action.get("image")
-
-        label = action.get(
-            "label",
-            ""
+        image = action.get(
+            "image"
         )
 
         if image:
@@ -293,11 +277,32 @@ def add_action_section(
                 )
 
             except Exception:
+
                 pass
 
+        description = ""
+
+        for item in button_descriptions:
+
+            if (
+                item.get(
+                    "button_index"
+                )
+                == index
+            ):
+
+                description = item.get(
+                    "description",
+                    ""
+                )
+
+                break
+
         document.add_paragraph(
-            f"功能：{desc_map.get(label, label)}"
+            description
         )
+
+        document.add_paragraph()
 
 def add_internal_link(
     paragraph,
@@ -685,6 +690,18 @@ def generate_docx():
                             "actions",
                             []
                         ),
+                        section.get(
+                            "button_descriptions",
+                            []
+                        )
+                    )
+                    print(
+                        page.get(
+                            "actions",
+                            []
+                        )
+                    )
+                    print(
                         section.get(
                             "button_descriptions",
                             []

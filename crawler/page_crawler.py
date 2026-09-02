@@ -322,7 +322,11 @@ async def crawl_pages(
                                 f"{title}_{tab_name}"
                             )
                         )
-                        actions = await extract_actions(frame)
+                        actions = await extract_actions(
+                            frame,
+                            title,
+                            tab_name
+                        )
                         metadata = (
                             await analyze_page(
 
@@ -385,7 +389,11 @@ async def crawl_pages(
                     title
                 )
             )
-            actions = await extract_actions(frame)
+            actions = await extract_actions(
+                frame,
+                title,
+                None
+            )
 
             metadata = (
                 await analyze_page(

@@ -9,7 +9,7 @@ from services.azure_openai_service import (
     generate_manual_content
 )
 
-CACHE_VERSION = "v7"
+CACHE_VERSION = "V1"
 
 MODEL_NAME = "gpt-4.1-mini"
 

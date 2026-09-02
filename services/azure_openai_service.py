@@ -1,7 +1,4 @@
-# ============================================================================
 # File: azure_openai_service.py
-# ============================================================================
-
 import base64
 import json
 import os
@@ -126,41 +123,141 @@ business_value
 button_descriptions
 ==================================================
 
-依據 metadata.actions 產生按鈕功能說明。
+你會收到：
 
-格式：
+- 整頁畫面截圖
+- 多張按鈕獨立截圖
+- metadata.actions
+
+請依據：
+
+- 按鈕截圖
+- 整頁畫面截圖
+- HTML內容
+- metadata.actions
+- 頁面上下文
+
+判斷每個按鈕的實際用途。
+
+不要依賴 icon class。
+
+優先依據實際按鈕圖片內容判斷功能。
+
+輸出格式：
 
 [
-    "新增：建立新的資料項目",
-    "刪除：移除指定資料",
-    "重新整理：重新載入最新資料"
+    {
+        "button_index": 0,
+        "description": "建立新的規則"
+    },
+    {
+        "button_index": 1,
+        "description": "移除指定規則"
+    },
+    {
+        "button_index": 2,
+        "description": "重新載入最新資料"
+    }
 ]
 
 規則：
 
+- 不需要輸出按鈕名稱
+- 不需要輸出圖示名稱
+- 只描述按鈕用途
+- 每個按鈕對應一筆說明
 - 僅允許描述 metadata.actions 中實際存在的按鈕
 - 不可臆測不存在按鈕
 - 不可描述按鈕顏色
 - 不可描述按鈕外觀
 - 不可描述 SVG 內容
-- 僅說明按鈕用途
 - 功能描述需符合當前頁面情境
+
+Button Screenshot 1
+=
+button_index 0
+
+Button Screenshot 2
+=
+button_index 1
+
+Button Screenshot 3
+=
+button_index 2
+
+重要：
+
+button_descriptions 的筆數必須與收到的 Button Screenshot 數量完全一致。
+
+如果收到 3 張按鈕截圖：
+
+則必須輸出 3 筆資料。
+
+不得增加額外按鈕。
+
+不得省略任何按鈕。
+
+即使無法由按鈕文字判斷功能，
+也必須參考：
+
+- 畫面截圖
+- 按鈕截圖
+- HTML內容
+- metadata.actions
+
+產生對應說明。
 
 錯誤：
 
 [
-    "加號圖示：新增資料"
+    "建立新的資料",
+    "移除資料"
 ]
 
+錯誤：
+
 [
-    "垃圾桶圖示：刪除資料"
+    {
+        "description": "建立新的資料"
+    }
+]
+
+錯誤：
+
+[
+    {
+        "button_index": 0,
+        "description": "建立新的資料"
+    },
+    {
+        "button_index": 1,
+        "description": "移除資料"
+    },
+    {
+        "button_index": 2,
+        "description": "下載資料"
+    },
+    {
+        "button_index": 3,
+        "description": "不存在的按鈕"
+    }
 ]
 
 正確：
 
 [
-    "新增：建立新的使用者帳號",
-    "刪除：移除指定使用者"
+    {
+        "button_index": 0,
+        "description": "執行歷史記錄內容的搜尋與篩選"
+    },
+    {
+        "button_index": 1,
+        "description": "下載目前查詢結果的資料報表"
+    },
+    {
+        "button_index": 2,
+        "description": "開啟操作說明與使用幫助文件"
+    }
 ]
 
 ==================================================
@@ -311,7 +408,7 @@ restrictions
 
 所有內容必須放入對應 JSON 欄位。
 
-button_descriptions 必須是字串陣列。
+button_descriptions 必須是物件陣列。
 
 page_sections 必須是字串陣列。
 
@@ -347,6 +444,24 @@ def generate_manual_content(
     page,
     screenshot_path=None
 ):
+    actions = [
+
+        action
+
+        for action in page.get(
+            "actions",
+            []
+        )
+
+        if action.get(
+            "image"
+        )
+    ]
+    actions_json = json.dumps(
+        actions,
+        ensure_ascii=False,
+        indent=2
+    )
 
     prompt = f"""
 頁面名稱
@@ -361,13 +476,49 @@ def generate_manual_content(
 畫面區塊
 {chr(10).join(page.get("headings", []))}
 
-欄位
+欄位資訊
 {chr(10).join(page.get("fields", []))}
 
-按鈕
-{chr(10).join(page.get("buttons", []))}
+metadata.actions
+
+{actions_json}
+
+說明：
+
+metadata.actions 中的每一筆資料都對應後續提供的一張按鈕截圖。
+
+例如：
+
+metadata.actions[0]
+對應
+Button Screenshot 1
+
+metadata.actions[1]
+對應
+Button Screenshot 2
+
+metadata.actions[2]
+對應
+Button Screenshot 3
+
+請同時參考：
+
+- 整頁截圖
+- metadata.actions
+- Button Screenshot 圖片
+- HTML資訊
+- 畫面上下文
+
+來判斷按鈕用途。
+
+按鈕用途必須符合目前頁面情境。
+
+如果畫面有 3 顆按鈕：
+
+button_descriptions 必須輸出 3 筆資料。
 
 表格欄位
+
 {chr(10).join(
 [
     str(column)
@@ -397,6 +548,43 @@ def generate_manual_content(
             "image_url":
             f"data:image/png;base64,{image_to_base64(screenshot_path)}"
         })
+    for idx, action in enumerate(actions):
+
+        image_path = action.get(
+            "image"
+        )
+
+        if (
+            image_path
+            and os.path.exists(
+                image_path
+            )
+        ):
+
+            content.append({
+                "type": "input_text",
+                "text":
+                f"""
+Button Screenshot {idx + 1}
+
+metadata.actions[{idx}]
+
+label:
+{action.get("label", "")}
+
+icon:
+{action.get("icon", "")}
+
+請記住：
+此張圖片對應 metadata.actions[{idx}]
+"""
+            })
+
+            content.append({
+                "type": "input_image",
+                "image_url":
+                f"data:image/png;base64,{image_to_base64(image_path)}"
+            })
 
     response = client.responses.create(
         model=os.getenv(
@@ -448,6 +636,8 @@ def generate_manual_content(
             "page_sections": [],
 
             "field_descriptions": [],
+
+            "button_descriptions": [],
 
             "workflow": [],
 
