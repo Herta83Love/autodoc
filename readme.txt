@@ -1,77 +1,126 @@
 # AutoDoc
 
-AI-powered documentation generator for SENTRY.
+AutoDoc 是用於產生 SENTRY 操作手冊的自動化工具。程式會登入 SENTRY、探索功能選單、擷取頁面資料與畫面，再透過 Azure OpenAI 產生說明內容，最後輸出 Word 文件。
 
-## Features
+## 主要功能
 
-- Menu Discovery
-- Page Crawling
-- Screenshot Capture
-- HTML Export
-- Metadata Extraction
-- Azure OpenAI Vision Analysis
-- Automated DOCX Manual Generation
+- 自動登入 SENTRY 並選擇介面語言
+- 探索功能選單、頁面與頁籤
+- 擷取頁面截圖及畫面操作圖示
+- 匯出 HTML 與結構化 Metadata
+- 使用 Azure OpenAI 分析頁面內容
+- 快取 AI 產生結果，避免重複呼叫
+- 自動產生 DOCX 操作手冊
+- 使用既有爬蟲與 AI 紀錄快速重建文件
 
-## Architecture
+## 處理流程
 
-Menu
-↓
-Crawler
-↓
-Screenshot
-↓
-Metadata
-↓
-GPT-4.1-mini Vision
-↓
-Structured JSON
-↓
-Word Manual
+```text
+SENTRY 選單與頁面
+        ↓
+爬蟲與畫面擷取
+        ↓
+Metadata、HTML、截圖
+        ↓
+Azure OpenAI 分析與 AI Cache
+        ↓
+Word 操作手冊
+```
 
-## Installation
+## 安裝
+
+建議先建立並啟用 Python 虛擬環境，再安裝相依套件：
 
 ```bash
-python -m pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
 playwright install chromium
 ```
 
-## Configuration
+## 設定
 
-Copy `.env.example` to `.env`, then configure the Azure OpenAI values and
-SENTRY login credentials. Adjust the login URL and selectors in
-`config/config.yaml` when the target environment differs.
+將 `.env.example` 複製為 `.env`，填入 SENTRY 登入資料及 Azure OpenAI 連線資訊。
 
-The `login.language.runs` list controls the crawl order. The default setup
-creates a fresh login session for English first and Traditional Chinese
-second. Each run writes isolated screenshots, HTML, icons, metadata, Markdown,
-and DOCX output beneath `output/`.
+SENTRY 登入網址、帳號欄位、密碼欄位、登入按鈕及語言選單設定位於：
 
-Chinese metadata is paired with the English crawl by stable menu/tab position.
-The Chinese manual therefore renders navigation terms as
-`中文（Official English UI term）` in both headings and the table of contents.
-If the login-page markup differs, set `login.language.selector` to the language
-dropdown CSS selector and adjust the run-specific labels or values.
-
-## Run
-
-```bash
-python main.py
+```text
+config/config.yaml
 ```
 
-## Word Manual Styling
+`login.language` 用於在登入前選擇 SENTRY 介面語言。若登入頁面的元件或語言值不同，可調整其中的 `selector`、`labels`、`values` 及逾時設定。
 
-The DOCX generator uses the URMAZI/SENTRY visual system defined in
-`document/manual_generator.py` and the reusable assets under
-`document/assets/`. Cover, publication notice, introduction, table of
-contents, running header/footer, and back-cover text can be adjusted in
-`config/document.yaml`.
+封面、出版聲明、前言、版本與封底文字位於：
 
-The table of contents is generated as visible internal links, so it remains
-available without manually refreshing Word fields.
+```text
+config/document.yaml
+```
 
-The final DOCX formatting pass explicitly applies a white page/table
-background and black text to body content, styles, hyperlinks, fields,
-headers, footers, and cover/back-cover text.
+## 完整執行：重新爬取並產生文件
 
-Screen action icons are rendered in a two-column icon/function table. The
-workflow section is intentionally omitted from both AI output and DOCX output.
+需要重新擷取 SENTRY 畫面與資料時執行：
+
+```bash
+python3 main.py
+```
+
+完整流程會啟動瀏覽器、登入 SENTRY、執行爬蟲、更新 `output` 內的資料，並產生：
+
+```text
+output/SENTRY_Manual.docx
+```
+
+## 快速執行：跳過爬蟲重新產生文件
+
+若 `output` 目錄已保留先前的爬蟲紀錄與 AI 紀錄，可以直接執行：
+
+```bash
+python3 test_docx.py
+```
+
+此模式不會開啟瀏覽器、不會登入 SENTRY，也不會重新執行爬蟲；它會直接使用下列既有資料重新產生 Word 文件：
+
+- `output/metadata.json`：頁面、欄位、按鈕及圖片路徑等爬蟲結果
+- `output/screenshots/`：頁面截圖
+- `output/icons/`：畫面操作圖示
+- `output/ai_cache/`：已產生的 AI 說明紀錄
+
+適合在調整 `document/manual_generator.py`、文件樣式、封面、前言、目錄、標頭或封底時使用，可省去重新登入和爬取所有頁面的時間。
+
+執行前請確認：
+
+1. `output/metadata.json` 存在且包含資料。
+2. Metadata 記錄的截圖與操作圖示仍位於原本路徑。
+3. `output/ai_cache/` 保留先前的 AI 紀錄；若對應 Cache 不存在，文件產生器可能會再次呼叫 Azure OpenAI。
+4. 已啟用安裝完成的 Python 虛擬環境。
+
+產生完成後，文件位於：
+
+```text
+output/SENTRY_Manual.docx
+```
+
+`test_docx.py` 會先檢查 Metadata 格式及圖片是否缺漏；缺少圖片時會在終端機顯示警告。
+
+## Output 目錄
+
+```text
+output/
+├── metadata.json
+├── screenshots/
+├── icons/
+├── html/
+├── ai_cache/
+├── manual.md
+└── SENTRY_Manual.docx
+```
+
+請勿在調整文件版面期間刪除 `metadata.json`、`screenshots/`、`icons/` 或 `ai_cache/`，否則無法完整沿用既有資料快速重建文件。
+
+## 文件樣式
+
+DOCX 版面主要由 `document/manual_generator.py` 控制，相關圖片資源位於 `document/assets/`。
+
+目前文件包含封面、文件資訊、出版聲明、修訂紀錄、目錄、前言、功能內容、標頭／頁尾與封底，並在輸出前統一套用白色背景與黑色文字。
+
+目錄使用可點擊的內部連結產生，不需手動更新 Word 欄位即可顯示。
