@@ -15,7 +15,7 @@ AutoDoc 是用於產生 SENTRY 操作手冊的自動化工具。程式會登入 
 
 ## 處理流程
 
-```text
+ 
 SENTRY 選單與頁面
         ↓
 爬蟲與畫面擷取
@@ -25,18 +25,19 @@ Metadata、HTML、截圖
 Azure OpenAI 分析與 AI Cache
         ↓
 Word 操作手冊
-```
+   
 
 ## 安裝
 
 建議先建立並啟用 Python 虛擬環境，再安裝相依套件：
 
-```bash
+bash:
+
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 playwright install chromium
-```
+   
 
 ## 設定
 
@@ -44,39 +45,41 @@ playwright install chromium
 
 SENTRY 登入網址、帳號欄位、密碼欄位、登入按鈕及語言選單設定位於：
 
-```text
+ 
 config/config.yaml
-```
+   
 
 `login.language` 用於在登入前選擇 SENTRY 介面語言。若登入頁面的元件或語言值不同，可調整其中的 `selector`、`labels`、`values` 及逾時設定。
 
 封面、出版聲明、前言、版本與封底文字位於：
 
-```text
+ 
 config/document.yaml
-```
+   
 
 ## 完整執行：重新爬取並產生文件
 
 需要重新擷取 SENTRY 畫面與資料時執行：
 
-```bash
+bash:
+
 python3 main.py
-```
+   
 
 完整流程會啟動瀏覽器、登入 SENTRY、執行爬蟲、更新 `output` 內的資料，並產生：
 
-```text
+ 
 output/SENTRY_Manual.docx
-```
+   
 
 ## 快速執行：跳過爬蟲重新產生文件
 
 若 `output` 目錄已保留先前的爬蟲紀錄與 AI 紀錄，可以直接執行：
 
-```bash
+bash:
+
 python3 test_docx.py
-```
+   
 
 此模式不會開啟瀏覽器、不會登入 SENTRY，也不會重新執行爬蟲；它會直接使用下列既有資料重新產生 Word 文件：
 
@@ -96,15 +99,15 @@ python3 test_docx.py
 
 產生完成後，文件位於：
 
-```text
+ 
 output/SENTRY_Manual.docx
-```
+   
 
 `test_docx.py` 會先檢查 Metadata 格式及圖片是否缺漏；缺少圖片時會在終端機顯示警告。
 
 ## Output 目錄
 
-```text
+ 
 output/
 ├── metadata.json
 ├── screenshots/
@@ -113,7 +116,7 @@ output/
 ├── ai_cache/
 ├── manual.md
 └── SENTRY_Manual.docx
-```
+   
 
 請勿在調整文件版面期間刪除 `metadata.json`、`screenshots/`、`icons/` 或 `ai_cache/`，否則無法完整沿用既有資料快速重建文件。
 
