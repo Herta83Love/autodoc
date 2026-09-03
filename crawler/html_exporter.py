@@ -3,11 +3,13 @@
 # ============================================================================
 
 import re
+from pathlib import Path
 
 
 async def save_html(
     frame,
-    title
+    title,
+    output_dir="output/html"
 ):
 
     safe_title = re.sub(
@@ -17,9 +19,11 @@ async def save_html(
     )
 
     path = (
-        f"output/html/"
+        f"{output_dir}/"
         f"{safe_title}.html"
     )
+
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     html = await frame.content()
 

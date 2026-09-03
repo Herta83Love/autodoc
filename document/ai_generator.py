@@ -10,7 +10,7 @@ from services.azure_openai_service import (
     generate_manual_content
 )
 
-CACHE_VERSION = "V2"
+CACHE_VERSION = "V4"
 
 MODEL_NAME = "gpt-4.1-mini"
 
@@ -56,6 +56,7 @@ def _update_hash_from_file(hasher, path):
 def get_content_fingerprint(page):
 
     relevant_page_data = {
+        "language": page.get("language"),
         "category": page.get("category"),
         "page": page.get("page"),
         "tab": page.get("tab"),
@@ -240,7 +241,6 @@ def generate_manual_section(page):
             "button_descriptions": [],
             "page_sections": [],
             "field_descriptions": [],
-            "workflow": [],
             "best_practices": [],
             "restrictions": [],
             "status": "error",

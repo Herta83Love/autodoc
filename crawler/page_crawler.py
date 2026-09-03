@@ -3,6 +3,7 @@
 # ============================================================================
 
 import asyncio
+from pathlib import Path
 
 import crawler.wait_helper
 
@@ -30,12 +31,18 @@ from crawler.tab_explorer import (
 
 async def crawl_pages(
     page,
-    menu_items
+    menu_items,
+    language="zh-TW",
+    output_root="output/zh-TW"
 ):
 
     results = []
 
     total = len(menu_items)
+    screenshot_dir = f"{output_root}/screenshots"
+    html_dir = f"{output_root}/html"
+    icon_dir = f"{output_root}/icons"
+    Path(html_dir).mkdir(parents=True, exist_ok=True)
 
     print(
         f"\n開始爬取 {total} 個頁面\n"
@@ -191,7 +198,7 @@ async def crawl_pages(
                 html = await frame.content()
 
                 debug_path = (
-                    f"output/html/debug_{title}.html"
+                    f"{html_dir}/debug_{index}_{title}.html"
                 )
 
                 with open(
@@ -236,7 +243,7 @@ async def crawl_pages(
                             name
                         )
 
-                for tab_name in tab_names:
+                for tab_index, tab_name in enumerate(tab_names):
 
                     try:
 
@@ -308,7 +315,8 @@ async def crawl_pages(
                         screenshot = (
                             await save_screenshot(
                                 frame,
-                                f"{title}_{tab_name}"
+                                f"{index}_{title}_{tab_index}_{tab_name}",
+                                screenshot_dir
                             )
                         )
 
@@ -319,13 +327,15 @@ async def crawl_pages(
                         html_file = (
                             await save_html(
                                 frame,
-                                f"{title}_{tab_name}"
+                                f"{index}_{title}_{tab_index}_{tab_name}",
+                                html_dir
                             )
                         )
                         actions = await extract_actions(
                             frame,
                             title,
-                            tab_name
+                            tab_name,
+                            icon_dir
                         )
                         metadata = (
                             await analyze_page(
@@ -342,7 +352,15 @@ async def crawl_pages(
 
                                 screenshot,
 
-                                html_file
+                                html_file,
+
+                                language=language,
+
+                                page_key=f"menu:{index}/tab:{tab_index}",
+
+                                menu_index=index,
+
+                                tab_index=tab_index
                             )
                         )
                         metadata.actions = actions
@@ -375,7 +393,8 @@ async def crawl_pages(
             screenshot = (
                 await save_screenshot(
                     frame,
-                    title
+                    f"{index}_{title}",
+                    screenshot_dir
                 )
             )
 
@@ -386,13 +405,15 @@ async def crawl_pages(
             html_file = (
                 await save_html(
                     frame,
-                    title
+                    f"{index}_{title}",
+                    html_dir
                 )
             )
             actions = await extract_actions(
                 frame,
                 title,
-                None
+                None,
+                icon_dir
             )
 
             metadata = (
@@ -410,7 +431,15 @@ async def crawl_pages(
 
                     screenshot,
 
-                    html_file
+                    html_file,
+
+                    language=language,
+
+                    page_key=f"menu:{index}",
+
+                    menu_index=index,
+
+                    tab_index=None
                 )
             )
 

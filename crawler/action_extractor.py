@@ -6,21 +6,16 @@ import os
 from pathlib import Path
 
 
-ICON_DIR = Path("output/icons")
-
-ICON_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-
 async def extract_actions(
     frame,
     page_name,
-    tab_name=None
+    tab_name=None,
+    output_dir="output/icons"
 ):
 
     actions = []
+    icon_dir = Path(output_dir)
+    icon_dir.mkdir(parents=True, exist_ok=True)
 
     try:
 
@@ -95,7 +90,7 @@ async def extract_actions(
                 )
 
                 image_path = (
-                    ICON_DIR
+                    icon_dir
                     /
                     f"{safe_page}_{safe_tab}_{idx}.png"
                 )

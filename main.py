@@ -37,6 +37,50 @@ from document.manual_generator import (
     generate_docx
 ) 
 
+from utils.language_pairing import (
+    add_english_terms,
+    find_unpaired_pages
+)
+
+
+async def crawl_language(browser, config, language_cfg):
+
+    language_code = language_cfg["code"]
+    print(f"\n========== LANGUAGE: {language_code} ==========\n")
+
+    context = await browser.new_context(
+        ignore_https_errors=True
+    )
+    page = await context.new_page()
+
+    try:
+        await login(page, config, language_cfg)
+
+        print("Current URL:")
+        print(await page.title())
+        print(page.url)
+
+        menus = await discover_menu_links(page)
+
+        print("\n========== MENU ==========")
+
+        for menu in menus:
+            print(menu)
+
+        print(f"\n共發現 {len(menus)} 個功能頁")
+
+        metadata = await crawl_pages(
+            page,
+            menus,
+            language=language_code,
+            output_root=f"output/{language_code}"
+        )
+
+        return metadata
+
+    finally:
+        await context.close()
+
 async def run():
 
     logging.basicConfig(
@@ -60,71 +104,65 @@ async def run():
             ]
         )
 
-        context = await browser.new_context(
-            ignore_https_errors=True
+        language_runs = (
+            config.get("login", {})
+            .get("language", {})
+            .get("runs", [])
         )
 
-        page = await context.new_page()
-
-        # 登入
-        await login(page, config)
-
-        print("Current URL:")
-        print(await page.title())
-        print(page.url)
-
-        # 探索選單
-        menus = await discover_menu_links(
-            page
-        )
-
-        print("\n========== MENU ==========")
-
-        for menu in menus:
-            print(menu)
-
-        print(
-            f"\n共發現 {len(menus)} 個功能頁"
-        )
-
-        # 爬取所有頁面
-        metadata = await crawl_pages(
-            page,
-            menus
-        )
-
-        # 儲存 metadata
-        with open(
-            "output/metadata.json",
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            json.dump(
-                metadata,
-                f,
-                ensure_ascii=False,
-                indent=2
+        if not language_runs:
+            raise RuntimeError(
+                "config/config.yaml 缺少 login.language.runs"
             )
 
-        print(
-            f"\n共產生 {len(metadata)} 筆 Metadata"
-        )
+        all_metadata = {}
 
-        # 產生 Markdown 文件
-        generate_manual(
-            metadata
-        )
+        # 依 YAML 順序執行；預設為英文完整擷取後再擷取繁體中文。
+        for language_cfg in language_runs:
+            code = language_cfg["code"]
+            all_metadata[code] = await crawl_language(
+                browser,
+                config,
+                language_cfg
+            )
 
-        generate_docx()
+        english_metadata = all_metadata.get("en", [])
+        chinese_metadata = all_metadata.get("zh-TW", [])
+        add_english_terms(chinese_metadata, english_metadata)
+        unpaired_pages = find_unpaired_pages(chinese_metadata)
 
-        print(
-            "\n✅ manual.md 已產生"
-        )
+        if unpaired_pages:
+            raise RuntimeError(
+                "以下中文頁面找不到對應的英文介面專有名詞："
+                + ", ".join(unpaired_pages)
+            )
 
-        print(
-            "✅ SENTRY_Manual.docx 已產生"
-        )
+        for code, metadata in all_metadata.items():
+            metadata_path = f"output/metadata_{code}.json"
+
+            with open(metadata_path, "w", encoding="utf-8") as f:
+                json.dump(
+                    metadata,
+                    f,
+                    ensure_ascii=False,
+                    indent=2
+                )
+
+            generate_manual(
+                metadata,
+                output_path=f"output/manual_{code}.md",
+                language=code
+            )
+
+            generate_docx(
+                pages=metadata,
+                language=code,
+                output_path=f"output/SENTRY_Manual_{code}.docx"
+            )
+
+            print(
+                f"✅ {code}: {len(metadata)} 筆 Metadata、Markdown 與 DOCX 已產生"
+            )
 
         await browser.close()
 

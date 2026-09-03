@@ -10,3 +10,44 @@ login:
   password_selector: 'input[name="password"]'
 
   submit_selector: 'input[type="submit"]' 
+
+  # SENTRY 會依登入前的選擇決定登入後整個介面的語言。
+  # selector 留空時，程式會自動偵測原生 select 或顯示 English 的下拉元件。
+  language:
+    enabled: true
+    required: true
+    selector: ''
+    timeout_ms: 10000
+
+    # 執行順序即為文件產生順序：先英文，再繁體中文。
+    runs:
+      - code: 'en'
+        document_language: 'en'
+        labels:
+          - 'English'
+        values:
+          - 'en-US'
+          - 'en_US'
+          - 'en-us'
+          - 'en'
+        current_labels:
+          - 'English'
+          - '繁體中文'
+          - '中文'
+
+      - code: 'zh-TW'
+        document_language: 'zh-TW'
+        labels:
+          - '繁體中文'
+          - '中文'
+          - 'Traditional Chinese'
+          - 'Chinese'
+        values:
+          - 'zh-TW'
+          - 'zh_TW'
+          - 'zh-tw'
+          - 'zh'
+        current_labels:
+          - 'English'
+          - '繁體中文'
+          - '中文'

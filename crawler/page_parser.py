@@ -25,7 +25,15 @@ async def analyze_page(
 
     screenshot_path,
 
-    html_path
+    html_path,
+
+    language="zh-TW",
+
+    page_key="",
+
+    menu_index=0,
+
+    tab_index=None
 ):
 
     #
@@ -222,6 +230,14 @@ async def analyze_page(
     # Build Metadata
     #
     return PageMetadata(
+
+        language=language,
+
+        page_key=page_key,
+
+        menu_index=menu_index,
+
+        tab_index=tab_index,
 
         category=category,
 

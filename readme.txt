@@ -41,6 +41,17 @@ Copy `.env.example` to `.env`, then configure the Azure OpenAI values and
 SENTRY login credentials. Adjust the login URL and selectors in
 `config/config.yaml` when the target environment differs.
 
+The `login.language.runs` list controls the crawl order. The default setup
+creates a fresh login session for English first and Traditional Chinese
+second. Each run writes isolated screenshots, HTML, icons, metadata, Markdown,
+and DOCX output beneath `output/`.
+
+Chinese metadata is paired with the English crawl by stable menu/tab position.
+The Chinese manual therefore renders navigation terms as
+`中文（Official English UI term）` in both headings and the table of contents.
+If the login-page markup differs, set `login.language.selector` to the language
+dropdown CSS selector and adjust the run-specific labels or values.
+
 ## Run
 
 ```bash
@@ -61,3 +72,6 @@ available without manually refreshing Word fields.
 The final DOCX formatting pass explicitly applies a white page/table
 background and black text to body content, styles, hyperlinks, fields,
 headers, footers, and cover/back-cover text.
+
+Screen action icons are rendered in a two-column icon/function table. The
+workflow section is intentionally omitted from both AI output and DOCX output.

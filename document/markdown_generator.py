@@ -9,9 +9,18 @@ from document.templates import (
 )
 
 
-def generate_manual(pages):
+def generate_manual(
+    pages,
+    output_path="output/manual.md",
+    language="zh-TW"
+):
 
-    content = "# 系統操作手冊\n\n"
+    title = (
+        "System Administration Manual"
+        if str(language).lower().startswith("en")
+        else "系統操作手冊"
+    )
+    content = f"# {title}\n\n"
 
     for page in pages:
 
@@ -39,7 +48,7 @@ def generate_manual(pages):
         content += "\n\n---\n\n"
 
     with open(
-        "output/manual.md",
+        output_path,
         "w",
         encoding="utf-8"
     ) as f:

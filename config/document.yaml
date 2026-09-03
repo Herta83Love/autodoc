@@ -27,7 +27,7 @@ back_cover:
 introduction:
   purpose: |
     本文件提供 SENTRY 平台功能說明、
-    操作流程及管理建議，
+    功能細節及管理建議，
     協助系統管理員完成部署、
     設定與維運工作。
 
@@ -46,3 +46,44 @@ introduction:
 
 footer:
   copyright: "© URMAZI All Rights Reserved"
+
+locales:
+  en:
+    cover:
+      subtitle: "Administrator Guide"
+
+    publication:
+      notice_title: "Publication and Use Notice"
+      change_notice: >-
+        URMAZI reserves the right to modify this document and the product
+        described herein without notice. Before installing or using the
+        product, review the version information, release notes, and latest
+        documentation.
+      trademark_notice: >-
+        URMAZI, the URMAZI logo, and related product names are trademarks or
+        registered trademarks of their respective owners.
+      support_url: "https://urmazi.com/support/"
+
+    back_cover:
+      thank_you: "Thank you for using SENTRY"
+      support_label: "Documentation and Technical Support"
+
+    introduction:
+      purpose: >-
+        This manual describes SENTRY platform functions, administration
+        details, and operational recommendations for deployment,
+        configuration, and maintenance.
+      audience:
+        - System administrators
+        - Security administrators
+        - Operations engineers
+      login_guide: >-
+        Open the system portal in a browser, select English on the login page,
+        enter the account credentials, and sign in.
+      interface_overview: >-
+        System functions are grouped by module in the navigation menu.
+        Administrators can open each module to review and manage its settings.
+
+  zh-TW:
+    cover:
+      subtitle: "管理員操作手冊"

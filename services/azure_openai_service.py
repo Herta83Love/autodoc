@@ -77,7 +77,6 @@ SYSTEM_PROMPT = """
     "button_descriptions": [],
     "page_sections": [],
     "field_descriptions": [],
-    "workflow": [],
     "best_practices": [],
     "restrictions": []
 }
@@ -301,51 +300,6 @@ field_descriptions
 ]
 
 ==================================================
-workflow
-==================================================
-
-操作流程。
-
-格式：
-
-[
-    "...",
-    "...",
-    "..."
-]
-
-要求：
-
-- 5~10個步驟
-- 每個步驟一行
-- 使用自然語言
-- 使用管理員角度
-
-重要規則：
-
-不要描述按鈕。
-
-錯誤：
-
-"點擊新增按鈕"
-
-"點擊刪除按鈕"
-
-"點擊搜尋按鈕"
-
-"點擊重新整理按鈕"
-
-正確：
-
-"建立新的資料項目"
-
-"移除指定資料"
-
-"執行資料查詢"
-
-"重新載入系統資料"
-
-==================================================
 best_practices
 ==================================================
 
@@ -414,8 +368,6 @@ page_sections 必須是字串陣列。
 
 field_descriptions 必須是字串陣列。
 
-workflow 必須是字串陣列。
-
 best_practices 必須是字串陣列。
 
 restrictions 必須是字串陣列。
@@ -444,6 +396,18 @@ def generate_manual_content(
     page,
     screenshot_path=None
 ):
+    output_language = (
+        "English"
+        if str(page.get("language", "")).lower().startswith("en")
+        else "繁體中文"
+    )
+    system_prompt = SYSTEM_PROMPT.replace(
+        "所有內容皆使用繁體中文。",
+        f"所有內容皆使用{output_language}。"
+    ).replace(
+        "- 繁體中文",
+        f"- {output_language}"
+    )
     actions = [
 
         action
@@ -593,7 +557,7 @@ icon:
         input=[
             {
                 "role": "system",
-                "content": SYSTEM_PROMPT
+                "content": system_prompt
             },
             {
                 "role": "user",
@@ -638,8 +602,6 @@ icon:
             "field_descriptions": [],
 
             "button_descriptions": [],
-
-            "workflow": [],
 
             "best_practices": [],
 
