@@ -6,3 +6,4 @@ PyYAML==6.0.2
 python-docx
 python-dotenv
 openai>=2.0.0,<3.0.0
+Pillow>=10.0.0,<12.0.0

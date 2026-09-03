@@ -4,10 +4,12 @@ document:
   title: "SENTRY 管理操作手冊"
   product_name: "SENTRY"
   version: "2.4.0"
+  build_version: "V2.4.0.2443028217"
   company: "URMAZI"
   classification: "CONFIDENTIAL"
 
 cover:
+  title: "SENTRY PDNS"
   subtitle: "Administrator Guide"
 
 publication:
@@ -69,21 +71,108 @@ locales:
       support_label: "Documentation and Technical Support"
 
     introduction:
-      purpose: >-
-        This manual describes SENTRY platform functions, administration
-        details, and operational recommendations for deployment,
-        configuration, and maintenance.
-      audience:
-        - System administrators
-        - Security administrators
-        - Operations engineers
-      login_guide: >-
-        Open the system portal in a browser, select English on the login page,
-        enter the account credentials, and sign in.
-      interface_overview: >-
-        System functions are grouped by module in the navigation menu.
-        Administrators can open each module to review and manage its settings.
+      heading: "Introduction"
+      what_is_sentry:
+        title: "What is SENTRY?"
+        paragraphs:
+          - >-
+            Introducing SENTRY, an enterprise-level Protective Domain Name System
+            (PDNS) solution that offers secure and reliable DNS resolution services.
+            SENTRY is designed to meet the demands of today's businesses and
+            organizations that require a high level of security and protection
+            against DNS-based threats.
+          - >-
+            As an on-premises software solution, SENTRY supports DNS over UDP, TCP,
+            TLS, and HTTPS, providing a secure and encrypted connection for all DNS
+            queries. It also offers DNSSEC validation, ensuring the authenticity and
+            integrity of DNS responses.
+          - >-
+            In addition, SENTRY includes advanced security features such as DDoS
+            protection, Response Rate Limit control, and SafeSearch, which help
+            prevent cyberattacks, limit the impact of malicious traffic, and provide
+            a safe browsing experience for users.
+          - >-
+            With SENTRY, businesses and organizations can enjoy peace of mind knowing
+            that their DNS resolution services are secure, reliable, and protected
+            against a wide range of threats. SENTRY is the perfect solution for
+            businesses of all sizes, from small and medium-sized enterprises to
+            large corporations.
+      target_version:
+        title: "Target version"
+        paragraphs:
+          - "This document is based on the features available in the following SENTRY version:"
+          - "V2.4.0.2443028217"
+          - >-
+            It is assumed that the software was successfully installed and is readily
+            accessible on the network.
+      logging_in:
+        title: "Logging in"
+        paragraphs:
+          - >-
+            To access and configure SENTRY features, you need to log in to the SENTRY
+            web portal first.
+          - >-
+            Using a web browser, navigate to the IP address of the SENTRY portal that
+            was set up during installation. SENTRY recommends Google Chrome or any
+            Chromium-based browser.
+          - >-
+            (Optional) Click the dropdown to select an interface language. Changing
+            the language here affects how all text and messages will be displayed
+            after logging in. The default interface language is English.
+          - "Provide the following details:"
+          - >-
+            To set up new accounts or update passwords, go to the Management » User
+            page.
+          - "Click Login."
+          - >-
+            If successful, the page redirects to the Domain Insights » Security
+            Console page.
 
   zh-TW:
     cover:
       subtitle: "管理員操作手冊"
+
+    introduction:
+      heading: "前言"
+      what_is_sentry:
+        title: "什麼是 SENTRY？"
+        paragraphs:
+          - >-
+            SENTRY 是企業級防護型網域名稱系統（Protective Domain Name System，PDNS）
+            解決方案，可提供安全且可靠的 DNS 解析服務。SENTRY 專為現今企業與組織的需求而設計，
+            適用於重視資訊安全，並需要防範 DNS 威脅的環境。
+          - >-
+            SENTRY 採用內部部署（On-Premises）模式，支援透過 UDP、TCP、TLS 及 HTTPS
+            傳輸 DNS 查詢，為查詢連線提供安全與加密保護；同時支援 DNSSEC 驗證，
+            以確保 DNS 回應的真實性與完整性。
+          - >-
+            此外，SENTRY 具備 DDoS 防護、回應速率限制（Response Rate Limit）與
+            SafeSearch 等進階安全功能，可協助防範網路攻擊、降低惡意流量造成的影響，
+            並為使用者提供更安全的網路瀏覽環境。
+          - >-
+            透過 SENTRY，企業與組織可確保 DNS 解析服務維持安全、可靠，並受到完善保護，
+            以因應各類威脅。無論是中小型企業或大型組織，皆可使用 SENTRY 建立符合需求的
+            DNS 安全防護機制。
+      target_version:
+        title: "適用版本"
+        paragraphs:
+          - "本文件內容係依據下列 SENTRY 版本所提供的功能編寫："
+          - "V2.4.0.2443028217"
+          - "使用本文件前，請確認軟體已正確安裝，且可透過網路正常存取。"
+      logging_in:
+        title: "登入系統"
+        paragraphs:
+          - "若要存取及設定 SENTRY 功能，請先登入 SENTRY 網頁管理介面。"
+          - >-
+            使用網頁瀏覽器前往安裝時所設定的 SENTRY 管理介面 IP 位址。
+            建議使用 Google Chrome 或其他以 Chromium 為基礎的瀏覽器。
+          - >-
+            （選用）按一下語言下拉式選單以選擇介面語言。此處選擇的語言會套用至登入後顯示的
+            所有文字與訊息；預設介面語言為英文。
+          - "輸入登入所需的帳號與密碼。"
+          - >-
+            若要建立新帳號或更新密碼，請前往「管理（Management）» 使用者（User）」頁面。
+          - "按一下「登入（Login）」。"
+          - >-
+            登入成功後，系統會導向「網域洞察（Domain Insights）» 安全主控台
+            （Security Console）」頁面。

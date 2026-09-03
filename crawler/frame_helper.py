@@ -1,12 +1,18 @@
-# ============================================================================
-# File: frame_helper.py
-# ============================================================================
+import asyncio
+from time import monotonic
 
-async def get_main_frame(page):
 
-    for frame in page.frames:  
-        if frame.name == "mainFrame":
+async def get_main_frame(page, timeout_ms=0):
+    """Return mainFrame immediately, or briefly poll while it is replaced."""
 
-            return frame
+    deadline = monotonic() + timeout_ms / 1000
 
-    return None
+    while True:
+        for frame in page.frames:
+            if frame.name == "mainFrame":
+                return frame
+
+        if monotonic() >= deadline:
+            return None
+
+        await asyncio.sleep(0.05)

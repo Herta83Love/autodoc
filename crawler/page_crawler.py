@@ -2,7 +2,6 @@
 # File: page_crawler.py
 # ============================================================================
 
-import asyncio
 from pathlib import Path
 
 import crawler.wait_helper
@@ -33,7 +32,8 @@ async def crawl_pages(
     page,
     menu_items,
     language="zh-TW",
-    output_root="output/zh-TW"
+    output_root="output/zh-TW",
+    term_index=None
 ):
 
     results = []
@@ -43,6 +43,7 @@ async def crawl_pages(
     html_dir = f"{output_root}/html"
     icon_dir = f"{output_root}/icons"
     Path(html_dir).mkdir(parents=True, exist_ok=True)
+    term_index = term_index if term_index is not None else {}
 
     print(
         f"\n開始爬取 {total} 個頁面\n"
@@ -67,6 +68,13 @@ async def crawl_pages(
                 await link.text_content()
             ).strip()
 
+            # Save official UI terms before screenshots or parsing can fail.
+            term_index[f"menu:{index}"] = {
+                "category": category,
+                "page": title,
+                "tab": None
+            }
+
             print(
                 f"\n[{index + 1}/{total}] {title}"
             )
@@ -82,17 +90,15 @@ async def crawl_pages(
                 page
             )
 
-            before_text = ""
+            before_snapshot = None
 
             if frame:
 
                 try:
 
-                    before_text = (
-                        await frame.locator(
-                            "body"
-                        ).inner_text()
-                    )[:800]
+                    before_snapshot = await crawler.wait_helper.get_dom_snapshot(
+                        frame
+                    )
 
                 except Exception:
                     pass
@@ -102,13 +108,9 @@ async def crawl_pages(
             #
             await link.click()
 
-            #
-            # 等待 frame
-            #
-            await asyncio.sleep(0.5)
-
             frame = await get_main_frame(
-                page
+                page,
+                timeout_ms=3000
             )
 
             if frame is None:
@@ -119,46 +121,10 @@ async def crawl_pages(
 
                 continue
 
-            #
-            # 等待頁面內容變化
-            #
-            for _ in range(30):
-
-                await asyncio.sleep(0.5)
-
-                try:
-
-                    current_text = (
-                        await frame.locator(
-                            "body"
-                        ).inner_text()
-                    )[:800]
-
-                    if (
-                        current_text
-                        and current_text != before_text
-                    ):
-
-                        print(
-                            "✅ 頁面內容已更新"
-                        )
-
-                        break
-
-                except Exception:
-                    pass
-
-            #
-            # 等待頁面穩定
-            #
-            await crawler.wait_helper.wait_frame_ready(
-                frame
+            await crawler.wait_helper.wait_dom_ready(
+                frame,
+                before_snapshot=before_snapshot
             )
-
-            #
-            # 額外等待避免 Vue SPA 尚未完成 render
-            #
-            await crawler.wait_helper.wait_dom_stable(frame)
 
             print(
                 f"Frame URL: {frame.url}"
@@ -245,6 +211,12 @@ async def crawl_pages(
 
                 for tab_index, tab_name in enumerate(tab_names):
 
+                    term_index[f"menu:{index}/tab:{tab_index}"] = {
+                        "category": category,
+                        "page": title,
+                        "tab": tab_name
+                    }
+
                     try:
 
                         print(
@@ -267,50 +239,23 @@ async def crawl_pages(
 
                             continue
 
-                        before_tab = ""
+                        before_tab = None
 
                         try:
 
-                            before_tab = (
-                                await frame.locator(
-                                    "body"
-                                ).inner_text()
-                            )[:800]
+                            before_tab = await crawler.wait_helper.get_dom_snapshot(
+                                frame
+                            )
 
                         except Exception:
                             pass
 
                         await locator.first.click()
 
-                        #
-                        # 等待 Tab 內容變化
-                        #
-                        for _ in range(20):
-
-                            await asyncio.sleep(0.5)
-
-                            try:
-
-                                current_tab = (
-                                    await frame.locator(
-                                        "body"
-                                    ).inner_text()
-                                )[:800]
-
-                                if (
-                                    current_tab
-                                    and current_tab != before_tab
-                                ):
-                                    break
-
-                            except Exception:
-                                pass
-
-                        await crawler.wait_helper.wait_frame_ready(
-                            frame
+                        await crawler.wait_helper.wait_dom_ready(
+                            frame,
+                            before_snapshot=before_tab
                         )
-
-                        await asyncio.sleep(1)
 
                         screenshot = (
                             await save_screenshot(
@@ -335,7 +280,8 @@ async def crawl_pages(
                             frame,
                             title,
                             tab_name,
-                            icon_dir
+                            icon_dir,
+                            screenshot
                         )
                         metadata = (
                             await analyze_page(
@@ -413,7 +359,8 @@ async def crawl_pages(
                 frame,
                 title,
                 None,
-                icon_dir
+                icon_dir,
+                screenshot
             )
 
             metadata = (
@@ -450,10 +397,6 @@ async def crawl_pages(
 
             print(
                 f"✅ 完成: {title}"
-            )
-
-            await asyncio.sleep(
-                1
             )
 
         except Exception as e:

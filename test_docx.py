@@ -1,8 +1,8 @@
-"""Use existing crawl output to regenerate the manual without Playwright.
+"""Regenerate both manuals from existing crawl output without Playwright.
 
-This script is intended for iterating on ``document/manual_generator.py``.
-It reads ``output/metadata.json`` and reuses the screenshots/icon images whose
-paths are recorded in that file. No browser, login, or crawler code is run.
+The script reuses bilingual metadata, screenshots, button images, and AI cache.
+It also reapplies the English UI-term pairing before generating the Chinese
+manual, so document-layout changes do not require another crawl.
 """
 
 import json
@@ -12,40 +12,56 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = PROJECT_ROOT / "output"
-METADATA_PATH = OUTPUT_DIR / "metadata.json"
-DOCX_PATH = OUTPUT_DIR / "SENTRY_Manual.docx"
+LANGUAGES = ("en", "zh-TW")
 
 
-def load_metadata():
-    if not METADATA_PATH.is_file():
+def load_json(path, expected_type, description, required=True):
+    if not path.is_file():
+        if not required:
+            return expected_type()
         raise FileNotFoundError(
-            "找不到 output/metadata.json，請先執行 main.py 完成一次爬取。"
+            f"找不到 {path.relative_to(PROJECT_ROOT)}，請先執行 main.py 完成雙語爬取。"
         )
 
-    with METADATA_PATH.open("r", encoding="utf-8") as file:
-        metadata = json.load(file)
+    with path.open("r", encoding="utf-8") as file:
+        data = json.load(file)
 
-    if not isinstance(metadata, list):
-        raise ValueError("output/metadata.json 格式錯誤：最外層必須是陣列。")
+    if not isinstance(data, expected_type):
+        raise ValueError(
+            f"{path.relative_to(PROJECT_ROOT)} 格式錯誤："
+            f"最外層必須是{'陣列' if expected_type is list else '物件'}。"
+        )
 
-    if not metadata:
-        raise ValueError("output/metadata.json 沒有任何頁面資料。")
+    if required and not data:
+        raise ValueError(f"{path.relative_to(PROJECT_ROOT)} 沒有任何{description}。")
 
-    return metadata
+    return data
+
+
+def load_bilingual_metadata():
+    metadata = {
+        language: load_json(
+            OUTPUT_DIR / f"metadata_{language}.json",
+            list,
+            "頁面資料"
+        )
+        for language in LANGUAGES
+    }
+    english_terms = load_json(
+        OUTPUT_DIR / "terms_en.json",
+        dict,
+        "英文介面名稱",
+        required=False
+    )
+    return metadata, english_terms
 
 
 def resolve_output_asset(path_value):
-    """Resolve metadata paths regardless of the shell's current directory."""
-
     if not path_value:
         return None
 
     path = Path(path_value)
-
-    if path.is_absolute():
-        return path
-
-    return PROJECT_ROOT / path
+    return path if path.is_absolute() else PROJECT_ROOT / path
 
 
 def check_assets(metadata):
@@ -67,50 +83,84 @@ def check_assets(metadata):
     return missing_screenshots, missing_icons
 
 
-def print_asset_warnings(missing_screenshots, missing_icons):
+def print_asset_warnings(language, missing_screenshots, missing_icons):
     if missing_screenshots:
-        print(f"⚠️ 找不到 {len(missing_screenshots)} 張頁面截圖，相關圖片將被略過。")
-
+        print(
+            f"⚠️ {language} 找不到 {len(missing_screenshots)} 張頁面截圖，"
+            "相關圖片將被略過。"
+        )
         for page_index, path in missing_screenshots[:5]:
-            print(f"   metadata 第 {page_index} 筆：{path}")
+            print(f"   Metadata 第 {page_index} 筆：{path}")
 
     if missing_icons:
-        print(f"⚠️ 找不到 {len(missing_icons)} 張操作圖示，相關圖示將被略過。")
-
+        print(
+            f"⚠️ {language} 找不到 {len(missing_icons)} 張操作圖示，"
+            "相關圖示將被略過。"
+        )
         for page_index, action_index, path in missing_icons[:5]:
             print(
-                f"   metadata 第 {page_index} 筆、action 第 {action_index} 筆：{path}"
+                f"   Metadata 第 {page_index} 筆、Action 第 {action_index} 筆：{path}"
             )
 
 
+def pair_chinese_terms(metadata, english_terms):
+    from utils.language_pairing import add_english_terms, find_unpaired_pages
+
+    chinese_pages = metadata["zh-TW"]
+    add_english_terms(chinese_pages, metadata["en"], english_terms)
+    unpaired = find_unpaired_pages(chinese_pages)
+
+    if unpaired:
+        raise RuntimeError(
+            "以下中文頁面找不到對應的英文介面專有名詞："
+            + ", ".join(unpaired)
+            + "。請確認 output/terms_en.json 與英文 Metadata 是否完整。"
+        )
+
+
 def run():
-    # The generators currently use project-relative config/output paths.
-    # Normalizing cwd also lets this script run from any directory.
     os.chdir(PROJECT_ROOT)
 
-    metadata = load_metadata()
-    missing_screenshots, missing_icons = check_assets(metadata)
-
-    print(f"載入 Metadata 成功，共 {len(metadata)} 筆")
-    print_asset_warnings(missing_screenshots, missing_icons)
-    print("開始使用既有 metadata 與截圖產生 Word 文件（不執行爬蟲）...")
-
-    # Import after cwd normalization because the document modules initialize
-    # cache/config paths during import.
     from utils.file_helper import ensure_directories
     from document.manual_generator import generate_docx
 
     ensure_directories()
-    generate_docx()
+    metadata, english_terms = load_bilingual_metadata()
+    pair_chinese_terms(metadata, english_terms)
 
-    if not DOCX_PATH.is_file():
-        raise RuntimeError("文件產生程序已結束，但找不到 output/SENTRY_Manual.docx。")
+    print("已載入並完成中英文 Metadata 配對：")
+    for language in LANGUAGES:
+        pages = metadata[language]
+        print(f"  {language}: {len(pages)} 筆")
+        missing_screenshots, missing_icons = check_assets(pages)
+        print_asset_warnings(language, missing_screenshots, missing_icons)
 
-    print(f"✅ 文件已產生：{DOCX_PATH.relative_to(PROJECT_ROOT)}")
+    print("開始使用既有爬蟲與 AI Cache 產生雙語 Word 文件（不執行爬蟲）...")
+
+    for language in LANGUAGES:
+        output_path = OUTPUT_DIR / f"SENTRY_Manual_{language}.docx"
+        generate_docx(
+            pages=metadata[language],
+            language=language,
+            output_path=str(output_path.relative_to(PROJECT_ROOT))
+        )
+
+        if not output_path.is_file():
+            raise RuntimeError(
+                f"文件產生程序已結束，但找不到 {output_path.relative_to(PROJECT_ROOT)}。"
+            )
+
+        print(f"✅ {language} 文件已產生：{output_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":
     try:
         run()
-    except (FileNotFoundError, ValueError, RuntimeError, json.JSONDecodeError) as error:
+    except (
+        FileNotFoundError,
+        ValueError,
+        RuntimeError,
+        json.JSONDecodeError
+    ) as error:
         raise SystemExit(f"❌ 無法產生文件：{error}") from error
+

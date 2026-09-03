@@ -69,14 +69,16 @@ async def crawl_language(browser, config, language_cfg):
 
         print(f"\n共發現 {len(menus)} 個功能頁")
 
+        term_index = {}
         metadata = await crawl_pages(
             page,
             menus,
             language=language_code,
-            output_root=f"output/{language_code}"
+            output_root=f"output/{language_code}",
+            term_index=term_index
         )
 
-        return metadata
+        return metadata, term_index
 
     finally:
         await context.close()
@@ -98,7 +100,7 @@ async def run():
 
         browser = await p.chromium.launch(
             headless=False,
-            slow_mo=500,
+            slow_mo=0,
             args=[
                 "--ignore-certificate-errors"
             ]
@@ -116,19 +118,42 @@ async def run():
             )
 
         all_metadata = {}
+        all_terms = {}
 
         # 依 YAML 順序執行；預設為英文完整擷取後再擷取繁體中文。
         for language_cfg in language_runs:
             code = language_cfg["code"]
-            all_metadata[code] = await crawl_language(
+            metadata, term_index = await crawl_language(
                 browser,
                 config,
                 language_cfg
             )
+            all_metadata[code] = metadata
+            all_terms[code] = term_index
+
+            # Persist each completed crawl immediately. A later language or
+            # pairing error must not discard a successful long-running crawl.
+            with open(
+                f"output/metadata_{code}.json",
+                "w",
+                encoding="utf-8"
+            ) as f:
+                json.dump(metadata, f, ensure_ascii=False, indent=2)
+
+            with open(
+                f"output/terms_{code}.json",
+                "w",
+                encoding="utf-8"
+            ) as f:
+                json.dump(term_index, f, ensure_ascii=False, indent=2)
 
         english_metadata = all_metadata.get("en", [])
         chinese_metadata = all_metadata.get("zh-TW", [])
-        add_english_terms(chinese_metadata, english_metadata)
+        add_english_terms(
+            chinese_metadata,
+            english_metadata,
+            all_terms.get("en", {})
+        )
         unpaired_pages = find_unpaired_pages(chinese_metadata)
 
         if unpaired_pages:

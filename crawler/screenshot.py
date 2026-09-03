@@ -26,7 +26,9 @@ async def save_screenshot(
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     await frame.locator("body").screenshot(
-        path=path
+        path=path,
+        animations="disabled",
+        caret="hide"
     )
 
     return path

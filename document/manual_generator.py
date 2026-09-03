@@ -38,6 +38,50 @@ TEXT_BLACK = RGBColor(0, 0, 0)
 MUTED_GRAY = RGBColor(100, 100, 100)
 LIGHT_GRAY = "D9D9D9"
 
+
+def convert_picture_to_page_anchor(inline, x, y):
+    """Keep the cover artwork at a fixed position on the cover page."""
+
+    inline.tag = qn("wp:anchor")
+
+    for name, value in {
+        "distT": "0",
+        "distB": "0",
+        "distL": "0",
+        "distR": "0",
+        "simplePos": "0",
+        "relativeHeight": "0",
+        "behindDoc": "0",
+        "locked": "1",
+        "layoutInCell": "1",
+        "allowOverlap": "1",
+    }.items():
+        inline.set(name, value)
+
+    extent = inline.find(qn("wp:extent"))
+    simple_position = OxmlElement("wp:simplePos")
+    simple_position.set("x", "0")
+    simple_position.set("y", "0")
+
+    horizontal = OxmlElement("wp:positionH")
+    horizontal.set("relativeFrom", "page")
+    horizontal_offset = OxmlElement("wp:posOffset")
+    horizontal_offset.text = str(x)
+    horizontal.append(horizontal_offset)
+
+    vertical = OxmlElement("wp:positionV")
+    vertical.set("relativeFrom", "page")
+    vertical_offset = OxmlElement("wp:posOffset")
+    vertical_offset.text = str(y)
+    vertical.append(vertical_offset)
+
+    wrap = OxmlElement("wp:wrapNone")
+    insert_at = inline.index(extent)
+    inline.insert(insert_at, simple_position)
+    inline.insert(insert_at + 1, horizontal)
+    inline.insert(insert_at + 2, vertical)
+    inline.insert(insert_at + 4, wrap)
+
 UI_TEXT = {
     "zh-TW": {
         "toc": "目錄 / TABLE OF CONTENTS",
@@ -980,29 +1024,38 @@ def add_cover(
 ):
 
     section = document.sections[0]
-    section.top_margin = Cm(0.8)
+    section.top_margin = Cm(0.65)
     section.bottom_margin = Cm(0)
-    section.left_margin = Cm(1.35)
-    section.right_margin = Cm(1.35)
+    section.left_margin = Cm(0)
+    section.right_margin = Cm(0)
     set_blank_header_footer(section)
-    section.top_margin = Cm(0.8)
+    section.top_margin = Cm(0.65)
     section.bottom_margin = Cm(0)
-    section.left_margin = Cm(1.35)
-    section.right_margin = Cm(1.35)
+    section.left_margin = Cm(0)
+    section.right_margin = Cm(0)
 
     logo_p = document.add_paragraph()
-    logo_p.paragraph_format.space_after = Pt(24)
+    logo_p.paragraph_format.left_indent = Cm(1.35)
+    logo_p.paragraph_format.space_after = Pt(34)
+    logo_p.paragraph_format.keep_with_next = True
+    logo_p.paragraph_format.keep_together = True
 
     if LOGO_PATH.exists():
         logo_p.add_run().add_picture(
             str(LOGO_PATH),
-            width=Inches(1.7)
+            width=Inches(1.45)
         )
 
     title_p = document.add_paragraph()
-    title_p.paragraph_format.space_after = Pt(2)
+    title_p.paragraph_format.left_indent = Cm(1.35)
+    title_p.paragraph_format.space_after = Pt(1)
+    title_p.paragraph_format.keep_with_next = True
+    title_p.paragraph_format.keep_together = True
     title_run = title_p.add_run(
-        f"{config['document']['product_name']} PDNS"
+        config.get("cover", {}).get(
+            "title",
+            f"{config['document']['product_name']} PDNS"
+        )
     )
     set_run_font(
         title_run,
@@ -1012,37 +1065,43 @@ def add_cover(
     )
 
     subtitle_p = document.add_paragraph()
-    subtitle_p.paragraph_format.space_after = Pt(7)
-    subtitle_run = subtitle_p.add_run(
-        get_localized_config(config, "cover", language)["subtitle"]
+    subtitle_p.paragraph_format.left_indent = Cm(1.35)
+    subtitle_p.paragraph_format.space_after = Pt(0)
+    subtitle_p.paragraph_format.keep_with_next = True
+    subtitle_p.paragraph_format.keep_together = True
+    subtitle = (
+        "管理員操作手冊"
+        if language_key(language) == "zh-TW"
+        else get_localized_config(config, "cover", language)["subtitle"]
     )
+    subtitle_run = subtitle_p.add_run(subtitle)
     set_run_font(
         subtitle_run,
         size=22,
         color=BRAND_BLUE
     )
-
-    version_p = document.add_paragraph()
-    version_p.paragraph_format.space_after = Pt(12)
-    version_run = version_p.add_run(
-        f"Version {config['document']['version']}  |  "
-        f"{datetime.now().strftime('%Y-%m-%d')}"
-    )
-    set_run_font(
-        version_run,
-        size=9.5,
-        color=MUTED_GRAY
-    )
+    if language_key(language) == "zh-TW":
+        subtitle_run._element.get_or_add_rPr().get_or_add_rFonts().set(
+            qn("w:eastAsia"),
+            "PingFang TC"
+        )
 
     art_p = document.add_paragraph()
     art_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    art_p.paragraph_format.space_before = Pt(2)
+    art_p.paragraph_format.space_before = Pt(0)
     art_p.paragraph_format.space_after = Pt(0)
+    art_p.paragraph_format.line_spacing = 1
+    art_p.paragraph_format.keep_together = True
 
     if COVER_CHARACTERS_PATH.exists():
-        art_p.add_run().add_picture(
+        picture = art_p.add_run().add_picture(
             str(COVER_CHARACTERS_PATH),
-            width=Inches(7.0)
+            width=Cm(21)
+        )
+        convert_picture_to_page_anchor(
+            picture._inline,
+            x=0,
+            y=Cm(13.95).emu
         )
 
 
@@ -1188,49 +1247,21 @@ def add_introduction(
 
     intro = get_localized_config(config, "introduction", language)
 
-    document.add_heading(
-        text_for(language, "introduction"),
-        level=1
-    )
+    document.add_heading(intro["heading"], level=1)
 
-    document.add_heading(
-        text_for(language, "purpose"),
-        level=2
-    )
+    for section_key in ["what_is_sentry", "target_version", "logging_in"]:
+        section_data = intro[section_key]
+        heading = document.add_heading(section_data["title"], level=2)
 
-    document.add_paragraph(
-        intro["purpose"]
-    )
+        if section_key == "logging_in":
+            heading.paragraph_format.page_break_before = True
 
-    document.add_heading(
-        text_for(language, "audience"),
-        level=2
-    )
+        for paragraph_text in section_data["paragraphs"]:
+            paragraph = document.add_paragraph(paragraph_text)
 
-    for item in intro["audience"]:
-
-        document.add_paragraph(
-            item,
-            style="List Bullet"
-        )
-
-    document.add_heading(
-        text_for(language, "login"),
-        level=2
-    )
-
-    document.add_paragraph(
-        intro["login_guide"]
-    )
-
-    document.add_heading(
-        text_for(language, "interface"),
-        level=2
-    )
-
-    document.add_paragraph(
-        intro["interface_overview"]
-    )
+            if paragraph_text == config["document"].get("build_version"):
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                paragraph.runs[0].bold = True
 
     document.add_page_break()
 
