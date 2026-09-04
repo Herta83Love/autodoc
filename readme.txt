@@ -37,7 +37,27 @@ python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 playwright install chromium
-   
+
+### 安裝 LibreOffice 與 Poppler（目錄頁碼必要）
+
+文件產生器不需要 Microsoft Word。它會使用免費的 LibreOffice 在背景完成文件分頁，再透過 Poppler 取得每個標題所在頁面，最後把實際頁碼寫回 DOCX。
+
+macOS 使用 Homebrew 安裝：
+
+bash:
+
+brew install --cask libreoffice
+brew install poppler
+
+安裝後可確認指令是否可用：
+
+bash:
+
+/Applications/LibreOffice.app/Contents/MacOS/soffice --version
+pdfinfo -v
+pdftotext -v
+
+不需要開啟 LibreOffice，也不需要設定 macOS 自動化權限。執行 `python3 main.py` 或 `python3 test_docx.py` 時，程式會在背景建立暫存 PDF、計算目錄頁碼並寫回最終 DOCX；暫存檔完成後會自動移除。
 
 ## 設定
 
@@ -126,4 +146,4 @@ DOCX 版面主要由 `document/manual_generator.py` 控制，相關圖片資源�
 
 目前文件包含封面、文件資訊、出版聲明、修訂紀錄、目錄、前言、功能內容、標頭／頁尾與封底，並在輸出前統一套用白色背景與黑色文字。
 
-目錄使用可點擊的內部連結產生，不需手動更新 Word 欄位即可顯示。
+目錄使用可點擊的內部連結與頁碼欄位產生。產生器會使用 LibreOffice 與 Poppler 自動計算並寫入實際頁碼，不需要安裝 Microsoft Word，也不需要手動更新欄位。
