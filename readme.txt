@@ -57,7 +57,63 @@ bash:
 pdfinfo -v
 pdftotext -v
 
-不需要開啟 LibreOffice，也不需要設定 macOS 自動化權限。執行 `python3 main.py` 或 `python3 test_docx.py` 時，程式會在背景建立暫存 PDF、計算目錄頁碼並寫回最終 DOCX；暫存檔完成後會自動移除。
+Windows 使用 PowerShell 與 WinGet 安裝：
+
+bash:
+
+winget install --id TheDocumentFoundation.LibreOffice --exact
+winget install --id oschwartz10612.Poppler --exact
+
+LibreOffice 的 `soffice.exe` 通常位於：
+
+ 
+C:\Program Files\LibreOffice\program\soffice.exe
+   
+
+安裝完成後請重新開啟 PowerShell，再確認下列指令是否可用：
+
+bash:
+
+soffice --version
+pdfinfo -v
+pdftotext -v
+
+若 PowerShell 找不到 `soffice`，請將 `C:\Program Files\LibreOffice\program` 加入系統的 `PATH`。若找不到 `pdfinfo` 或 `pdftotext`，請將 WinGet 安裝的 Poppler `Library\bin` 目錄加入 `PATH`，再重新開啟終端機。
+
+也可以從 LibreOffice 官方網站下載 Windows 安裝程式：
+
+https://www.libreoffice.org/download/
+
+Linux 可依使用的發行版安裝：
+
+Ubuntu／Debian：
+
+bash:
+
+sudo apt update
+sudo apt install libreoffice poppler-utils
+
+Fedora／RHEL 系列：
+
+bash:
+
+sudo dnf install libreoffice poppler-utils
+
+Arch Linux／Manjaro：
+
+bash:
+
+sudo pacman -S libreoffice-fresh poppler
+
+Linux 安裝完成後可確認指令是否可用：
+
+bash:
+
+soffice --version
+pdfinfo -v
+pdftotext -v
+
+各平台都不需要手動開啟 LibreOffice；macOS 也不需要設定自動化權限。執行 `python3 main.py` 或 `python3 test_docx.py` 時，程式會在背景建立暫存 PDF、計算目錄頁碼並寫回最終 DOCX；暫存檔完成後會自動移除。
 
 ## 設定
 
