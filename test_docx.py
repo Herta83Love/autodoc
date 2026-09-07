@@ -69,10 +69,11 @@ def check_assets(metadata):
     missing_icons = []
 
     for page_index, page in enumerate(metadata, start=1):
-        screenshot = resolve_output_asset(page.get("screenshot"))
-
-        if screenshot is not None and not screenshot.is_file():
-            missing_screenshots.append((page_index, screenshot))
+        screenshot_values = page.get("screenshots") or [page.get("screenshot")]
+        for screenshot_value in screenshot_values:
+            screenshot = resolve_output_asset(screenshot_value)
+            if screenshot is not None and not screenshot.is_file():
+                missing_screenshots.append((page_index, screenshot))
 
         for action_index, action in enumerate(page.get("actions") or [], start=1):
             image = resolve_output_asset(action.get("image"))
@@ -163,4 +164,3 @@ if __name__ == "__main__":
         json.JSONDecodeError
     ) as error:
         raise SystemExit(f"❌ 無法產生文件：{error}") from error
-

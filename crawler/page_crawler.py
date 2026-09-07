@@ -11,6 +11,7 @@ from crawler.frame_helper import (
 )
 
 from crawler.screenshot import (
+    cleanup_screenshot_capture,
     save_screenshot
 )
 from crawler.action_extractor import (
@@ -257,13 +258,14 @@ async def crawl_pages(
                             before_snapshot=before_tab
                         )
 
-                        screenshot = (
+                        screenshot_capture = (
                             await save_screenshot(
                                 frame,
                                 f"{index}_{title}_{tab_index}_{tab_name}",
                                 screenshot_dir
                             )
                         )
+                        screenshot = screenshot_capture["path"]
 
                         print(
                             f"Screenshot: {screenshot}"
@@ -276,13 +278,16 @@ async def crawl_pages(
                                 html_dir
                             )
                         )
-                        actions = await extract_actions(
-                            frame,
-                            title,
-                            tab_name,
-                            icon_dir,
-                            screenshot
-                        )
+                        try:
+                            actions = await extract_actions(
+                                frame,
+                                title,
+                                tab_name,
+                                icon_dir,
+                                screenshot_capture
+                            )
+                        finally:
+                            cleanup_screenshot_capture(screenshot_capture)
                         metadata = (
                             await analyze_page(
 
@@ -299,6 +304,8 @@ async def crawl_pages(
                                 screenshot,
 
                                 html_file,
+
+                                screenshot_paths=screenshot_capture["paths"],
 
                                 language=language,
 
@@ -336,13 +343,14 @@ async def crawl_pages(
             #
             # 無 Tabs
             #
-            screenshot = (
+            screenshot_capture = (
                 await save_screenshot(
                     frame,
                     f"{index}_{title}",
                     screenshot_dir
                 )
             )
+            screenshot = screenshot_capture["path"]
 
             print(
                 f"Screenshot: {screenshot}"
@@ -355,13 +363,16 @@ async def crawl_pages(
                     html_dir
                 )
             )
-            actions = await extract_actions(
-                frame,
-                title,
-                None,
-                icon_dir,
-                screenshot
-            )
+            try:
+                actions = await extract_actions(
+                    frame,
+                    title,
+                    None,
+                    icon_dir,
+                    screenshot_capture
+                )
+            finally:
+                cleanup_screenshot_capture(screenshot_capture)
 
             metadata = (
                 await analyze_page(
@@ -379,6 +390,8 @@ async def crawl_pages(
                     screenshot,
 
                     html_file,
+
+                    screenshot_paths=screenshot_capture["paths"],
 
                     language=language,
 

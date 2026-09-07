@@ -35,11 +35,15 @@ class PageMetadata(BaseModel):
 
     screenshot: str
 
+    screenshots: list[str] = Field(default_factory=list)
+
     html: str
     
     actions: list = Field(default_factory=list)
 
     fields: list[str]
+
+    field_details: list[dict] = Field(default_factory=list)
 
     buttons: list[str]
 

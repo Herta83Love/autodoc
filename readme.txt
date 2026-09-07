@@ -1,6 +1,6 @@
 # AutoDoc
 
-AutoDoc 是用於產生 SENTRY 操作手冊的自動化工具。程式會登入 SENTRY、探索功能選單、擷取頁面資料與畫面，再透過 Azure OpenAI 產生說明內容，最後輸出 Word 文件。
+AutoDoc 是用於產生 SENTRY 操作手冊的自動化工具。程式會登入 SENTRY、探索功能選單、擷取頁面資料與畫面，再透過 vLLM 的 OpenAI 相容 API 產生說明內容，最後輸出 Word 文件。
 
 ## 主要功能
 
@@ -8,7 +8,7 @@ AutoDoc 是用於產生 SENTRY 操作手冊的自動化工具。程式會登入 
 - 探索功能選單、頁面與頁籤
 - 擷取頁面截圖及畫面操作圖示
 - 匯出 HTML 與結構化 Metadata
-- 使用 Azure OpenAI 分析頁面內容
+- 使用 vLLM 多模態模型分析頁面內容
 - 快取 AI 產生結果，避免重複呼叫
 - 自動產生 DOCX 操作手冊
 - 使用既有爬蟲與 AI 紀錄快速重建文件
@@ -22,7 +22,7 @@ SENTRY 選單與頁面
         ↓
 Metadata、HTML、截圖
         ↓
-Azure OpenAI 分析與 AI Cache
+vLLM 分析與 AI Cache
         ↓
 Word 操作手冊
    
@@ -117,7 +117,19 @@ pdftotext -v
 
 ## 設定
 
-將 `.env.example` 複製為 `.env`，填入 SENTRY 登入資料及 Azure OpenAI 連線資訊。
+將 `.env.example` 複製為 `.env`，填入 SENTRY 登入資料及 vLLM 連線資訊。
+
+vLLM 使用下列環境變數：
+
+- `VLLM_API_ENDPOINT`：OpenAI 相容 API 位址，必須包含 `/v1`，例如 `http://127.0.0.1:8000/v1`
+- `VLLM_API_KEY`：vLLM 啟用 API Key 驗證時填入實際金鑰；未啟用時可使用 `EMPTY`
+- `VLLM_MODEL`：vLLM 啟動時提供的模型名稱，必須與伺服器實際載入的模型一致
+
+可執行下列程式測試 vLLM 連線及內容產生：
+
+bash:
+
+python3 test_vllm.py
 
 SENTRY 登入網址、帳號欄位、密碼欄位、登入按鈕及語言選單設定位於：
 
@@ -170,7 +182,7 @@ python3 test_docx.py
 
 1. `output/metadata.json` 存在且包含資料。
 2. Metadata 記錄的截圖與操作圖示仍位於原本路徑。
-3. `output/ai_cache/` 保留先前的 AI 紀錄；若對應 Cache 不存在，文件產生器可能會再次呼叫 Azure OpenAI。
+3. `output/ai_cache/` 保留先前的 AI 紀錄；若對應 Cache 不存在，文件產生器可能會再次呼叫 vLLM。
 4. 已啟用安裝完成的 Python 虛擬環境。
 
 產生完成後，文件位於：

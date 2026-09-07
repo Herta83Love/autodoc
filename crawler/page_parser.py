@@ -27,6 +27,8 @@ async def analyze_page(
 
     html_path,
 
+    screenshot_paths=None,
+
     language="zh-TW",
 
     page_key="",
@@ -35,6 +37,88 @@ async def analyze_page(
 
     tab_index=None
 ):
+
+    field_details_raw = await frame.evaluate("""
+    () => {
+        const visibleInLayout = element => {
+            for (let node = element; node; node = node.parentElement) {
+                const style = window.getComputedStyle(node);
+                if (style.display === 'none' || style.visibility === 'hidden') {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        const directText = (container, selector) => {
+            if (!container) return '';
+            const node = container.querySelector(`:scope > ${selector}`);
+            return node ? (node.innerText || '').trim() : '';
+        };
+
+        return Array.from(document.querySelectorAll('input,select,textarea'))
+            .filter(control => control.type !== 'hidden' && visibleInLayout(control))
+            .map(control => {
+                const item = control.closest('.operation-conf-item');
+                const block = control.closest('.operation-conf-block');
+                const section = directText(block, '.title');
+                let label = directText(item, '.field');
+
+                if (!label && control.id) {
+                    const associated = document.querySelector(
+                        `label[for="${CSS.escape(control.id)}"]`
+                    );
+                    label = associated ? (associated.innerText || '').trim() : '';
+                }
+
+                label = label
+                    || (control.getAttribute('aria-label') || '').trim()
+                    || (control.getAttribute('placeholder') || '').trim();
+
+                let options = [];
+                if (control.tagName === 'SELECT') {
+                    options = Array.from(control.options)
+                        .map(option => (option.textContent || '').trim())
+                        .filter(Boolean);
+                } else if (control.type === 'checkbox' || control.type === 'radio') {
+                    const optionLabel = control.id
+                        ? document.querySelector(`label[for="${CSS.escape(control.id)}"]`)
+                        : null;
+                    const optionText = optionLabel
+                        ? (optionLabel.innerText || '').trim()
+                        : '';
+                    if (optionText && optionText !== label) options = [optionText];
+                }
+
+                return {
+                    internal_name: control.name || control.id || '',
+                    section,
+                    label,
+                    options
+                };
+            });
+    }
+    """)
+
+    field_details_by_key = {}
+    for detail in field_details_raw:
+        section = str(detail.get("section") or "").strip()
+        label = str(detail.get("label") or "").strip()
+        internal_name = str(detail.get("internal_name") or "").strip()
+        key = (section, label, internal_name)
+        if key not in field_details_by_key:
+            field_details_by_key[key] = {
+                "internal_name": internal_name,
+                "section": section,
+                "label": label,
+                "options": []
+            }
+        for option in detail.get("options") or []:
+            option = str(option).strip()
+            if option and option not in field_details_by_key[key]["options"]:
+                field_details_by_key[key]["options"].append(option)
+
+    field_details = list(field_details_by_key.values())
 
     #
     # Buttons
@@ -55,50 +139,13 @@ async def analyze_page(
     }
     """)
 
-    #
-    # Labels
-    #
-    labels = await frame.evaluate("""
-    () => {
-
-        return Array.from(
-            document.querySelectorAll(
-                'label'
-            )
-        )
-        .map(x =>
-            x.innerText.trim()
-        )
-        .filter(Boolean);
-
-    }
-    """)
-
-    #
-    # Fields
-    #
-    fields = await frame.evaluate("""
-    () => {
-
-        return Array.from(
-            document.querySelectorAll(
-                'input,select,textarea'
-            )
-        )
-        .map(x => {
-
-            return (
-                x.placeholder ||
-                x.name ||
-                x.id ||
-                ''
-            );
-
-        })
-        .filter(Boolean);
-
-    }
-    """)
+    fields = []
+    for detail in field_details:
+        section = detail["section"]
+        label = detail["label"]
+        display_name = f"{section}－{label}" if section and label else label
+        if display_name and display_name not in fields:
+            fields.append(display_name)
 
     #
     # Table Headers
@@ -127,7 +174,7 @@ async def analyze_page(
 
         return Array.from(
             document.querySelectorAll(
-                'h1,h2,h3,h4,h5,h6'
+                'h1,h2,h3,h4,h5,h6,.operation-conf-block > .title'
             )
         )
         .map(x =>
@@ -186,9 +233,7 @@ async def analyze_page(
         buttons
     )
 
-    fields = clean_items(
-        fields + labels
-    )
+    fields = clean_items(fields)
 
     table_headers = clean_items(
         table_headers
@@ -255,9 +300,13 @@ async def analyze_page(
 
         screenshot=screenshot_path,
 
+        screenshots=screenshot_paths or [screenshot_path],
+
         html=html_path,
 
         fields=fields,
+
+        field_details=field_details,
 
         buttons=buttons,
 

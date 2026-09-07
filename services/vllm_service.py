@@ -1,7 +1,8 @@
-# File: azure_openai_service.py
+# File: vllm_service.py
 import base64
 import json
 import os
+import re
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -9,14 +10,14 @@ from openai import OpenAI
 load_dotenv()
 
 client = OpenAI(
-    api_key=os.getenv(
-        "AZURE_OPENAI_API_KEY"
-    ),
-    base_url=os.getenv(
-        "AZURE_OPENAI_ENDPOINT"
-    )
+    base_url=os.getenv("VLLM_API_ENDPOINT", "http://127.0.0.1:8000/v1"),
+    api_key=os.getenv("VLLM_API_KEY", "EMPTY"),
 )
 
+MODEL_NAME = os.getenv(
+    "VLLM_MODEL",
+    "Qwen/Qwen3.8-27B",
+)
 
 SYSTEM_PROMPT = """
 你是一位企業級產品文件工程師。
@@ -285,6 +286,19 @@ field_descriptions
 
 欄位說明。
 
+欄位名稱只能使用「欄位資訊」提供的 section 與 label。
+
+禁止輸出：
+
+- internal_name
+- HTML id 或 name
+- snake_case 程式變數名稱
+- 帶有 [] 的表單名稱
+
+例如 internal_name 為 rcode_rate_status，section 為 RCode 速率，
+label 為狀態時，只能輸出「RCode 速率－狀態」，不得輸出
+「rcode_rate_status」。
+
 格式：
 
 [
@@ -392,9 +406,38 @@ def image_to_base64(image_path):
         )
 
 
+INTERNAL_FIELD_PATTERN = re.compile(r"^[a-z][a-z0-9_]*(?:\[\])?$")
+
+
+def get_public_field_context(page):
+    details = []
+    for detail in page.get("field_details") or []:
+        section = str(detail.get("section") or "").strip()
+        label = str(detail.get("label") or "").strip()
+        if not label:
+            continue
+        details.append({
+            "section": section,
+            "label": label,
+            "display_name": f"{section}－{label}" if section else label,
+            "options": detail.get("options") or []
+        })
+
+    if details:
+        return json.dumps(details, ensure_ascii=False, indent=2)
+
+    # Compatibility with metadata generated before field_details existed.
+    fields = []
+    for field in page.get("fields") or []:
+        value = str(field).strip()
+        if value and not INTERNAL_FIELD_PATTERN.fullmatch(value):
+            fields.append(value)
+    return "\n".join(fields)
+
+
 def generate_manual_content(
     page,
-    screenshot_path=None
+    screenshot_paths=None
 ):
     output_language = (
         "English"
@@ -426,6 +469,7 @@ def generate_manual_content(
         ensure_ascii=False,
         indent=2
     )
+    public_field_context = get_public_field_context(page)
 
     prompt = f"""
 頁面名稱
@@ -441,7 +485,12 @@ def generate_manual_content(
 {chr(10).join(page.get("headings", []))}
 
 欄位資訊
-{chr(10).join(page.get("fields", []))}
+{public_field_context}
+
+欄位輸出規則
+- 僅使用欄位資訊中的 display_name 作為欄位名稱。
+- internal_name 僅供程式內部識別，不得出現在輸出中。
+- 不得自行把 section、label 改回 HTML id、name 或 snake_case 名稱。
 
 metadata.actions
 
@@ -495,23 +544,26 @@ button_descriptions 必須輸出 3 筆資料。
 
     content = [
         {
-            "type": "input_text",
+            "type": "text",
             "text": prompt
         }
     ]
 
-    if (
-        screenshot_path
-        and os.path.exists(
-            screenshot_path
-        )
-    ):
+    if isinstance(screenshot_paths, str):
+        screenshot_paths = [screenshot_paths]
 
-        content.append({
-            "type": "input_image",
-            "image_url":
-            f"data:image/png;base64,{image_to_base64(screenshot_path)}"
-        })
+    for screenshot_index, screenshot_path in enumerate(screenshot_paths or []):
+        if screenshot_path and os.path.exists(screenshot_path):
+            content.append({
+                "type": "text",
+                "text": f"Page Screenshot {screenshot_index + 1}"
+            })
+            content.append({
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/png;base64,{image_to_base64(screenshot_path)}"
+                }
+            })
     for idx, action in enumerate(actions):
 
         image_path = action.get(
@@ -526,7 +578,7 @@ button_descriptions 必須輸出 3 筆資料。
         ):
 
             content.append({
-                "type": "input_text",
+                "type": "text",
                 "text":
                 f"""
 Button Screenshot {idx + 1}
@@ -545,16 +597,15 @@ icon:
             })
 
             content.append({
-                "type": "input_image",
-                "image_url":
-                f"data:image/png;base64,{image_to_base64(image_path)}"
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/png;base64,{image_to_base64(image_path)}"
+                }
             })
 
-    response = client.responses.create(
-        model=os.getenv(
-            "AZURE_OPENAI_DEPLOYMENT"
-        ),
-        input=[
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=[
             {
                 "role": "system",
                 "content": system_prompt
@@ -563,13 +614,24 @@ icon:
                 "role": "user",
                 "content": content
             }
-        ]
+        ],
+        temperature=0,
+        max_tokens=4096,
+        extra_body={
+            "chat_template_kwargs": {
+                "enable_thinking": False,
+                "preserve_thinking": False,
+            }
+        },
     )
 
+    result_text = response.choices[0].message.content
+
+    if not result_text:
+        raise ValueError("vLLM 回傳空白內容")
+
     result_text = (
-        response.output[0]
-        .content[0]
-        .text
+        result_text
         .replace("```json", "")
         .replace("```", "")
         .strip()

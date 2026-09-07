@@ -1,8 +1,8 @@
 # ============================================================================
-# File: test_openai.py
+# File: test_vllm.py
 # ============================================================================
 
-from services.azure_openai_service import (
+from services.vllm_service import (
     generate_manual_content
 )
 

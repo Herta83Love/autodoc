@@ -44,9 +44,9 @@ def safe_filename(value):
     return re.sub(r"[^a-zA-Z0-9_]", "_", str(value or ""))
 
 
-def crop_button(source, button, image_path, padding_css=3):
+def crop_button(source, button, image_path, padding_css=3, viewport=None):
     box = button["box"]
-    body = button["body"]
+    body = viewport or button.get("body")
     if body["width"] <= 0 or body["height"] <= 0:
         return False
 
@@ -84,17 +84,34 @@ async def extract_actions(
     page_name,
     tab_name=None,
     output_dir="output/icons",
-    screenshot_path=None
+    screenshot_capture=None
 ):
     started = monotonic()
     icon_dir = Path(output_dir)
     icon_dir.mkdir(parents=True, exist_ok=True)
 
-    try:
-        buttons = await frame.locator("button").evaluate_all(BUTTON_DATA_SCRIPT)
-    except Exception as exc:
-        print(f"⚠️ 按鈕資料擷取失敗：{exc}")
-        return []
+    capture_segments = (
+        screenshot_capture.get("segments", [])
+        if isinstance(screenshot_capture, dict)
+        else []
+    )
+
+    if capture_segments:
+        # Each scroll segment contains the buttons actually visible at that
+        # position. This includes buttons below the initial viewport.
+        buttons_by_index = {}
+        for segment_index, segment in enumerate(capture_segments):
+            for button in segment.get("buttons", []):
+                button = dict(button)
+                button["segment_index"] = segment_index
+                buttons_by_index.setdefault(button["index"], button)
+        buttons = list(buttons_by_index.values())
+    else:
+        try:
+            buttons = await frame.locator("button").evaluate_all(BUTTON_DATA_SCRIPT)
+        except Exception as exc:
+            print(f"⚠️ 按鈕資料擷取失敗：{exc}")
+            return []
 
     candidates = []
     for button in buttons:
@@ -106,11 +123,19 @@ async def extract_actions(
     if not candidates:
         return []
 
-    try:
-        source = await open_page_screenshot(frame, screenshot_path)
-    except Exception as exc:
-        print(f"⚠️ 頁面截圖無法用於按鈕裁切：{exc}")
-        return []
+    source = None
+    segment_sources = {}
+    if not capture_segments:
+        screenshot_path = (
+            screenshot_capture.get("path")
+            if isinstance(screenshot_capture, dict)
+            else screenshot_capture
+        )
+        try:
+            source = await open_page_screenshot(frame, screenshot_path)
+        except Exception as exc:
+            print(f"⚠️ 頁面截圖無法用於按鈕裁切：{exc}")
+            return []
 
     safe_page = safe_filename(page_name)
     safe_tab = safe_filename(tab_name)
@@ -118,7 +143,20 @@ async def extract_actions(
     for button in candidates:
         image_path = icon_dir / f"{safe_page}_{safe_tab}_{button['index']}.png"
         try:
-            saved = crop_button(source, button, image_path)
+            if capture_segments:
+                segment_index = button["segment_index"]
+                if segment_index not in segment_sources:
+                    segment_path = capture_segments[segment_index]["path"]
+                    with Image.open(segment_path) as image:
+                        segment_sources[segment_index] = image.convert("RGB")
+                saved = crop_button(
+                    segment_sources[segment_index],
+                    button,
+                    image_path,
+                    viewport=screenshot_capture["plan"]["viewport"]
+                )
+            else:
+                saved = crop_button(source, button, image_path)
         except Exception as exc:
             print(f"⚠️ 按鈕圖片裁切失敗：{image_path}：{exc}")
             saved = False
@@ -130,7 +168,10 @@ async def extract_actions(
                 "image": str(image_path)
             })
 
-    source.close()
+    if source:
+        source.close()
+    for segment_source in segment_sources.values():
+        segment_source.close()
     elapsed = monotonic() - started
     print(
         f"✅ 按鈕圖片已由單張頁面截圖裁切："

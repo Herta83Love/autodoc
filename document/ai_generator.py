@@ -6,13 +6,12 @@ import json
 import hashlib
 from pathlib import Path
 
-from services.azure_openai_service import (
-    generate_manual_content
+from services.vllm_service import (
+    MODEL_NAME,
+    generate_manual_content,
 )
 
-CACHE_VERSION = "V4"
-
-MODEL_NAME = "gpt-4.1-mini"
+CACHE_VERSION = "V2.1"
 
 CACHE_DIR = Path("output/ai_cache")
 
@@ -53,6 +52,16 @@ def _update_hash_from_file(hasher, path):
             hasher.update(chunk)
 
 
+def get_screenshot_paths(page):
+
+    paths = page.get("screenshots") or []
+
+    if not paths and page.get("screenshot"):
+        paths = [page.get("screenshot")]
+
+    return [path for path in paths if path]
+
+
 def get_content_fingerprint(page):
 
     relevant_page_data = {
@@ -63,6 +72,7 @@ def get_content_fingerprint(page):
         "descriptions": page.get("descriptions", []),
         "headings": page.get("headings", []),
         "fields": page.get("fields", []),
+        "field_details": page.get("field_details", []),
         "tables": page.get("tables", []),
         "actions": [
             {
@@ -82,12 +92,75 @@ def get_content_fingerprint(page):
         ).encode("utf-8")
     )
 
-    _update_hash_from_file(hasher, page.get("screenshot"))
+    for screenshot_path in get_screenshot_paths(page):
+        _update_hash_from_file(hasher, screenshot_path)
 
     for action in page.get("actions", []):
         _update_hash_from_file(hasher, action.get("image"))
 
     return hasher.hexdigest()
+
+
+def get_internal_field_mapping(page):
+
+    mapping = {}
+
+    for detail in page.get("field_details") or []:
+        internal_name = str(detail.get("internal_name") or "").strip()
+        section = str(detail.get("section") or "").strip()
+        label = str(detail.get("label") or "").strip()
+
+        if not internal_name or not label:
+            continue
+
+        # Avoid replacing ordinary words such as "action" inside prose.
+        if "_" not in internal_name and not internal_name.endswith("[]"):
+            continue
+
+        mapping[internal_name] = (
+            f"{section}－{label}"
+            if section
+            else label
+        )
+
+    return mapping
+
+
+def sanitize_internal_field_names(value, mapping):
+
+    if isinstance(value, dict):
+        return {
+            key: sanitize_internal_field_names(item, mapping)
+            for key, item in value.items()
+        }
+
+    if isinstance(value, list):
+        return [
+            sanitize_internal_field_names(item, mapping)
+            for item in value
+        ]
+
+    if isinstance(value, str):
+        for internal_name in sorted(mapping, key=len, reverse=True):
+            value = value.replace(internal_name, mapping[internal_name])
+
+    return value
+
+
+def assert_no_internal_field_names(value, mapping):
+
+    serialized = json.dumps(value, ensure_ascii=False)
+    remaining = [
+        internal_name
+        for internal_name in mapping
+        if internal_name in serialized
+    ]
+
+    if remaining:
+        raise ValueError(
+            "AI 結果仍包含內部欄位名稱："
+            + ", ".join(sorted(remaining))
+        )
 
 
 def get_cache_file(page):
@@ -217,7 +290,19 @@ def generate_manual_section(page):
 
         result = generate_manual_content(
             page,
-            page.get("screenshot")
+            get_screenshot_paths(page)
+        )
+
+        internal_field_mapping = get_internal_field_mapping(page)
+
+        result = sanitize_internal_field_names(
+            result,
+            internal_field_mapping
+        )
+
+        assert_no_internal_field_names(
+            result,
+            internal_field_mapping
         )
 
         save_cache(
@@ -230,7 +315,7 @@ def generate_manual_section(page):
     except Exception as e:
 
         print(
-            "Azure OpenAI 呼叫失敗"
+            "vLLM 呼叫失敗"
         )
 
         print(e)
