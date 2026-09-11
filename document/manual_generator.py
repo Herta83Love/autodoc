@@ -16,6 +16,7 @@ from datetime import datetime
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 from lxml import etree
+from PIL import Image
 from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
@@ -1219,6 +1220,152 @@ def configure_table_row(row, repeat_header=False):
         tr_pr.append(table_header)
 
 
+def action_image_size(action):
+    """Return image dimensions for filtering and proportional document sizing."""
+
+    image = action.get("image")
+    if not image or not Path(image).is_file():
+        return None
+
+    try:
+        with Image.open(image) as source:
+            return source.size
+    except Exception:
+        return None
+
+
+def is_document_operation(action, image_size=None):
+    """Exclude SENTRY form controls that happen to be implemented as buttons."""
+
+    class_tokens = set(
+        str(action.get("button_class") or "").lower().split()
+    )
+    if class_tokens.intersection({"disabled", "picking", "page-tag", "laptop"}):
+        return False
+
+    label = str(
+        action.get("label")
+        or action.get("text")
+        or action.get("aria")
+        or ""
+    ).strip()
+    if re.match(r"^sort table by\b", label, flags=re.IGNORECASE):
+        return False
+
+    if image_size and not action.get("icon") and "detail-button" not in class_tokens:
+        width, height = image_size
+        if width / max(1, height) >= 2:
+            return False
+
+    if image_size and image_size[1] < 20:
+        return False
+
+    return True
+
+
+def action_icon_key(action):
+    """Return the Font Awesome glyph class without style-only class names."""
+
+    return next(
+        (
+            token
+            for token in str(action.get("icon") or "").lower().split()
+            if token.startswith("fa-")
+        ),
+        "",
+    )
+
+
+def join_targets(targets, language):
+    if len(targets) == 1:
+        return targets[0]
+    if language == "zh-TW":
+        return "、".join(targets[:-1]) + "或 " + targets[-1]
+    if len(targets) == 2:
+        return " or ".join(targets)
+    return ", ".join(targets[:-1]) + ", or " + targets[-1]
+
+
+def certificate_target(context, language):
+    context = str(context or "").strip()
+    if language == "zh-TW" and context.endswith("憑證"):
+        return context[:-2].strip()
+    if language != "zh-TW":
+        if context.lower() == "certificate authority":
+            return "CA"
+        if context.lower().endswith(" certificate"):
+            return context[:-12].strip()
+    return ""
+
+
+def grouped_certificate_description(actions, language):
+    """Describe repeated certificate controls once, using their section names."""
+
+    icon_key = action_icon_key(actions[0])
+    verbs = {
+        "zh-TW": {
+            "fa-upload": "上傳新的 {targets} 憑證",
+            "fa-download": "下載 {targets} 憑證的備份副本",
+            "fa-edit": "編輯 {targets} 憑證的詳細資訊",
+            "fa-redo-alt": "重新產生或重新簽署 {targets} 憑證",
+        },
+        "en": {
+            "fa-upload": "Upload a new {targets} certificate.",
+            "fa-download": "Download a backup copy of the {targets} certificate.",
+            "fa-edit": "Edit details for the {targets} certificate.",
+            "fa-redo-alt": "Regenerate or re-sign the {targets} certificate.",
+        },
+    }
+    template = verbs.get(language, verbs["en"]).get(icon_key)
+    if not template:
+        return ""
+
+    targets = []
+    for action in actions:
+        target = certificate_target(action.get("context_heading"), language)
+        if not target:
+            return ""
+        if target not in targets:
+            targets.append(target)
+
+    if len(targets) < 2:
+        return ""
+    return template.format(targets=join_targets(targets, language))
+
+
+def group_renderable_actions(renderable_actions, language):
+    """Collapse repeated certificate glyphs into one reader-friendly entry."""
+
+    by_icon = {}
+    for item in renderable_actions:
+        icon_key = action_icon_key(item["action"])
+        if icon_key:
+            by_icon.setdefault(icon_key, []).append(item)
+
+    grouped_descriptions = {
+        icon_key: grouped_certificate_description(
+            [item["action"] for item in items],
+            language,
+        )
+        for icon_key, items in by_icon.items()
+    }
+
+    result = []
+    emitted_icons = set()
+    for item in renderable_actions:
+        icon_key = action_icon_key(item["action"])
+        grouped_description = grouped_descriptions.get(icon_key, "")
+        if not grouped_description:
+            result.append(item)
+            continue
+        if icon_key in emitted_icons:
+            continue
+        emitted_icons.add(icon_key)
+        result.append({**item, "description": grouped_description})
+
+    return result
+
+
 def add_action_section(
     document,
     actions,
@@ -1247,10 +1394,26 @@ def add_action_section(
         action_id = str(action.get("action_id") or f"button-{index}")
         description = descriptions.get(action_id, "")
 
-        if not image or not description or not Path(image).is_file():
+        image_size = action_image_size(action)
+        if (
+            not image
+            or not description
+            or not image_size
+            or not is_document_operation(action, image_size)
+        ):
             continue
 
-        renderable_actions.append((image, description))
+        renderable_actions.append({
+            "action": action,
+            "image": image,
+            "description": description,
+            "image_size": image_size,
+        })
+
+    renderable_actions = group_renderable_actions(
+        renderable_actions,
+        language,
+    )
 
     if not renderable_actions:
         return
@@ -1263,15 +1426,15 @@ def add_action_section(
     table = document.add_table(rows=1, cols=2)
     table.style = "Table Grid"
     table.autofit = False
-    table.columns[0].width = Cm(2.6)
-    table.columns[1].width = Cm(13.2)
+    table.columns[0].width = Cm(3.5)
+    table.columns[1].width = Cm(12.3)
 
     header = table.rows[0].cells
     configure_table_row(table.rows[0], repeat_header=True)
     header[0].text = text_for(language, "icon")
     header[1].text = text_for(language, "function")
 
-    for cell, width in zip(header, [Cm(2.6), Cm(13.2)]):
+    for cell, width in zip(header, [Cm(3.5), Cm(12.3)]):
         cell.width = width
         cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
         set_cell_margins(cell)
@@ -1279,13 +1442,17 @@ def add_action_section(
         for run in cell.paragraphs[0].runs:
             set_run_font(run, size=9.5, color=TEXT_BLACK, bold=True)
 
-    for image, description in renderable_actions:
+    for item in renderable_actions:
+
+        image = item["image"]
+        description = item["description"]
+        image_size = item["image_size"]
 
         row = table.add_row()
         configure_table_row(row)
         cells = row.cells
-        cells[0].width = Cm(2.6)
-        cells[1].width = Cm(13.2)
+        cells[0].width = Cm(3.5)
+        cells[1].width = Cm(12.3)
         cells[0].vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
         cells[1].vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
         set_cell_margins(cells[0])
@@ -1297,10 +1464,13 @@ def add_action_section(
         image_p.paragraph_format.space_after = Pt(3)
 
         try:
-            image_p.add_run().add_picture(
-                image,
-                width=Inches(0.68)
-            )
+            width, height = image_size
+            aspect_ratio = width / max(1, height)
+            picture = image_p.add_run()
+            if aspect_ratio > 2:
+                picture.add_picture(image, width=Inches(1.05))
+            else:
+                picture.add_picture(image, width=Inches(0.68))
         except Exception as exc:
             print(f"按鈕圖片加入失敗: {image}: {exc}")
             continue
@@ -1832,6 +2002,9 @@ def generate_docx(
                     page_name,
                     level=2
                 )
+
+                if "certificate" in str(page_name).lower():
+                    h.paragraph_format.page_break_before = True
 
                 add_bookmark(
                     h,

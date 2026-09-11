@@ -115,6 +115,9 @@ VISIBLE_BUTTONS_SCRIPT = """
         const style = window.getComputedStyle(button);
         const iconNode = button.querySelector('i, svg');
         const label = (button.textContent || '').trim();
+        const classTokens = new Set(
+            (button.getAttribute('class') || '').toLowerCase().split(/\s+/).filter(Boolean)
+        );
         const contextRoot = button.closest(
             '.content_box,.operation-conf-block,.chartWindow,.mazi-table,.contentBlock'
         );
@@ -154,10 +157,18 @@ VISIBLE_BUTTONS_SCRIPT = """
         // accessibility-only table sort controls. Those are not operation
         // icons and produce 1000px-wide strips or 4px-high lines when cropped.
         const maxDocumentableWidth = Math.min(420, viewportWidth * 0.5);
+        const isFormControl = ['disabled', 'picking', 'page-tag', 'laptop']
+            .some(token => classTokens.has(token))
+            || /^sort table by\b/i.test(label)
+            || (!iconNode && rect.width / Math.max(1, rect.height) >= 2
+                && !classTokens.has('detail-button'));
         const documentable = visible
+            && rect.top >= 0
+            && rect.bottom <= viewportHeight
             && rect.width >= 12
             && rect.height >= 12
             && rect.width <= maxDocumentableWidth
+            && !isFormControl
             && Boolean(iconNode || label);
 
         return {

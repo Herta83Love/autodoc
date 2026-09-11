@@ -18,6 +18,9 @@ buttons => {
         const style = window.getComputedStyle(button);
         const iconNode = button.querySelector('i, svg');
         const label = (button.textContent || '').trim();
+        const classTokens = new Set(
+            (button.getAttribute('class') || '').toLowerCase().split(/\s+/).filter(Boolean)
+        );
         const contextRoot = button.closest(
             '.content_box,.operation-conf-block,.chartWindow,.mazi-table,.contentBlock'
         );
@@ -46,10 +49,16 @@ buttons => {
             }
         }
         const maxDocumentableWidth = Math.min(420, viewportWidth * 0.5);
+        const isFormControl = ['disabled', 'picking', 'page-tag', 'laptop']
+            .some(token => classTokens.has(token))
+            || /^sort table by\b/i.test(label)
+            || (!iconNode && rect.width / Math.max(1, rect.height) >= 2
+                && !classTokens.has('detail-button'));
         const documentable = visible
             && rect.width >= 12
             && rect.height >= 12
             && rect.width <= maxDocumentableWidth
+            && !isFormControl
             && Boolean(iconNode || label);
         return {
             index,
@@ -102,7 +111,7 @@ def crop_button(source, button, image_path, padding_css=3, viewport=None):
     cropped = source.crop((left, top, right, bottom))
     if (
         cropped.width < 10
-        or cropped.height < 10
+        or cropped.height < 20
         or cropped.width / max(1, cropped.height) > 14
     ):
         return False
