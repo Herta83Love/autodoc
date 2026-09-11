@@ -29,6 +29,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
 from document.ai_generator import (
+    collapse_equivalent_tabs,
     generate_manual_section
 )
 
@@ -40,6 +41,7 @@ DOCUMENT_CONFIG = (
 ASSET_DIR = Path(__file__).resolve().parent / "assets"
 LOGO_PATH = ASSET_DIR / "urmazi_logo.png"
 COVER_PAGE_PATH = ASSET_DIR / "sentry_cover_page.png"
+TOC_BOOKMARK = "toc_home"
 
 BRAND_BLUE = RGBColor(31, 101, 133)
 BRAND_GREEN = RGBColor(112, 173, 71)
@@ -113,6 +115,7 @@ UI_TEXT = {
         "action_icons": "畫面操作圖示",
         "icon": "圖示",
         "function": "功能說明",
+        "interaction_details": "操作後設定",
         "overview": "功能概述",
         "business_value": "使用價值",
         "page_sections": "畫面組成",
@@ -140,6 +143,7 @@ UI_TEXT = {
         "action_icons": "SCREEN ACTION ICONS",
         "icon": "Icon",
         "function": "Function",
+        "interaction_details": "Configuration Details",
         "overview": "Overview",
         "business_value": "Business Value",
         "page_sections": "Screen Components",
@@ -172,6 +176,21 @@ def bilingual_name(local_name, english_name):
     return f"{local_name}（{english_name}）"
 
 
+ZH_TW_TERMINOLOGY = {
+    "網域洞察（Domain Insights）": "域名洞悉（DOMAIN INSIGHTS）",
+    "名稱服務器": "名稱伺服器",
+    "事件記錄": "警報",
+    "必須立刻採取應對行動": "警示",
+}
+
+
+def normalize_zh_tw_terminology(value):
+    value = str(value or "")
+    for source, target in ZH_TW_TERMINOLOGY.items():
+        value = value.replace(source, target)
+    return value
+
+
 def prepare_display_pages(pages, language):
 
     display_pages = copy.deepcopy(pages)
@@ -180,6 +199,10 @@ def prepare_display_pages(pages, language):
         return display_pages
 
     for page in display_pages:
+        page["category"] = normalize_zh_tw_terminology(page.get("category"))
+        page["page"] = normalize_zh_tw_terminology(page.get("page"))
+        if page.get("tab"):
+            page["tab"] = normalize_zh_tw_terminology(page.get("tab"))
         page["category"] = bilingual_name(
             page.get("category"),
             page.get("english_category")
@@ -519,10 +542,35 @@ def set_branded_header_footer(section):
     header_p.paragraph_format.space_after = Pt(4)
 
     if LOGO_PATH.exists():
+        begin_run = header_p.add_run()
+        begin_char = OxmlElement("w:fldChar")
+        begin_char.set(qn("w:fldCharType"), "begin")
+        begin_char.set(qn("w:dirty"), "true")
+        begin_run._r.append(begin_char)
+
+        instruction_run = header_p.add_run()
+        instruction = OxmlElement("w:instrText")
+        instruction.set(
+            "{http://www.w3.org/XML/1998/namespace}space",
+            "preserve",
+        )
+        instruction.text = f' HYPERLINK \\l "{TOC_BOOKMARK}" '
+        instruction_run._r.append(instruction)
+
+        separate_run = header_p.add_run()
+        separate_char = OxmlElement("w:fldChar")
+        separate_char.set(qn("w:fldCharType"), "separate")
+        separate_run._r.append(separate_char)
+
         header_p.add_run().add_picture(
             str(LOGO_PATH),
             width=Inches(1.35)
         )
+
+        end_run = header_p.add_run()
+        end_char = OxmlElement("w:fldChar")
+        end_char.set(qn("w:fldCharType"), "end")
+        end_run._r.append(end_char)
 
     footer_p = section.footer.add_paragraph()
     footer_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -877,6 +925,7 @@ def generate_manual_toc(document, grouped, language="zh-TW"):
         color=TEXT_BLACK,
         bold=True
     )
+    add_bookmark(title, TOC_BOOKMARK)
 
     for category_index, (category, page_dict) in enumerate(grouped.items()):
 
@@ -1178,24 +1227,25 @@ def add_action_section(
 ):
 
     descriptions = {}
-
     for item in button_descriptions or []:
-
         if not isinstance(item, dict):
             continue
-
+        action_id = str(item.get("action_id") or "").strip()
         description = str(item.get("description") or "").strip()
-        index = item.get("button_index")
-
-        if description and isinstance(index, int):
-            descriptions[index] = description
+        try:
+            confidence = float(item.get("confidence", 0))
+        except (TypeError, ValueError):
+            confidence = 0
+        if item.get("include") is True and confidence >= 0.8 and description:
+            descriptions[action_id] = description
 
     renderable_actions = []
 
     for index, action in enumerate(actions):
 
         image = action.get("image")
-        description = descriptions.get(index)
+        action_id = str(action.get("action_id") or f"button-{index}")
+        description = descriptions.get(action_id, "")
 
         if not image or not description or not Path(image).is_file():
             continue
@@ -1263,6 +1313,62 @@ def add_action_section(
 
     after_table = document.add_paragraph()
     after_table.paragraph_format.space_after = Pt(2)
+
+
+def add_interaction_sections(document, page, sections, language="zh-TW"):
+
+    if not sections:
+        return
+
+    flows = {
+        str(flow.get("action_id") or ""): flow
+        for flow in page.get("interaction_flows", [])
+        if flow.get("action_id")
+    }
+    renderable = [
+        item for item in sections
+        if isinstance(item, dict) and str(item.get("action_id") or "") in flows
+    ]
+
+    if not renderable:
+        return
+
+    document.add_heading(text_for(language, "interaction_details"), level=5)
+
+    for item in renderable:
+        action_id = str(item.get("action_id") or "")
+        flow = flows[action_id]
+        title = str(
+            item.get("title")
+            or flow.get("title")
+            or flow.get("context_heading")
+            or action_id
+        ).strip()
+        document.add_heading(title, level=6)
+
+        overview = str(item.get("overview") or "").strip()
+        if overview:
+            document.add_paragraph(overview)
+
+        for screenshot_path in flow.get("screenshots", []):
+            if not screenshot_path or not Path(screenshot_path).is_file():
+                continue
+            paragraph = document.add_paragraph()
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            try:
+                paragraph.add_run().add_picture(
+                    screenshot_path,
+                    width=Inches(6.2),
+                )
+            except Exception as exc:
+                print(f"操作表單截圖加入失敗: {screenshot_path}: {exc}")
+
+        fields = normalize_ai_content(item.get("field_descriptions", []))
+        if fields:
+            heading = document.add_paragraph()
+            run = heading.add_run(text_for(language, "fields"))
+            set_run_font(run, size=10, color=TEXT_BLACK, bold=True)
+            add_bullet_list(document, fields)
 
 def add_internal_link(
     paragraph,
@@ -1370,6 +1476,16 @@ def group_pages(pages):
         )
 
     return result
+
+
+def merge_equivalent_tabs(grouped):
+    """Collapse only AI-confirmed, structurally identical tab instances."""
+
+    for page_dict in grouped.values():
+        for page_name, items in list(page_dict.items()):
+            page_dict[page_name] = collapse_equivalent_tabs(items)
+
+    return grouped
 
 
 def add_cover(
@@ -1560,6 +1676,9 @@ def add_introduction(
             heading.paragraph_format.page_break_before = True
 
         for paragraph_text in section_data["paragraphs"]:
+            if language_key(language) == "zh-TW":
+                paragraph_text = normalize_zh_tw_terminology(paragraph_text)
+                paragraph_text = paragraph_text.replace("主控台 （", "主控台（")
             paragraph = document.add_paragraph(paragraph_text)
 
             if paragraph_text == config["document"].get("build_version"):
@@ -1653,6 +1772,7 @@ def generate_docx(
     grouped = group_pages(
         pages
     )
+    grouped = merge_equivalent_tabs(grouped)
 
     document = Document()
 
@@ -1774,6 +1894,12 @@ def generate_docx(
                             []
                         ),
                         language
+                    )
+                    add_interaction_sections(
+                        document,
+                        page,
+                        section.get("interaction_sections", []),
+                        language,
                     )
                     print(
                         page.get(

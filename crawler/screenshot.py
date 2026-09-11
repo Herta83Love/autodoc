@@ -114,6 +114,13 @@ VISIBLE_BUTTONS_SCRIPT = """
         const rect = button.getBoundingClientRect();
         const style = window.getComputedStyle(button);
         const iconNode = button.querySelector('i, svg');
+        const label = (button.textContent || '').trim();
+        const contextRoot = button.closest(
+            '.content_box,.operation-conf-block,.chartWindow,.mazi-table,.contentBlock'
+        );
+        const headingNode = contextRoot && contextRoot.querySelector(
+            ':scope > .title,:scope > .sub_title,:scope > h1,:scope > h2,:scope > h3'
+        );
         let visible = style.display !== 'none'
             && style.visibility !== 'hidden'
             && Number(style.opacity || 1) > 0
@@ -128,21 +135,47 @@ VISIBLE_BUTTONS_SCRIPT = """
             const parentStyle = window.getComputedStyle(parent);
             if (parentStyle.display === 'none'
                 || parentStyle.visibility === 'hidden'
-                || Number(parentStyle.opacity || 1) === 0) {
+                || Number(parentStyle.opacity || 1) === 0
+                || parent.getAttribute('aria-hidden') === 'true') {
                 visible = false;
+            }
+
+            const overflow = `${parentStyle.overflowX} ${parentStyle.overflowY}`;
+            if (visible && /(auto|scroll|hidden|clip)/.test(overflow)) {
+                const parentRect = parent.getBoundingClientRect();
+                if (rect.right <= parentRect.left || rect.left >= parentRect.right
+                    || rect.bottom <= parentRect.top || rect.top >= parentRect.bottom) {
+                    visible = false;
+                }
             }
         }
 
+        // SENTRY also uses <button> for full-width date bands and tiny
+        // accessibility-only table sort controls. Those are not operation
+        // icons and produce 1000px-wide strips or 4px-high lines when cropped.
+        const maxDocumentableWidth = Math.min(420, viewportWidth * 0.5);
+        const documentable = visible
+            && rect.width >= 12
+            && rect.height >= 12
+            && rect.width <= maxDocumentableWidth
+            && Boolean(iconNode || label);
+
         return {
             index,
-            text: (button.textContent || '').trim(),
+            text: label,
             title: (button.getAttribute('title') || '').trim(),
             aria: (button.getAttribute('aria-label') || '').trim(),
             icon: iconNode ? (iconNode.getAttribute('class') || '') : '',
+            buttonClass: button.getAttribute('class') || '',
+            contextHeading: headingNode ? (headingNode.innerText || '').trim() : '',
+            contextText: contextRoot
+                ? (contextRoot.innerText || '').trim().slice(0, 500)
+                : '',
             visible,
+            documentable,
             box: {x: rect.left, y: rect.top, width: rect.width, height: rect.height}
         };
-    }).filter(button => button.visible);
+    }).filter(button => button.documentable);
 }
 """
 

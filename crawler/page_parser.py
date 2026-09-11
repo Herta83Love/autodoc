@@ -38,6 +38,30 @@ async def analyze_page(
     tab_index=None
 ):
 
+    # SENTRY embeds authoritative icon descriptions in its hidden help panel.
+    # Keep them as structured evidence for the VLM instead of flattening the
+    # whole panel into unrelated page text.
+    help_actions = await frame.evaluate("""
+    () => Array.from(document.querySelectorAll('table.sidepaneltable'))
+        .map((table, index) => {
+            const icon = table.querySelector('.SPTicon i, td i');
+            const image = table.querySelector('.SPTicon img, td img');
+            const descriptions = Array.from(table.querySelectorAll('.SPTdesc'))
+                .map(node => (node.textContent || '').trim())
+                .filter(Boolean);
+            return {
+                help_index: index,
+                icon: icon ? (icon.getAttribute('class') || '') : '',
+                image_src: image ? (image.getAttribute('src') || '') : '',
+                // This script is embedded in a Python triple-quoted string.
+                // Escape the backslash so JavaScript receives "\\n" instead
+                // of an actual newline inside a single-quoted literal.
+                description: descriptions.join('\\n')
+            };
+        })
+        .filter(item => item.description);
+    """)
+
     field_details_raw = await frame.evaluate("""
     () => {
         const visibleInLayout = element => {
@@ -71,9 +95,12 @@ async def analyze_page(
                     label = associated ? (associated.innerText || '').trim() : '';
                 }
 
+                // A placeholder is an example/value hint, not a field name.
+                // Treating it as a label previously leaked values such as
+                // backup.yourdomain.com and backup filename patterns into the
+                // generated manual.
                 label = label
-                    || (control.getAttribute('aria-label') || '').trim()
-                    || (control.getAttribute('placeholder') || '').trim();
+                    || (control.getAttribute('aria-label') || '').trim();
 
                 let options = [];
                 if (control.tagName === 'SELECT') {
@@ -105,6 +132,11 @@ async def analyze_page(
         section = str(detail.get("section") or "").strip()
         label = str(detail.get("label") or "").strip()
         internal_name = str(detail.get("internal_name") or "").strip()
+        # Controls without a public label cannot be documented reliably. Keep
+        # the internal name out of the AI input instead of asking it to guess.
+        if not label:
+            continue
+
         key = (section, label, internal_name)
         if key not in field_details_by_key:
             field_details_by_key[key] = {
@@ -303,6 +335,10 @@ async def analyze_page(
         screenshots=screenshot_paths or [screenshot_path],
 
         html=html_path,
+
+        help_actions=help_actions,
+
+        interaction_flows=[],
 
         fields=fields,
 

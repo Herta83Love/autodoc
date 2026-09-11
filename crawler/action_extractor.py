@@ -12,21 +12,58 @@ BUTTON_DATA_SCRIPT = """
 buttons => {
     const body = document.body;
     const bodyRect = body.getBoundingClientRect();
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
     return buttons.map((button, index) => {
         const rect = button.getBoundingClientRect();
         const style = window.getComputedStyle(button);
         const iconNode = button.querySelector('i, svg');
-        const visible = style.display !== 'none'
+        const label = (button.textContent || '').trim();
+        const contextRoot = button.closest(
+            '.content_box,.operation-conf-block,.chartWindow,.mazi-table,.contentBlock'
+        );
+        const headingNode = contextRoot && contextRoot.querySelector(
+            ':scope > .title,:scope > .sub_title,:scope > h1,:scope > h2,:scope > h3'
+        );
+        let visible = style.display !== 'none'
             && style.visibility !== 'hidden'
             && Number(style.opacity || 1) > 0
             && rect.width > 0 && rect.height > 0;
+        for (let parent = button.parentElement; visible && parent; parent = parent.parentElement) {
+            const parentStyle = window.getComputedStyle(parent);
+            if (parentStyle.display === 'none'
+                || parentStyle.visibility === 'hidden'
+                || Number(parentStyle.opacity || 1) === 0
+                || parent.getAttribute('aria-hidden') === 'true') {
+                visible = false;
+            }
+            const overflow = `${parentStyle.overflowX} ${parentStyle.overflowY}`;
+            if (visible && /(auto|scroll|hidden|clip)/.test(overflow)) {
+                const parentRect = parent.getBoundingClientRect();
+                if (rect.right <= parentRect.left || rect.left >= parentRect.right
+                    || rect.bottom <= parentRect.top || rect.top >= parentRect.bottom) {
+                    visible = false;
+                }
+            }
+        }
+        const maxDocumentableWidth = Math.min(420, viewportWidth * 0.5);
+        const documentable = visible
+            && rect.width >= 12
+            && rect.height >= 12
+            && rect.width <= maxDocumentableWidth
+            && Boolean(iconNode || label);
         return {
             index,
-            text: (button.textContent || '').trim(),
+            text: label,
             title: (button.getAttribute('title') || '').trim(),
             aria: (button.getAttribute('aria-label') || '').trim(),
             icon: iconNode ? (iconNode.getAttribute('class') || '') : '',
+            buttonClass: button.getAttribute('class') || '',
+            contextHeading: headingNode ? (headingNode.innerText || '').trim() : '',
+            contextText: contextRoot
+                ? (contextRoot.innerText || '').trim().slice(0, 500)
+                : '',
             visible,
+            documentable,
             box: {
                 x: rect.left - bodyRect.left,
                 y: rect.top - bodyRect.top,
@@ -62,7 +99,15 @@ def crop_button(source, button, image_path, padding_css=3, viewport=None):
     if right <= left or bottom <= top:
         return False
 
-    source.crop((left, top, right, bottom)).save(image_path, format="PNG")
+    cropped = source.crop((left, top, right, bottom))
+    if (
+        cropped.width < 10
+        or cropped.height < 10
+        or cropped.width / max(1, cropped.height) > 14
+    ):
+        return False
+
+    cropped.save(image_path, format="PNG")
     return image_path.is_file()
 
 
@@ -84,7 +129,8 @@ async def extract_actions(
     page_name,
     tab_name=None,
     output_dir="output/icons",
-    screenshot_capture=None
+    screenshot_capture=None,
+    artifact_key=None,
 ):
     started = monotonic()
     icon_dir = Path(output_dir)
@@ -116,7 +162,12 @@ async def extract_actions(
     candidates = []
     for button in buttons:
         label = button["text"] or button["title"] or button["aria"]
-        if button["visible"] and (label or button["icon"]):
+        semantic_class = button.get("buttonClass", "")
+        if button["visible"] and button.get("documentable", True) and (
+            label
+            or button["icon"]
+            or "plus" in semantic_class.split()
+        ):
             button["label"] = label
             candidates.append(button)
 
@@ -137,11 +188,16 @@ async def extract_actions(
             print(f"⚠️ 頁面截圖無法用於按鈕裁切：{exc}")
             return []
 
-    safe_page = safe_filename(page_name)
-    safe_tab = safe_filename(tab_name)
+    # Chinese page/tab names previously collapsed into runs of underscores.
+    # Different pages could therefore point to the same PNG and later crawls
+    # overwrote earlier icons. The crawler-supplied menu/tab key is unique
+    # within one language run and keeps every metadata path stable.
+    safe_artifact = safe_filename(artifact_key) if artifact_key else ""
+    safe_page = safe_artifact or safe_filename(page_name)
+    safe_tab = "" if safe_artifact else safe_filename(tab_name)
     actions = []
     for button in candidates:
-        image_path = icon_dir / f"{safe_page}_{safe_tab}_{button['index']}.png"
+        image_path = icon_dir / f"{safe_page}_{safe_tab}button_{button['index']}.png"
         try:
             if capture_segments:
                 segment_index = button["segment_index"]
@@ -163,8 +219,19 @@ async def extract_actions(
 
         if saved:
             actions.append({
+                # Stable DOM identity. Unlike the position in the filtered
+                # actions list, this value does not change if another crop
+                # fails or an action is omitted.
+                "action_id": f"button-{button['index']}",
+                "dom_index": button["index"],
                 "label": button["label"],
+                "text": button.get("text", ""),
+                "title": button.get("title", ""),
+                "aria": button.get("aria", ""),
                 "icon": button["icon"],
+                "button_class": button.get("buttonClass", ""),
+                "context_heading": button.get("contextHeading", ""),
+                "context_text": button.get("contextText", ""),
                 "image": str(image_path)
             })
 

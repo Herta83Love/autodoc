@@ -41,6 +41,10 @@ class PageMetadata(BaseModel):
     
     actions: list = Field(default_factory=list)
 
+    help_actions: list[dict] = Field(default_factory=list)
+
+    interaction_flows: list[dict] = Field(default_factory=list)
+
     fields: list[str]
 
     field_details: list[dict] = Field(default_factory=list)

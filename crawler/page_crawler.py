@@ -2,7 +2,10 @@
 # File: page_crawler.py
 # ============================================================================
 
+import asyncio
 from pathlib import Path
+from time import monotonic
+from urllib.parse import urlsplit
 
 import crawler.wait_helper
 
@@ -17,6 +20,10 @@ from crawler.screenshot import (
 from crawler.action_extractor import (
     extract_actions
 )
+from crawler.interaction_explorer import (
+    UnsafeInteractionState,
+    explore_safe_actions
+)
 from crawler.html_exporter import (
     save_html
 )
@@ -27,6 +34,163 @@ from crawler.page_parser import (
 from crawler.tab_explorer import (
     discover_tabs
 )
+
+
+def _route_identity(value):
+    """Return the stable URL portion used to identify a SENTRY page."""
+
+    parsed = urlsplit(str(value or "").strip())
+    path = parsed.path.rstrip("/") or "/"
+    return parsed.netloc.casefold(), path.casefold()
+
+
+def _matches_expected_route(current_url, expected_url):
+    if not expected_url:
+        return False
+    return _route_identity(current_url) == _route_identity(expected_url)
+
+
+async def _wait_for_page_transition(
+    page,
+    previous_snapshot,
+    previous_url="",
+    expected_url="",
+    expected_title="",
+    allow_unchanged=False,
+    timeout_ms=15000,
+):
+    """Wait for real navigation, not merely stability of the old page."""
+
+    started = monotonic()
+    deadline = started + timeout_ms / 1000
+    latest_frame = None
+    while monotonic() < deadline:
+        latest_frame = await get_main_frame(page, timeout_ms=1000)
+        if latest_frame is None:
+            await asyncio.sleep(0.1)
+            continue
+        try:
+            snapshot = await crawler.wait_helper.get_dom_snapshot(latest_frame)
+            # Menu metadata contains the authoritative SENTRY route. Live
+            # dashboards update their DOM continuously, so a changed snapshot
+            # alone must not be accepted while we are still on the old route.
+            if expected_url and _matches_expected_route(
+                latest_frame.url,
+                expected_url,
+            ):
+                await crawler.wait_helper.wait_dom_ready(latest_frame)
+                return latest_frame
+
+            # Keep the old fallback only for menu entries that do not expose a
+            # target URL. Otherwise an update on Top Reports can be mistaken
+            # for navigation to Schedule Reports.
+            if not expected_url and latest_frame.url != previous_url:
+                await crawler.wait_helper.wait_dom_ready(latest_frame)
+                return latest_frame
+            if (
+                not expected_url
+                and previous_snapshot is not None
+                and snapshot != previous_snapshot
+            ):
+                await crawler.wait_helper.wait_dom_ready(
+                    latest_frame,
+                    before_snapshot=previous_snapshot,
+                )
+                return latest_frame
+            # The first menu can already be active after login. Accept an
+            # unchanged frame only when its visible body explicitly identifies
+            # the requested page; otherwise keep waiting for real navigation.
+            if allow_unchanged and monotonic() - started >= 0.8 and expected_title:
+                body_text = await latest_frame.locator("body").inner_text()
+                if expected_title.casefold() in body_text.casefold():
+                    await crawler.wait_helper.wait_dom_ready(latest_frame)
+                    return latest_frame
+        except Exception:
+            pass
+        await asyncio.sleep(0.1)
+
+    raise RuntimeError("選單點擊後頁面內容未完成切換，停止擷取以避免跨頁污染")
+
+
+async def _active_tab_name(frame):
+    return str(await frame.evaluate("""
+    () => {
+        const active = document.querySelector(
+            '.route_link a.router-link-exact-active,'
+            + '.route_link a.active,'
+            + '.route_link a[aria-selected="true"],'
+            + '.route_link a[aria-current="page"]'
+        );
+        return active ? (active.innerText || active.textContent || '').trim() : '';
+    }
+    """) or "").strip()
+
+
+async def _wait_for_tab_transition(
+    frame,
+    expected_tab,
+    timeout_ms=8000,
+):
+    """Wait until the requested tab, rather than any live DOM update, is active."""
+
+    deadline = monotonic() + timeout_ms / 1000
+    last_active = ""
+    while monotonic() < deadline:
+        try:
+            last_active = await _active_tab_name(frame)
+            if last_active.casefold() == str(expected_tab).strip().casefold():
+                # The active class can change one render tick before Vue swaps
+                # the route content. Wait two frames, then stabilise the new
+                # view. This avoids accepting live table-row updates from the
+                # previously active History Logs tab as a successful switch.
+                await frame.evaluate("""
+                () => new Promise(resolve => requestAnimationFrame(
+                    () => requestAnimationFrame(resolve)
+                ))
+                """)
+                await crawler.wait_helper.wait_dom_ready(frame)
+                if (
+                    (await _active_tab_name(frame)).casefold()
+                    == str(expected_tab).strip().casefold()
+                ):
+                    return
+        except Exception:
+            pass
+        await asyncio.sleep(0.1)
+    raise RuntimeError(
+        f"Tab 點擊後未切換至 {expected_tab}（目前作用中：{last_active or '無'}），"
+        "停止擷取以避免使用上一個 Tab"
+    )
+
+
+async def _visible_tab_names(frame, tabs):
+    route_links = frame.locator(".route_link a")
+    route_names = []
+    try:
+        for index in range(await route_links.count()):
+            link = route_links.nth(index)
+            if await link.is_visible():
+                name = str(await link.inner_text()).strip()
+                if name and name not in route_names:
+                    route_names.append(name)
+    except Exception:
+        route_names = []
+
+    if route_names:
+        return route_names
+
+    names = []
+    for tab in tabs:
+        name = str(tab.get("name") or "").strip()
+        if not name or name in names:
+            continue
+        locator = frame.get_by_text(name, exact=True)
+        try:
+            if await locator.count() and await locator.first.is_visible():
+                names.append(name)
+        except Exception:
+            continue
+    return names
 
 
 async def crawl_pages(
@@ -107,11 +271,17 @@ async def crawl_pages(
             #
             # 點擊選單
             #
+            previous_url = frame.url if frame else ""
+            expected_url = str(menu_item.get("url") or "").strip()
             await link.click()
 
-            frame = await get_main_frame(
+            frame = await _wait_for_page_transition(
                 page,
-                timeout_ms=3000
+                before_snapshot,
+                previous_url,
+                expected_url,
+                title,
+                index == 0,
             )
 
             if frame is None:
@@ -189,6 +359,8 @@ async def crawl_pages(
                 frame
             )
 
+            tab_names = await _visible_tab_names(frame, tabs)
+
             print(
                 f"找到 {len(tabs)} 個 Tabs"
             )
@@ -196,19 +368,7 @@ async def crawl_pages(
             #
             # 有 Tabs
             #
-            if len(tabs) > 0:
-
-                tab_names = []
-
-                for tab in tabs:
-
-                    name = tab["name"]
-
-                    if name not in tab_names:
-
-                        tab_names.append(
-                            name
-                        )
+            if tab_names:
 
                 for tab_index, tab_name in enumerate(tab_names):
 
@@ -224,7 +384,7 @@ async def crawl_pages(
                             f"切換 Tab: {tab_name}"
                         )
 
-                        locator = frame.get_by_text(
+                        locator = frame.locator(".route_link").get_by_text(
                             tab_name,
                             exact=True
                         )
@@ -240,23 +400,21 @@ async def crawl_pages(
 
                             continue
 
-                        before_tab = None
+                        is_active = await locator.first.evaluate("""
+                        element => element.classList.contains('router-link-exact-active')
+                            || element.classList.contains('active')
+                            || element.getAttribute('aria-selected') === 'true'
+                            || element.getAttribute('aria-current') === 'page'
+                        """)
 
-                        try:
-
-                            before_tab = await crawler.wait_helper.get_dom_snapshot(
-                                frame
+                        if not is_active:
+                            await locator.first.click()
+                            await _wait_for_tab_transition(
+                                frame,
+                                tab_name,
                             )
-
-                        except Exception:
-                            pass
-
-                        await locator.first.click()
-
-                        await crawler.wait_helper.wait_dom_ready(
-                            frame,
-                            before_snapshot=before_tab
-                        )
+                        else:
+                            await crawler.wait_helper.wait_dom_ready(frame)
 
                         screenshot_capture = (
                             await save_screenshot(
@@ -284,7 +442,8 @@ async def crawl_pages(
                                 title,
                                 tab_name,
                                 icon_dir,
-                                screenshot_capture
+                                screenshot_capture,
+                                artifact_key=f"menu_{index}_tab_{tab_index}",
                             )
                         finally:
                             cleanup_screenshot_capture(screenshot_capture)
@@ -317,6 +476,14 @@ async def crawl_pages(
                             )
                         )
                         metadata.actions = actions
+                        metadata.interaction_flows = await explore_safe_actions(
+                            frame,
+                            actions,
+                            title,
+                            tab_name,
+                            f"{output_root}/action_flows",
+                            artifact_key=f"menu_{index}_tab_{tab_index}",
+                        )
 
                         results.append(
                             metadata.model_dump()
@@ -325,6 +492,9 @@ async def crawl_pages(
                         print(
                             f"✅ 完成 Tab: {tab_name}"
                         )
+
+                    except UnsafeInteractionState:
+                        raise
 
                     except Exception as e:
 
@@ -369,7 +539,8 @@ async def crawl_pages(
                     title,
                     None,
                     icon_dir,
-                    screenshot_capture
+                    screenshot_capture,
+                    artifact_key=f"menu_{index}",
                 )
             finally:
                 cleanup_screenshot_capture(screenshot_capture)
@@ -404,6 +575,14 @@ async def crawl_pages(
             )
 
             metadata.actions = actions
+            metadata.interaction_flows = await explore_safe_actions(
+                frame,
+                actions,
+                title,
+                None,
+                f"{output_root}/action_flows",
+                artifact_key=f"menu_{index}",
+            )
             results.append(
                 metadata.model_dump()
             )
@@ -411,6 +590,9 @@ async def crawl_pages(
             print(
                 f"✅ 完成: {title}"
             )
+
+        except UnsafeInteractionState:
+            raise
 
         except Exception as e:
 
