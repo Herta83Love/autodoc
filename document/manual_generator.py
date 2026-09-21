@@ -38,6 +38,7 @@ bookmark_id = 1
 DOCUMENT_CONFIG = (
     "config/document.yaml"
 )
+PAGE_NOTES_CONFIG = "config/page_notes.yaml"
 
 ASSET_DIR = Path(__file__).resolve().parent / "assets"
 LOGO_PATH = ASSET_DIR / "urmazi_logo.png"
@@ -1080,6 +1081,60 @@ def load_document_config():
         )
 
 
+def load_page_notes():
+    """Load manually maintained notes; absent entries intentionally render nothing."""
+
+    path = Path(PAGE_NOTES_CONFIG)
+    if not path.is_file():
+        return []
+
+    with path.open("r", encoding="utf-8") as file:
+        config = yaml.safe_load(file) or {}
+
+    entries = config.get("entries", [])
+    if not isinstance(entries, list):
+        raise ValueError(f"{PAGE_NOTES_CONFIG} 的 entries 必須是陣列")
+    return entries
+
+
+def get_page_notes(page, entries, language):
+    """Return explicit YAML notes matching one crawled page or tab."""
+
+    result = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("menu_index") != page.get("menu_index"):
+            continue
+
+        tab_indexes = entry.get("tab_indexes")
+        if tab_indexes is not None:
+            if not isinstance(tab_indexes, list):
+                raise ValueError(
+                    f"{PAGE_NOTES_CONFIG} 的 tab_indexes 必須是陣列"
+                )
+            if page.get("tab_index") not in tab_indexes:
+                continue
+
+        localized_notes = entry.get("notes", {})
+        if not isinstance(localized_notes, dict):
+            raise ValueError(f"{PAGE_NOTES_CONFIG} 的 notes 必須是物件")
+        notes = localized_notes.get(language_key(language), [])
+        if isinstance(notes, str):
+            notes = [notes]
+        if not isinstance(notes, list):
+            raise ValueError(
+                f"{PAGE_NOTES_CONFIG} 的 {language_key(language)} 注意事項必須是陣列"
+            )
+        result.extend(
+            str(note).strip()
+            for note in notes
+            if str(note).strip()
+        )
+
+    return result
+
+
 def get_localized_config(config, section, language):
 
     localized = (
@@ -1925,6 +1980,7 @@ def generate_docx(
     bookmark_id = 1
 
     config = load_document_config()
+    page_note_entries = load_page_notes()
 
     if pages is None:
         metadata_path = (
@@ -2091,8 +2147,7 @@ def generate_docx(
                         ("business_value", "business_value"),
                         ("page_sections", "page_sections"),
                         ("fields", "field_descriptions"),
-                        ("best_practices", "best_practices"),
-                        ("restrictions", "restrictions")
+                        ("best_practices", "best_practices")
                     ]:
 
                         data = normalize_ai_content(
@@ -2122,6 +2177,18 @@ def generate_docx(
                             document.add_paragraph(
                                 str(data)
                             )
+
+                    manual_notes = get_page_notes(
+                        page,
+                        page_note_entries,
+                        language,
+                    )
+                    if manual_notes:
+                        document.add_heading(
+                            text_for(language, "restrictions"),
+                            level=5,
+                        )
+                        add_bullet_list(document, manual_notes)
 
                 except Exception as e:
 

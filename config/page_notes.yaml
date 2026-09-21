@@ -1,0 +1,23 @@
+# Manually maintained notes shown in the generated manuals.
+#
+# Matching uses crawler indexes so the same entry works for every language:
+#   menu_index: sidebar function index
+#   tab_indexes: optional tab indexes; omit it to apply to the whole page
+#
+# A page or tab without a matching entry does not display a Notes section.
+
+entries:
+  # Domain Insights > History Logs > Proxy / Firewall
+  # New Observed (tab_index 2) is intentionally not included.
+  - menu_index: 1
+    tab_indexes: [0, 1]
+    notes:
+      zh-TW:
+        - >-
+          若要匯出所選時間範圍內的完整記錄，請先將記錄清單瀏覽至最後一頁，
+          再執行匯出；否則匯出的內容僅會包含最新 2,500 筆記錄。
+      en:
+        - >-
+          To export all records within the selected time range, browse to the
+          last page of the log list before exporting. Otherwise, the export
+          includes only the latest 2,500 records.
