@@ -19,10 +19,14 @@ entries:
     notes:
       zh-TW:
         - >-
-          若要匯出所選時間範圍內的完整記錄，請先將記錄清單瀏覽至最後一頁，
-          再執行匯出；否則匯出的內容僅會包含最新 2,500 筆記錄。
+          CSV 僅會匯出目前已載入的記錄。頁面初始載入 100 頁（2,500 筆），
+          每次按下頁數按鈕會再載入 100 頁（2,500 筆）；最後不足 100 頁時，
+          按鈕會顯示剩餘頁數。例如共有 380 頁時，載入順序為
+          100（2,500 筆）→ 200（5,000 筆）→ 300（7,500 筆）→ 80（9,500 筆）。
       en:
         - >-
-          To export all records within the selected time range, browse to the
-          last page of the log list before exporting. Otherwise, the export
-          includes only the latest 2,500 records.
+          CSV exports only the records currently loaded. The page initially
+          loads 100 pages (2,500 records); each press of the page-count button
+          loads another 100 pages (2,500 records). The final button shows the
+          remaining pages. For 380 pages, the sequence is 100 (2,500) →
+          200 (5,000) → 300 (7,500) → 80 (9,500 records).
