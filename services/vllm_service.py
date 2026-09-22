@@ -175,6 +175,8 @@ button_descriptions
 - 每個按鈕對應一筆判斷結果
 - 僅允許描述 metadata.actions 中實際存在的按鈕
 - 不可臆測不存在按鈕
+- SENTRY 2.4 沒有獨立的 Commit 控制項；儲存後變更會立即生效，
+  不得描述提交佇列或要求使用者再按 Commit
 - 不可描述按鈕顏色
 - 不可描述按鈕外觀
 - 不可描述 SVG 內容

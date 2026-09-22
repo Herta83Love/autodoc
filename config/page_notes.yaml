@@ -5,6 +5,11 @@
 #   tab_indexes: optional tab indexes; omit it to apply to the whole page
 #
 # A page or tab without a matching entry does not display a Notes section.
+#
+# The legacy manualwriter YAML was reviewed before adding entries here. Its
+# page leads, field definitions, crawler safety rules and editorial TODOs are
+# source material or internal review state, not end-user cautions. They remain
+# outside this file. Only verified operational caveats belong below.
 
 entries:
   # Domain Insights > History Logs > Proxy / Firewall

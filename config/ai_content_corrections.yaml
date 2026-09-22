@@ -1,0 +1,49 @@
+# Deterministic corrections applied after AI generation and cache loading.
+#
+# These facts were verified in the earlier manualwriter project. SENTRY 2.4
+# applies a saved change immediately and does not expose a separate Commit
+# control. Keeping the corrections outside the cache prevents stale cached
+# prose from reintroducing the removed workflow.
+
+replacements:
+  en:
+    - from: "Saves changes to the commit queue. To apply your changes, click Commit."
+      to: "Saves and applies the changes immediately."
+    - from: "Save changes to the commit queue. To apply your changes, click Commit."
+      to: "Save and apply the changes immediately."
+    - from: "Saves changes to the commit queue."
+      to: "Saves and applies the changes immediately."
+    - from: "Save changes to the commit queue."
+      to: "Save and apply the changes immediately."
+    - from: "Save the current default route configuration changes to the commit queue."
+      to: "Save and apply the current default route configuration immediately."
+    - from: "Saves the cache clearing configuration to the commit queue."
+      to: "Saves and applies the cache clearing configuration immediately."
+    - from: "save changes to the commit queue"
+      to: "save and apply changes immediately"
+    - from: "save changes to a commit queue"
+      to: "save and apply changes immediately"
+    - from: "after committing changes"
+      to: "after saving changes"
+    - from: "uncommitted changes"
+      to: "unsaved changes"
+    - from: "committed entries"
+      to: "saved entries"
+    - from: "committed entry"
+      to: "saved entry"
+
+  zh-TW:
+    - from: "將目前的設定變更儲存至提交佇列"
+      to: "儲存設定並立即套用變更"
+    - from: "儲存目前頁面的設定變更至提交佇列"
+      to: "儲存目前頁面的設定並立即套用變更"
+    - from: "將變更儲存至提交佇列"
+      to: "儲存並立即套用變更"
+    - from: "儲存變更至提交佇列"
+      to: "儲存並立即套用變更"
+    - from: "儲存至提交佇列"
+      to: "儲存並立即套用"
+    - from: "未提交的變更"
+      to: "尚未儲存的變更"
+    - from: "已提交的"
+      to: "已儲存的"

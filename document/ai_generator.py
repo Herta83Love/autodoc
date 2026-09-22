@@ -7,6 +7,8 @@ import hashlib
 import re
 from pathlib import Path
 
+import yaml
+
 from services.vllm_service import (
     MODEL_NAME,
     assess_tab_equivalence,
@@ -17,11 +19,49 @@ from services.vllm_service import (
 CACHE_VERSION = "V6"
 
 CACHE_DIR = Path("output/ai_cache")
+AI_CONTENT_CORRECTIONS_CONFIG = Path("config/ai_content_corrections.yaml")
 
 CACHE_DIR.mkdir(
     parents=True,
     exist_ok=True
 )
+
+
+def load_ai_content_corrections():
+    if not AI_CONTENT_CORRECTIONS_CONFIG.is_file():
+        return {}
+
+    with AI_CONTENT_CORRECTIONS_CONFIG.open("r", encoding="utf-8") as file:
+        config = yaml.safe_load(file) or {}
+
+    return config.get("replacements") or {}
+
+
+def apply_ai_content_corrections(value, language):
+    """Apply verified product facts without mutating the cached AI payload."""
+
+    replacements = load_ai_content_corrections().get(language) or []
+
+    if isinstance(value, dict):
+        return {
+            key: apply_ai_content_corrections(item, language)
+            for key, item in value.items()
+        }
+
+    if isinstance(value, list):
+        return [
+            apply_ai_content_corrections(item, language)
+            for item in value
+        ]
+
+    if isinstance(value, str):
+        for replacement in replacements:
+            old = str(replacement.get("from") or "")
+            new = str(replacement.get("to") or "")
+            if old:
+                value = value.replace(old, new)
+
+    return value
 
 TAB_GROUP_CACHE_DIR = CACHE_DIR / "tab_groups"
 TAB_GROUP_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -702,6 +742,10 @@ def generate_manual_section(page):
                 internal_field_mapping
             )
             cached_result = normalize_grounded_result(cached_result, page)
+            cached_result = apply_ai_content_corrections(
+                cached_result,
+                page.get("language", "zh-TW"),
+            )
             assert_no_internal_field_names(
                 cached_result,
                 internal_field_mapping
@@ -735,6 +779,10 @@ def generate_manual_section(page):
         )
 
         result = normalize_grounded_result(result, page)
+        result = apply_ai_content_corrections(
+            result,
+            page.get("language", "zh-TW"),
+        )
 
         assert_no_internal_field_names(
             result,
