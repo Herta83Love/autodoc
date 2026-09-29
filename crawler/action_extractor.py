@@ -133,6 +133,46 @@ async def open_page_screenshot(frame, screenshot_path=None):
         return image.convert("RGB")
 
 
+async def capture_clean_button(frame, button_index, image_path):
+    """Capture one button above overlapping page content, then restore styles."""
+
+    locator = frame.locator("button").nth(button_index)
+    original_style = await locator.evaluate(
+        "element => element.getAttribute('style')"
+    )
+    try:
+        await locator.evaluate("""
+        element => {
+            element.style.setProperty('position', 'relative', 'important');
+            element.style.setProperty('z-index', '2147483647', 'important');
+            element.style.setProperty('opacity', '1', 'important');
+            element.style.setProperty('background-color', 'rgb(71, 137, 105)', 'important');
+        }
+        """)
+        await locator.screenshot(
+            path=str(image_path),
+            animations="disabled",
+            caret="hide",
+        )
+    finally:
+        await locator.evaluate(
+            """
+            (element, style) => {
+                if (style === null) element.removeAttribute('style');
+                else element.setAttribute('style', style);
+            }
+            """,
+            original_style,
+        )
+
+    try:
+        with Image.open(image_path) as captured:
+            width, height = captured.size
+        return width >= 10 and height >= 20
+    except Exception:
+        return False
+
+
 async def extract_actions(
     frame,
     page_name,
@@ -222,6 +262,16 @@ async def extract_actions(
                 )
             else:
                 saved = crop_button(source, button, image_path)
+
+            # Help buttons can overlap dense TLD cards at narrower iframe
+            # widths. A page-level crop then includes the card text behind the
+            # button. Capture these buttons as raised, opaque elements instead.
+            if "btn-desc" in str(button.get("buttonClass") or "").split():
+                saved = await capture_clean_button(
+                    frame,
+                    button["index"],
+                    image_path,
+                )
         except Exception as exc:
             print(f"⚠️ 按鈕圖片裁切失敗：{image_path}：{exc}")
             saved = False
