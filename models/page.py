@@ -45,6 +45,10 @@ class PageMetadata(BaseModel):
 
     interaction_flows: list[dict] = Field(default_factory=list)
 
+    detail_sections: list[dict] = Field(default_factory=list)
+
+    visual_sections: list[dict] = Field(default_factory=list)
+
     fields: list[str]
 
     field_details: list[dict] = Field(default_factory=list)

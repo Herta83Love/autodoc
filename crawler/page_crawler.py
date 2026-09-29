@@ -17,6 +17,10 @@ from crawler.screenshot import (
     cleanup_screenshot_capture,
     save_screenshot
 )
+from crawler.content_explorer import (
+    explore_readonly_details,
+    extract_visual_sections,
+)
 from crawler.action_extractor import (
     extract_actions
 )
@@ -191,6 +195,32 @@ async def _visible_tab_names(frame, tabs):
         except Exception:
             continue
     return names
+
+
+async def _enrich_readonly_content(
+    metadata,
+    frame,
+    title,
+    tab_name,
+    output_root,
+    artifact_key,
+):
+    """Capture visible chart explanations and one safe record-detail schema."""
+
+    metadata.visual_sections = await extract_visual_sections(frame)
+    metadata.detail_sections = await explore_readonly_details(
+        frame,
+        title,
+        tab_name,
+        f"{output_root}/detail_flows",
+        artifact_key=artifact_key,
+    )
+    for section in metadata.detail_sections:
+        for screenshot in section.get("screenshots") or []:
+            if screenshot and screenshot not in metadata.screenshots:
+                metadata.screenshots.append(screenshot)
+
+    return metadata
 
 
 async def crawl_pages(
@@ -476,6 +506,14 @@ async def crawl_pages(
                             )
                         )
                         metadata.actions = actions
+                        metadata = await _enrich_readonly_content(
+                            metadata,
+                            frame,
+                            title,
+                            tab_name,
+                            output_root,
+                            f"menu_{index}_tab_{tab_index}",
+                        )
                         metadata.interaction_flows = await explore_safe_actions(
                             frame,
                             actions,
@@ -575,6 +613,14 @@ async def crawl_pages(
             )
 
             metadata.actions = actions
+            metadata = await _enrich_readonly_content(
+                metadata,
+                frame,
+                title,
+                None,
+                output_root,
+                f"menu_{index}",
+            )
             metadata.interaction_flows = await explore_safe_actions(
                 frame,
                 actions,

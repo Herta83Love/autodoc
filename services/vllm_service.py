@@ -33,6 +33,8 @@ SYSTEM_PROMPT = """
 - 欄位資訊
 - 按鈕資訊(metadata.actions)
 - 表格資訊
+- 圖表與指標區塊資訊
+- 資料列展開後的明細欄位
 - 畫面截圖
 
 產生正式產品管理手冊內容。
@@ -457,17 +459,43 @@ def is_public_field_label(value):
 
 def get_public_field_context(page):
     details = []
+    seen = set()
     for detail in page.get("field_details") or []:
         section = str(detail.get("section") or "").strip()
         label = str(detail.get("label") or "").strip()
         if not is_public_field_label(label):
             continue
+        display_name = f"{section}－{label}" if section else label
+        if display_name in seen:
+            continue
+        seen.add(display_name)
         details.append({
             "section": section,
             "label": label,
-            "display_name": f"{section}－{label}" if section else label,
-            "options": detail.get("options") or []
+            "display_name": display_name,
+            "options": detail.get("options") or [],
+            "source": "form",
         })
+
+    for section in page.get("detail_sections") or []:
+        section_name = str(section.get("title") or "").strip()
+        for detail in section.get("fields") or []:
+            label = str(detail.get("label") or "").strip()
+            if not is_public_field_label(label):
+                continue
+            display_name = (
+                f"{section_name}－{label}" if section_name else label
+            )
+            if display_name in seen:
+                continue
+            seen.add(display_name)
+            details.append({
+                "section": section_name,
+                "label": label,
+                "display_name": display_name,
+                "options": [],
+                "source": "record_detail",
+            })
 
     if details:
         return json.dumps(details, ensure_ascii=False, indent=2)
@@ -497,6 +525,18 @@ def _tab_comparison_summary(page):
             if detail.get("label")
         ],
         "tables": page.get("tables", []),
+        "visual_sections": page.get("visual_sections", []),
+        "detail_sections": [
+            {
+                "title": section.get("title", ""),
+                "fields": [
+                    field.get("label", "")
+                    for field in section.get("fields", [])
+                    if field.get("label")
+                ],
+            }
+            for section in page.get("detail_sections", [])
+        ],
         "actions": [
             {
                 "label": action.get("label", ""),
@@ -713,6 +753,18 @@ overview 清楚說明它們是多組獨立設定；不可只描述其中一個�
 畫面區塊
 {chr(10).join(page.get("headings", []))}
 
+圖表與指標區塊
+{json.dumps(page.get("visual_sections", []), ensure_ascii=False, indent=2)}
+
+資料列展開後的明細欄位
+{json.dumps([
+    {
+        "title": section.get("title", ""),
+        "fields": [field.get("label", "") for field in section.get("fields", [])]
+    }
+    for section in page.get("detail_sections", [])
+], ensure_ascii=False, indent=2)}
+
 欄位資訊
 {public_field_context}
 
@@ -795,6 +847,12 @@ interaction_sections 請針對「按鈕開啟後的設定表單」輸出：
 - 不得輸出 internal_name。
 - 沒有 interaction flow 時輸出空陣列。
 
+頁面內容規則：
+- page_sections 必須涵蓋「圖表與指標區塊」中每個有標題的區塊。
+- 圖表已有 description 時，應以它為依據解釋該指標或圖表代表的內容。
+- field_descriptions 必須涵蓋「資料列展開後的明細欄位」提供的每個欄位。
+- 不得把即時統計數字、IP、網域、時間或其他單筆資料當成固定產品行為。
+
 輸出順序：
 1. 先判斷所有 button_descriptions。
 2. 再完成所有 interaction_sections 與欄位說明。
@@ -826,7 +884,7 @@ interaction_sections 請針對「按鈕開啟後的設定表單」輸出：
     if isinstance(screenshot_paths, str):
         screenshot_paths = [screenshot_paths]
 
-    for screenshot_index, screenshot_path in enumerate((screenshot_paths or [])[:1]):
+    for screenshot_index, screenshot_path in enumerate((screenshot_paths or [])[:3]):
         if screenshot_path and os.path.exists(screenshot_path):
             content.append({
                 "type": "text",

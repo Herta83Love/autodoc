@@ -38,12 +38,27 @@ def ordered_content(result, content_fields):
     }
 
 
-def preserve_existing_content(previous, generated, content_fields):
+def preserve_existing_content(
+    previous,
+    generated,
+    content_fields,
+    merge_new_structured_items,
+):
     """Keep human edits while adding any newly supported content fields."""
 
     content = dict(previous.get("content") or {})
     for field in content_fields:
         content.setdefault(field, generated[field])
+    for field in (
+        "button_descriptions",
+        "interaction_sections",
+        "page_sections",
+        "field_descriptions",
+    ):
+        content[field] = merge_new_structured_items(
+            content.get(field),
+            generated.get(field),
+        )
     return {field: content[field] for field in content_fields}
 
 
@@ -73,6 +88,7 @@ def sync(overwrite=False):
     from document.manual_content import (
         CONTENT_FIELDS,
         manual_content_path,
+        merge_new_structured_items,
         page_content_key,
     )
     from document.manual_generator import (
@@ -111,6 +127,7 @@ def sync(overwrite=False):
                                 previous,
                                 content,
                                 CONTENT_FIELDS,
+                                merge_new_structured_items,
                             )
                         ),
                     }

@@ -138,6 +138,10 @@ def get_content_fingerprint(page):
         "help_actions": page.get("help_actions", []),
         "interaction_flows": page.get("interaction_flows", []),
     }
+    if page.get("detail_sections"):
+        relevant_page_data["detail_sections"] = page["detail_sections"]
+    if page.get("visual_sections"):
+        relevant_page_data["visual_sections"] = page["visual_sections"]
 
     hasher = hashlib.sha256()
     hasher.update(
@@ -199,6 +203,19 @@ def get_tab_structure_signature(page):
             for action in page.get("actions", [])
         ],
     }
+    if page.get("visual_sections"):
+        structure["visual_sections"] = page["visual_sections"]
+    if page.get("detail_sections"):
+        structure["detail_sections"] = [
+            {
+                "title": section.get("title", ""),
+                "fields": [
+                    field.get("label", "")
+                    for field in section.get("fields", [])
+                ],
+            }
+            for section in page["detail_sections"]
+        ]
     encoded = json.dumps(
         _normalize_structure_value(structure),
         ensure_ascii=False,
@@ -431,20 +448,53 @@ def normalize_grounded_result(result, page):
     if not isinstance(result, dict):
         raise ValueError("AI 結果必須是 JSON object")
 
-    allowed_fields = set()
+    allowed_fields = []
     for detail in page.get("field_details") or []:
         section = str(detail.get("section") or "").strip()
         label = str(detail.get("label") or "").strip()
         if not is_public_field_label(label):
             continue
-        allowed_fields.add(f"{section}－{label}" if section else label)
+        allowed_fields.append({
+            "name": f"{section}－{label}" if section else label,
+            "label": label,
+            "source": "form",
+        })
 
-    filtered_fields = []
+    for section in page.get("detail_sections") or []:
+        section_name = str(section.get("title") or "").strip()
+        for detail in section.get("fields") or []:
+            label = str(detail.get("label") or "").strip()
+            if not is_public_field_label(label):
+                continue
+            allowed_fields.append({
+                "name": f"{section_name}－{label}" if section_name else label,
+                "label": label,
+                "source": "record_detail",
+            })
+
+    allowed_field_names = {field["name"] for field in allowed_fields}
+
+    filtered_fields_by_name = {}
     for item in result.get("field_descriptions") or []:
         text = str(item or "").strip()
         name = re.split(r"[：:]", text, maxsplit=1)[0].strip()
-        if text and name in allowed_fields:
-            filtered_fields.append(text)
+        if text and name in allowed_field_names:
+            filtered_fields_by_name.setdefault(name, text)
+
+    filtered_fields = []
+    emitted_field_names = set()
+    for field in allowed_fields:
+        name = field["name"]
+        if name in emitted_field_names:
+            continue
+        emitted_field_names.add(name)
+        filtered_fields.append(
+            filtered_fields_by_name.get(name)
+            or _fallback_page_field_description(
+                field,
+                page.get("language", "zh-TW"),
+            )
+        )
     result["field_descriptions"] = filtered_fields
 
     allowed_sections = {
@@ -457,12 +507,26 @@ def normalize_grounded_result(result, page):
         for detail in page.get("field_details") or []
         if str(detail.get("section") or "").strip()
     )
-    filtered_sections = []
+    allowed_sections.update(
+        str(section.get("title") or "").strip()
+        for section in page.get("visual_sections") or []
+        if str(section.get("title") or "").strip()
+    )
+    filtered_sections_by_name = {}
     for item in result.get("page_sections") or []:
         text = str(item or "").strip()
         name = re.split(r"[：:]", text, maxsplit=1)[0].strip()
         if text and name in allowed_sections:
-            filtered_sections.append(text)
+            filtered_sections_by_name.setdefault(name, text)
+
+    filtered_sections = list(filtered_sections_by_name.values())
+    for section in page.get("visual_sections") or []:
+        title = str(section.get("title") or "").strip()
+        description = str(section.get("description") or "").strip()
+        if not title or title in filtered_sections_by_name:
+            continue
+        if description:
+            filtered_sections.append(f"{title}：{description}")
     result["page_sections"] = filtered_sections
 
     valid_action_ids = {
@@ -555,6 +619,24 @@ def normalize_grounded_result(result, page):
     result["restrictions"] = []
 
     return result
+
+
+def _fallback_page_field_description(field, language="zh-TW"):
+    """Guarantee coverage for every visible form or expanded-record field."""
+
+    name = str(field.get("name") or "").strip()
+    label = str(field.get("label") or name).strip()
+    detail_field = field.get("source") == "record_detail"
+    english = str(language).lower().startswith("en")
+
+    if english:
+        if detail_field:
+            return f"{name}: Displays the {label} value for the selected record."
+        return f"{name}: Sets or displays the {label} value."
+
+    if detail_field:
+        return f"{name}：顯示所選記錄的「{label}」資訊。"
+    return f"{name}：設定或顯示「{label}」的內容。"
 
 
 def _fallback_interaction_field_description(field, language="zh-TW"):
