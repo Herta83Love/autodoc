@@ -8,7 +8,7 @@ from crawler.screenshot import cleanup_screenshot_capture, save_screenshot
 
 
 VISUAL_SECTIONS_SCRIPT = r"""
-() => {
+(context) => {
     const visible = element => {
         if (!element) return false;
         for (let node = element; node; node = node.parentElement) {
@@ -19,17 +19,34 @@ VISUAL_SECTIONS_SCRIPT = r"""
         const rect = element.getBoundingClientRect();
         return rect.width > 0 && rect.height > 0;
     };
-    const text = element => element ? (element.innerText || '').trim() : '';
+    const text = element => element
+        ? (element.innerText || element.textContent || '').trim()
+        : '';
     const results = [];
     const seen = new Set();
-    const add = (title, description, kind) => {
+    const cleanLabel = value => String(value || '').replace(/\s+/g, ' ').trim();
+    const usefulLabel = value => {
+        value = cleanLabel(value);
+        if (!value || value === '_' || /^[-+]?\d[\d,.%]*$/.test(value)) return false;
+        if (/^(loading|no data)$/i.test(value)) return false;
+        if (/^\d{4}[-/]\d{1,2}[-/]\d{1,2}/.test(value)) return false;
+        return value.length <= 100;
+    };
+    const unique = values => Array.from(new Set(values.map(cleanLabel).filter(usefulLabel)));
+    const add = (title, description, kind, extra = {}) => {
         title = String(title || '').trim();
         description = String(description || '').trim();
         if (!title || title.length > 120) return;
-        const key = `${title.toLowerCase()}\n${description.toLowerCase()}`;
+        const labels = unique(extra.labels || []);
+        const tableColumns = unique(extra.table_columns || []);
+        const key = `${kind}\n${title.toLowerCase()}\n${description.toLowerCase()}\n${labels.join('|')}`;
         if (seen.has(key)) return;
         seen.add(key);
-        results.push({title, description, kind});
+        const item = {title, description, kind};
+        if (labels.length) item.labels = labels;
+        if (tableColumns.length) item.table_columns = tableColumns;
+        if (extra.period) item.period = cleanLabel(extra.period);
+        results.push(item);
     };
 
     // Dashboard chart headers retain their authoritative explanation even
@@ -58,10 +75,72 @@ VISUAL_SECTIONS_SCRIPT = r"""
             add(title, description, 'metric');
         });
 
+    // SCOUTEYE's Threat Insight family uses ECharts without header-section.
+    // Preserve every chart as a separate item and retain only semantic labels;
+    // live counts, dates and plotted values are deliberately excluded.
+    const threatRoot = document.querySelector(
+        '.threat-insight-read .chartWindow, .chartWindow > .amplification, '
+        + '.chartWindow > .tunneling, .chartWindow > .botnetInsight, '
+        + '.chartWindow > .botnet-insight, '
+        + '.chartWindow > .cloudAccess, .chartWindow > .first-observed'
+    );
+    if (threatRoot && visible(threatRoot)) {
+        const pageLabel = cleanLabel(context && context.page_name) || 'Threat Insight';
+        const tabLabel = cleanLabel(context && context.tab_name);
+        const prefix = tabLabel ? `${pageLabel} - ${tabLabel}` : pageLabel;
+        const chartWord = /[\u3400-\u9fff]/.test(prefix) ? '圖表' : 'Chart';
+        const period = text(threatRoot.querySelector('.left_1'));
+        const chartBlocks = Array.from(threatRoot.querySelectorAll('.chart-block'))
+            .filter(block => visible(block) && block.querySelector('canvas,svg,.stack-chart'));
+        const controlLabels = unique(Array.from(threatRoot.querySelectorAll(
+            '.right-button span, .right-button-2 span, .page-tag, '
+            + '.desktop span, .laptop span'
+        )).map(text));
+
+        chartBlocks.forEach((block, index) => {
+            const container = block.closest('.position-relative,.left_2,.top,.chart') || block;
+            const explicitTitle = text(container.querySelector(
+                ':scope > .title,:scope > .header,:scope > h2,:scope > h3'
+            ));
+            const svgLabels = Array.from(block.querySelectorAll('svg text')).map(text);
+            const nearbyLabels = Array.from(container.querySelectorAll(
+                ':scope > span, :scope > .label, :scope > .name, :scope > button'
+            )).map(text);
+            const labels = unique([
+                ...nearbyLabels,
+                ...svgLabels,
+                ...(index === chartBlocks.length - 1 ? controlLabels : [])
+            ]);
+            const semanticTitle = explicitTitle || (
+                labels.length === 1 && labels[0].length <= 60 ? labels[0] : ''
+            );
+            const title = semanticTitle || `${prefix} - ${chartWord} ${index + 1}`;
+            const panel = container.closest('.right,.bottom,.query-behaviors') || container;
+            const tableColumns = Array.from(panel.querySelectorAll('table thead th'))
+                .map(text);
+            add(title, '', 'chart', {labels, table_columns: tableColumns, period});
+        });
+    }
+
+    // Operation Intel consists of five metric/table cards rather than graphs.
+    document.querySelectorAll('.threatIntelligence-entrance .header').forEach(header => {
+        if (!visible(header)) return;
+        const card = header.parentElement;
+        add(
+            text(header.querySelector('.title')),
+            text(header.querySelector('.subtitle')),
+            'metric',
+            {
+                table_columns: Array.from(card.querySelectorAll('table thead th')).map(text)
+            }
+        );
+    });
+
     // Generic fallback for other pages with charts. Limit extraction to the
     // nearest semantic panel and never treat raw chart values as instructions.
     document.querySelectorAll('canvas,svg').forEach(graphic => {
         if (!visible(graphic)) return;
+        if (graphic.closest('.chart-block') && threatRoot) return;
         const block = graphic.closest(
             '.chartWindow,.content_box,.contentBlock,.traffic,.connection'
         );
@@ -101,10 +180,13 @@ DETAIL_FIELDS_SCRIPT = r"""
 """
 
 
-async def extract_visual_sections(frame):
+async def extract_visual_sections(frame, page_name=None, tab_name=None):
     """Return titles and authoritative descriptions for charts/metric cards."""
 
-    return await frame.evaluate(VISUAL_SECTIONS_SCRIPT)
+    return await frame.evaluate(
+        VISUAL_SECTIONS_SCRIPT,
+        {"page_name": page_name or "", "tab_name": tab_name or ""},
+    )
 
 
 async def _wait_for_detail_panel(frame, timeout_ms=3000):

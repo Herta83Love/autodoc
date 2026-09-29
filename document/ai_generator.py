@@ -525,8 +525,12 @@ def normalize_grounded_result(result, page):
         description = str(section.get("description") or "").strip()
         if not title or title in filtered_sections_by_name:
             continue
-        if description:
-            filtered_sections.append(f"{title}：{description}")
+        if not description:
+            description = _fallback_visual_section_description(
+                section,
+                page.get("language", "zh-TW"),
+            )
+        filtered_sections.append(f"{title}：{description}")
     result["page_sections"] = filtered_sections
 
     valid_action_ids = {
@@ -637,6 +641,24 @@ def _fallback_page_field_description(field, language="zh-TW"):
     if detail_field:
         return f"{name}：顯示所選記錄的「{label}」資訊。"
     return f"{name}：設定或顯示「{label}」的內容。"
+
+
+def _fallback_visual_section_description(section, language="zh-TW"):
+    """Describe an unlabeled chart conservatively from captured UI labels."""
+
+    labels = [str(value).strip() for value in section.get("labels") or []]
+    columns = [str(value).strip() for value in section.get("table_columns") or []]
+    values = [value for value in labels + columns if value]
+    summary = "、".join(list(dict.fromkeys(values))[:6])
+    english = str(language).lower().startswith("en")
+
+    if english:
+        if summary:
+            return f"Displays statistics related to {summary}."
+        return "Displays the statistics and trend represented by this chart."
+    if summary:
+        return f"顯示與「{summary}」相關的統計資訊。"
+    return "顯示此圖表所代表的統計與趨勢。"
 
 
 def _fallback_interaction_field_description(field, language="zh-TW"):

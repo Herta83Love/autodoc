@@ -207,7 +207,11 @@ async def _enrich_readonly_content(
 ):
     """Capture visible chart explanations and one safe record-detail schema."""
 
-    metadata.visual_sections = await extract_visual_sections(frame)
+    metadata.visual_sections = await extract_visual_sections(
+        frame,
+        title,
+        tab_name,
+    )
     metadata.detail_sections = await explore_readonly_details(
         frame,
         title,
