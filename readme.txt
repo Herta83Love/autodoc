@@ -24,6 +24,8 @@ Metadata、HTML、截圖
         ↓
 vLLM 分析與 AI Cache
         ↓
+可人工修改的頁面內容 YAML
+        ↓
 Word 操作手冊
    
 
@@ -144,6 +146,27 @@ config/config.yaml
  
 config/document.yaml
    
+
+### 人工修改每個頁面的文件內容
+
+中英文每一頁的完整文件內容分別位於：
+
+
+config/manual_content/en.yaml
+config/manual_content/zh-TW.yaml
+
+
+每個頁面以穩定的 `menu:.../tab:...` 識別碼保存，旁邊也會列出分類、頁面與頁籤名稱，方便搜尋。可直接修改各頁 `content` 內的功能概述、使用價值、按鈕說明、互動區塊、頁面區塊、欄位說明、最佳實務與限制事項。產生文件時，這些 YAML 內容會在最後套用，因此不需要編輯雜湊命名的 AI Cache。
+
+重新爬取或增加頁面後，執行：
+
+bash:
+
+python3 scripts/sync_manual_content.py
+
+此指令只會加入缺少的頁面，預設不覆蓋既有人工修改。只有確定要把所有內容重設成目前 AI／Cache 初稿時，才使用 `--overwrite`。
+
+個別頁面的人工注意事項仍維護在 `config/page_notes.yaml`；沒有設定的頁面不會顯示注意事項區塊。
 
 ## 完整執行：重新爬取並產生文件
 

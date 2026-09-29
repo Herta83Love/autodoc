@@ -1,0 +1,2817 @@
+# Human-editable content used by the generated manual.
+# Edit values under content; category/page/tab are lookup labels.
+# Run python3 scripts/sync_manual_content.py after a new crawl to add
+# missing pages without overwriting existing human edits.
+
+version: 1
+language: en
+pages:
+  menu:0:
+    category: DOMAIN INSIGHTS
+    page: Security Console
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Security Console provides a dashboard for monitoring network security and performance
+        metrics. It visualizes the efficiency of traffic and connection offloading from the gateway appliance
+        and tracks the progression of cyber attacks across the Reconnaissance, Delivery, and Command &
+        Control phases.
+      business_value: ''
+      button_descriptions: []
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:0:
+    category: DOMAIN INSIGHTS
+    page: History Logs
+    tab: Proxy
+    equivalent_tabs: []
+    content:
+      overview: The Proxy History Logs page provides a detailed view of proxy-related network events.
+        It allows administrators to search, filter, and export log data based on specific criteria such
+        as time, action, and query details.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog to filter proxy history logs by specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Downloads the currently displayed proxy history log data as a report.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with instructions for using the search and filter functions.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:1:
+    category: DOMAIN INSIGHTS
+    page: History Logs
+    tab: Firewall
+    equivalent_tabs: []
+    content:
+      overview: The History Logs page under the Firewall tab provides a detailed view of firewall events.
+        Administrators can filter logs by time, action, ID, source, type, and query name, and can download
+        the filtered results for further analysis.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog box to filter log entries by specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Downloads the currently displayed log data as a file.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for the available filter and search controls.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:2:
+    category: DOMAIN INSIGHTS
+    page: History Logs
+    tab: New Observed, New Responded
+    equivalent_tabs:
+    - New Observed
+    - New Responded
+    content:
+      overview: The History Logs page provides a detailed view of DNS query events, categorized into 'New
+        Observed' and 'New Responded' tabs. It allows administrators to filter, search, and export log
+        data for analysis and auditing purposes.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog to filter log entries by specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Downloads the current list of log entries as a file.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with instructions for using the search and filter features.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:4:
+    category: DOMAIN INSIGHTS
+    page: History Logs
+    tab: Sinkhole
+    equivalent_tabs: []
+    content:
+      overview: The Sinkhole tab within the History Logs section provides a detailed view of network traffic
+        that has been redirected to a sinkhole. Administrators can filter these logs by time, protocol,
+        and IP addresses to investigate specific security events or monitor the effectiveness of sinkhole
+        configurations.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog to filter sinkhole history logs based on specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Downloads the current list of sinkhole history logs as a report file.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions of the available search and filter functions.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:0:
+    category: DOMAIN INSIGHTS
+    page: Top Reports
+    tab: Proxy
+    equivalent_tabs: []
+    content:
+      overview: The Top Reports page provides a dashboard for analyzing proxy security data. It allows
+        administrators to view top blocked query names, hosts, and other metrics across different categories
+        and time periods.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Display the Security Dashboard view showing top blocked query names and hosts.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Display the Hosts view.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Display the Categories view.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Display the Names and Domains view.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Display the Types and Codes view.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:1:
+    category: DOMAIN INSIGHTS
+    page: Top Reports
+    tab: Firewall
+    equivalent_tabs: []
+    content:
+      overview: The Top Reports page provides a dashboard for analyzing firewall activity, allowing administrators
+        to view and filter blocked traffic data. It supports multiple views including a security summary,
+        host details, and query name/type breakdowns.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Switch the view to the Security Dashboard to display summary statistics for blocked
+          hosts, query names, and query types.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Switch the view to the Hosts tab to display detailed host-based reports.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Switch the view to the Names and Domains tab to display detailed name and domain-based
+          reports.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Switch the view to the Types and Codes tab to display detailed type and code-based
+          reports.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:2:
+    category: DOMAIN INSIGHTS
+    page: Top Reports
+    tab: Authority
+    equivalent_tabs: []
+    content:
+      overview: The Top Reports Authority page provides a Security Dashboard for monitoring blocked network
+        activity. It displays top blocked hosts for both IPv4 and IPv6, allowing administrators to review
+        risk levels and occurrence counts within a selected time period.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Access the help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Display the Security Dashboard view.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:3:
+    category: DOMAIN INSIGHTS
+    page: Top Reports
+    tab: System
+    equivalent_tabs: []
+    content:
+      overview: The Top Reports page under the System tab provides a dashboard for monitoring system performance,
+        specifically CPU utilization. It allows administrators to view resource usage over a configurable
+        time period, with a default view of the last two hours.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the Top Reports page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:3/tab:0:
+    category: DOMAIN INSIGHTS
+    page: Schedule Reports
+    tab: Report List
+    equivalent_tabs: []
+    content:
+      overview: The Schedule Reports page allows administrators to manage scheduled report configurations.
+        It provides functionality to create new report entries with specific execution times, date ranges,
+        and export types, as well as to remove existing entries from the list.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new report entry to the list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected entries from the report list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays help and usage instructions for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: Report List
+        overview: Configures the parameters for a new scheduled report entry.
+        field_descriptions:
+        - 'Export Type: Selects the type of data to be included in the report.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:3/tab:1:
+    category: DOMAIN INSIGHTS
+    page: Schedule Reports
+    tab: Periodical Report
+    equivalent_tabs: []
+    content:
+      overview: The Periodical Report tab allows administrators to configure the status and schedule for
+        the daily data export process. It provides controls to enable or disable the automated export
+        of the previous day's data within a defined time window.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Displays the system help panel for the current page.
+      interaction_sections: []
+      page_sections:
+      - 'Periodical Report: Configures the status and schedule for the daily data export process.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:4/tab:0:
+    category: SCOUTEYE
+    page: Threat Insight
+    tab: Potential Threat Hosts
+    equivalent_tabs: []
+    content:
+      overview: The Potential Threat Hosts page provides a list of devices identified as potential security
+        risks based on their network activity. It displays the severity, specific risk indicators, and
+        a calculated score for each device, allowing administrators to assess and investigate potential
+        threats.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: View detailed information for the specific device listed in the row.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: View detailed information for the specific device listed in the row.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Navigate to the previous page of the device list.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Navigate to the next page of the device list.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:4/tab:1:
+    category: SCOUTEYE
+    page: Threat Insight
+    tab: Query Behaviors
+    equivalent_tabs: []
+    content:
+      overview: The Query Behaviors tab provides a detailed analysis of threat-related query activities.
+        It allows administrators to filter data by specific threat categories (e.g., Hazardous Category
+        Queried, NAQ, JTD) and view metrics such as threat scores, disguised names, and query domains.
+        The interface supports sorting data by hits and name counts to prioritize high-impact threats.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Navigate back to the previous page or view.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Open the help panel to view descriptions of page elements and features.
+      - action_id: button-8
+        include: true
+        confidence: 0.95
+        description: Select the 'Hazardous Category Queried' category to display its specific threat data.
+      - action_id: button-9
+        include: true
+        confidence: 0.95
+        description: Select the 'NAQ' category to display its specific threat data.
+      - action_id: button-10
+        include: true
+        confidence: 0.95
+        description: Select the 'JTD' category to display its specific threat data.
+      - action_id: button-11
+        include: true
+        confidence: 0.95
+        description: Select the 'QBR' category to display its specific threat data.
+      - action_id: button-12
+        include: true
+        confidence: 0.95
+        description: Select the 'SND' category to display its specific threat data.
+      - action_id: button-13
+        include: true
+        confidence: 0.95
+        description: Select the 'ABQ' category to display its specific threat data.
+      - action_id: button-14
+        include: true
+        confidence: 0.95
+        description: Select the 'Invalid Formats' category to display its specific threat data.
+      - action_id: button-15
+        include: true
+        confidence: 0.95
+        description: Select the 'Public Cloud' category to display its specific threat data.
+      - action_id: button-16
+        include: true
+        confidence: 0.95
+        description: Sort the upper data table by the 'Hits' column in descending order.
+      - action_id: button-17
+        include: true
+        confidence: 0.95
+        description: Sort the lower data table by the 'Name Count' column in descending order.
+      - action_id: button-18
+        include: true
+        confidence: 0.95
+        description: Sort the lower data table by the 'Hits' column in descending order.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:5:
+    category: SCOUTEYE
+    page: Amplification
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Amplification page provides statistical analysis of amplification attack traffic.
+        It displays graphical trends for a seven-day period and a specific date, along with tables listing
+        the top source addresses and domains by hit count.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Sort the source table by the number of hits in descending order.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Sort the domain table by the number of hits in descending order.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:6:
+    category: SCOUTEYE
+    page: Tunneling
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Tunneling page provides statistical analysis of network activity, categorized into
+        threat intelligence feeds and query-based detections. It allows administrators to review hit counts
+        and domain information over a selected time period.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Access the built-in help panel for the current page.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Display threat intelligence feed statistics and data.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Display detection statistics derived from queries.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Sort the threat intelligence feed table by hits in descending order.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Sort the detection from queries table by name count in descending order.
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: Sort the detection from queries table by hits in descending order.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:7:
+    category: SCOUTEYE
+    page: Botnet Insight
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Botnet Insight page provides a comprehensive overview of botnet-related activity,
+        including a seven-day statistical trend and detailed detection data. Administrators can analyze
+        this data through the Threat Intelligence Feed and Detection from Queries tabs to identify and
+        monitor potential botnet sources and domains.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Access the system help and operational documentation for the Botnet Insight page.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Display the Threat Intelligence Feed tab to view botnet-related data categorized
+          by source and name.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Display the Detection from Queries tab to view botnet-related data categorized by
+          source, type, and domain.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Sort the data in the Source table by the number of hits in descending order.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Sort the data in the Name table by the number of hits in descending order.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:8:
+    category: SCOUTEYE
+    page: Cloud Access
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Cloud Access page provides a dashboard for monitoring cloud-related activity, including
+        a time-series chart and a table of top items by source, cloud provider, and country. It allows
+        administrators to filter data by date and sort results by hit count to analyze traffic patterns.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Access the help panel for usage instructions and feature descriptions.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Sort the table data by the number of hits in descending order.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:9:
+    category: SCOUTEYE
+    page: First Observed
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The First Observed page provides statistical analysis and detailed tables for newly detected
+        DNS queries and answers. It allows administrators to review source, domain, and answer type data,
+        including hit counts and suspicious indicators, to monitor network activity.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the help panel to display usage instructions and feature descriptions.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Switches the view to display statistics and data for first observed queries.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Switches the view to display statistics and data for first observed answers.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Sorts the query source table by the number of hits in descending order.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Sorts the domain table by the name count in descending order.
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: Sorts the domain table by the number of hits in descending order.
+      - action_id: button-7
+        include: true
+        confidence: 0.95
+        description: Sorts the answer table by the suspicious rating in descending order.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:10:
+    category: SCOUTEYE
+    page: Operation Intel
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Operation Intel page provides a comprehensive threat intelligence dashboard that aggregates
+        and displays the top detected devices, domains, ransomware groups, threat actors, and malware.
+        It allows administrators to monitor security events within a specific date range and access detailed
+        information for each threat category.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Access the help documentation and user guide for the Operation Intel page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:11/tab:0:
+    category: CONFIGURE
+    page: Network
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: The IPv4 tab within the Network section allows administrators to view and manage the configuration
+        of network ports. It provides a list of ports with their assigned addresses and a detailed view
+        of specific port parameters such as MTU and SPAN status.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display context-specific help and configuration instructions for the current page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:11/tab:1:
+    category: CONFIGURE
+    page: Network
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to view and manage IPv6 port configurations. It provides
+        a list of ports with their associated device, address, MTU, and SPAN status, along with a detailed
+        view for the selected port.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the context-sensitive help panel to display configuration instructions and
+          system actions.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:12/tab:0:
+    category: CONFIGURE
+    page: Secondary IP
+    tab: Interface
+    equivalent_tabs: []
+    content:
+      overview: The Secondary IP Interface page allows administrators to configure and manage secondary
+        IP addresses assigned to network interfaces. Administrators can add new entries by specifying
+        the interface, IP address, and subnet mask, or remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new secondary IP entry to the selected interface.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed secondary IP entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for the available actions.
+      interaction_sections:
+      - action_id: button-0
+        title: ( Interface ) Secondary IP
+        overview: Configures the parameters for a new secondary IP address assigned to a network interface.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the secondary IP entry.'
+        - 'Device: Select the network interface to which the secondary IP will be assigned.'
+        - 'Address: Enter the IP address value.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:12/tab:1:
+    category: CONFIGURE
+    page: Secondary IP
+    tab: VLAN
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure and manage secondary IP addresses for VLAN
+        interfaces. Administrators can add new IP entries by specifying the device and address, and can
+        remove existing entries from the configuration.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new secondary IP entry for the selected VLAN.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes existing secondary IP entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for the available actions.
+      interaction_sections:
+      - action_id: button-0
+        title: ( VLAN ) Secondary IP
+        overview: Configures the parameters for a new secondary IP address assigned to a specific VLAN.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the secondary IP entry.'
+        - 'Device: Select the network interface or device to which the IP address will be assigned.'
+        - 'Address: Enter the IP address value or select it from the available options.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:12/tab:2:
+    category: CONFIGURE
+    page: Secondary IP
+    tab: Bond
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage secondary IP addresses assigned to Bond interfaces.
+        It provides functionality to add new IP entries with specific device and address configurations,
+        as well as to remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new secondary IP entry to the Bond interface.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed secondary IP entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: ( Bond ) Secondary IP
+        overview: Configures the parameters for a new secondary IP address on a Bond interface.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the secondary IP entry.'
+        - 'Device: Select the Bond device to which the secondary IP will be assigned.'
+        - 'Address: Enter the IP address to be assigned to the device.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:13/tab:0:
+    category: CONFIGURE
+    page: VLAN
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure IPv4 VLANs by adding new entries with specific
+        identifiers, types, and network addresses. It provides a centralized interface for managing VLAN
+        definitions and removing existing configurations.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new VLAN entry to the configuration list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed VLAN entries from the system.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the VLAN configuration page.
+      interaction_sections:
+      - action_id: button-0
+        title: VLAN
+        overview: Defines the parameters for a new VLAN entry, including identification, type, and network
+          addressing.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the VLAN.'
+        - 'VID: Enter the VLAN Identifier number.'
+        - 'Type: Select the VLAN type from the available options.'
+        - 'Device: Select the network device associated with this VLAN.'
+        - 'Address: Enter the IP address for the VLAN interface.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:13/tab:1:
+    category: CONFIGURE
+    page: VLAN
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage VLAN configurations specifically for IPv6. It
+        provides the ability to add new VLAN entries by specifying the name, identifier, type, device,
+        and IPv6 address details, as well as the option to remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new VLAN entry for IPv6 configuration.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed VLAN entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for page actions.
+      interaction_sections:
+      - action_id: button-0
+        title: VLAN
+        overview: Configures the parameters for a new VLAN entry, including identification, type, and
+          IPv6 addressing.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the VLAN entry.'
+        - 'VID: Enter the VLAN Identifier (VID) number.'
+        - 'Type: Select the VLAN type from the available options.'
+        - 'Device: Select the network device associated with this VLAN.'
+        - 'Address: Enter the IPv6 address for the VLAN interface.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:14/tab:0:
+    category: CONFIGURE
+    page: Bond
+    tab: IPv4, IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: This page allows administrators to manage network bond entries for both IPv4 and IPv6
+        protocols. It provides the ability to add new bond configurations with specific parameters such
+        as mode, hash policy, and MTU, as well as remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new bond entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes entries from this page.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel for this page.
+      interaction_sections:
+      - action_id: button-0
+        title: Bond
+        overview: Configures the parameters for a new bond entry.
+        field_descriptions:
+        - 'Name: The name of the bond interface.'
+        - 'Mode: The bonding mode to use.'
+        - 'Hash: The hash policy for the bond.'
+        - 'Device: The network device to include in the bond.'
+        - 'Address: The IP address assigned to the bond.'
+        - 'MTU: The Maximum Transmission Unit size.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:15/tab:0:
+    category: CONFIGURE
+    page: Bridge
+    tab: General
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure the general settings for the Bridge feature.
+        It provides controls to select the operation mode (Drop-In or DPR) and displays a list of bridge
+        members with their device and IP address information.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display help and documentation for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save and apply the changes immediately.
+      interaction_sections: []
+      page_sections:
+      - 'Operation Mode: Configure the bridge operating mode, such as Drop-In or DPR.'
+      - 'List: Display a list of bridge members with their associated device and IP address details.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:15/tab:1:
+    category: CONFIGURE
+    page: Bridge
+    tab: IPv4, IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: The Bridge page allows administrators to manage bridge configurations for IPv4 and IPv6
+        protocols. It provides independent tabs for each protocol version, allowing users to add, configure,
+        and delete bridge entries with specific device and address settings.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new bridge entry to the list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for page actions.
+      interaction_sections:
+      - action_id: button-0
+        title: Bridge
+        overview: Configures the parameters for a new bridge entry.
+        field_descriptions:
+        - 'Name: Enter a name for the bridge entry.'
+        - 'Device: Select the network device associated with the bridge.'
+        - 'Address: Enter the IP address for the bridge.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:16/tab:0:
+    category: CONFIGURE
+    page: Routing
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage IPv4 static routes. It provides functionality
+        to add new route entries with specific destination, device, and next hop configurations, as well
+        as to remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new IPv4 static route entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected static route entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for page actions.
+      interaction_sections:
+      - action_id: button-0
+        title: ( IPv4 ) Static Route
+        overview: Configures the parameters for a new IPv4 static route entry.
+        field_descriptions:
+        - 'Destination: Specifies the destination network address.'
+        - 'Type: Selects the type of the route entry.'
+        - 'Device: Selects the network interface associated with the route.'
+        - 'Nexthop: Specifies the next hop address for the route.'
+        - 'Metric: Specifies the metric value for the route.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:16/tab:1:
+    category: CONFIGURE
+    page: Routing
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage IPv6 static routes. It provides functionality
+        to add new route entries with specific destination, device, and next hop configurations, as well
+        as to remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new IPv6 static route entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed IPv6 static route entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel for the IPv6 static route configuration.
+      interaction_sections:
+      - action_id: button-0
+        title: ( IPv6 ) Static Route
+        overview: Configures the parameters for a new IPv6 static route entry.
+        field_descriptions:
+        - 'Destination: Specifies the destination network address.'
+        - 'Type: Selects the type of the static route.'
+        - 'Device: Selects the network interface associated with the route.'
+        - 'Nexthop: Specifies the next hop address for the route.'
+        - 'Metric: Specifies the metric value for the route.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:17:
+    category: DNS FIREWALL
+    page: Services
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Services page allows administrators to manage network service configurations. It provides
+        the ability to add new services by specifying parameters such as protocol, interface, and listen
+        address, as well as to view and remove existing service entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new service entry to the configuration list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected service entries from the configuration list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the Services page.
+      interaction_sections:
+      - action_id: button-0
+        title: Services
+        overview: Configures the parameters for a new service entry.
+        field_descriptions:
+        - 'Name: Enter the name for the new service.'
+        - 'Description: Provide a text description for the service.'
+        - 'Protocol: Select the communication protocol for the service.'
+        - 'Interface: Select the network interface associated with the service.'
+        - 'Listen Address: Select the address on which the service will listen.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:18:
+    category: DNS FIREWALL
+    page: Rules
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Rules page allows administrators to manage rule entries, including adding new rules
+        with specific position and policy settings, and removing existing entries. It provides a list
+        view of rules with their status and actions, as well as a detailed view for configuring parameters
+        such as target, name, description, and action.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new rule entry to the list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected rule entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays help information and usage instructions for the Rules page.
+      interaction_sections:
+      - action_id: button-0
+        title: Position
+        overview: Configures the placement and policy parameters for a new rule entry.
+        field_descriptions:
+        - 'Target: Selects the target for the rule.'
+        - 'Name: Enters the name for the rule.'
+        - 'Description: Enters a description for the rule.'
+        - 'Action: Selects the action to be performed by the rule.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:19/tab:0:
+    category: DNS FIREWALL
+    page: Dynamic Block
+    tab: Rule 1–3
+    equivalent_tabs:
+    - Rule 1
+    - Rule 2
+    - Rule 3
+    content:
+      overview: The Dynamic Block page provides three independent rule slots (Rule 1–3) for configuring
+        automated traffic blocking based on IP ranges and DNS metrics. Administrators can define specific
+        thresholds and durations for Query Rate, RCode Rate, RCode Ratio, and QType Rate to trigger blocking
+        actions.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Displays help and usage instructions for the current page.
+      interaction_sections: []
+      page_sections:
+      - 'IP Range: Defines the scope of IP addresses to which the rule applies, including status, action
+        (Exclude/Include), and IPv4/IPv6 ranges.'
+      - 'Query Rate: Configures blocking criteria based on the rate of DNS queries.'
+      - 'RCode Rate: Configures blocking criteria based on the rate of specific response codes.'
+      - 'RCode Ratio: Configures blocking criteria based on the ratio of specific response codes relative
+        to total responses.'
+      - 'QType Rate: Configures blocking criteria based on the rate of specific query types.'
+      field_descriptions:
+      - 'Query Rate－Rate: Specifies the threshold rate of queries per second that triggers the blocking
+        action.'
+      - 'Query Rate－Duration: Defines the time window in seconds over which the query rate is calculated.'
+      - 'Query Rate－Blocking Time: Sets the duration for which the target is blocked when the rate threshold
+        is exceeded.'
+      - 'RCode Rate－Rate: Specifies the threshold rate of response codes per second that triggers the
+        blocking action.'
+      - 'RCode Rate－Duration: Defines the time window in seconds over which the response code rate is
+        calculated.'
+      - 'RCode Rate－Blocking Time: Sets the duration for which the target is blocked when the response
+        code rate threshold is exceeded.'
+      - 'RCode Ratio－Ratio: Specifies the percentage threshold of response codes that triggers the blocking
+        action.'
+      - 'RCode Ratio－Duration: Defines the time window in seconds over which the response code ratio is
+        calculated.'
+      - 'RCode Ratio－Blocking Time: Sets the duration for which the target is blocked when the response
+        code ratio threshold is exceeded.'
+      - 'RCode Ratio－Minimum number of Responses: Defines the minimum number of responses required before
+        the ratio calculation is applied.'
+      - 'QType Rate－Rate: Specifies the threshold rate of query types per second that triggers the blocking
+        action.'
+      - 'QType Rate－Duration: Defines the time window in seconds over which the query type rate is calculated.'
+      - 'QType Rate－Blocking Time: Sets the duration for which the target is blocked when the query type
+        rate threshold is exceeded.'
+      best_practices: []
+      restrictions: []
+  menu:20/tab:0:
+    category: RECURSIVE DNS
+    page: Forwarders
+    tab: Static
+    equivalent_tabs: []
+    content:
+      overview: The Static tab allows administrators to configure static DNS forwarding rules. Users can
+        add, edit, or remove entries that define how specific domains are resolved, including settings
+        for recursion and primary/secondary IPv4 and IPv6 addresses.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the configuration page to add a new static route entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help and documentation for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: Static Route
+        overview: Configures the parameters for a new static route entry, including domain, recursion,
+          and IP address settings.
+        field_descriptions:
+        - 'Domain: Enter the domain name for the static route.'
+        - 'Primary: Enter the primary IP address for the selected protocol.'
+        - 'Secondary: Enter the secondary IP address for the selected protocol.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:20/tab:1:
+    category: RECURSIVE DNS
+    page: Forwarders
+    tab: Default
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure the default DNS forwarders for the system.
+        It provides settings to enable or disable forwarding for IPv4 and IPv6, and to specify the IP
+        addresses for primary and secondary forwarders.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help and configuration instructions for the Forwarders page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save and apply the current default route configuration immediately.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Discard any unsaved changes and revert the configuration to the previous state.
+      interaction_sections: []
+      page_sections:
+      - 'Default Route: Configure the primary and secondary DNS forwarders for IPv4 and IPv6 traffic.'
+      field_descriptions:
+      - 'Default Route－Primary: The IP address of the primary DNS forwarder.'
+      - 'Default Route－Secondary: The IP address of the secondary DNS forwarder.'
+      best_practices: []
+      restrictions: []
+  menu:21:
+    category: RECURSIVE DNS
+    page: SafeSearch
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The SafeSearch page allows administrators to configure content filtering settings for
+        supported search engines. It provides a global status toggle to enable or disable the filtering
+        feature and lists the search engines (Bing, Pixabay, Google, DuckDuckGo, Yandex, Brave) that are
+        managed by this policy.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Save the current SafeSearch configuration settings.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Display help documentation and usage instructions for the SafeSearch feature.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:22/tab:0:
+    category: RECURSIVE DNS
+    page: Domain Categories
+    tab: Categories
+    equivalent_tabs: []
+    content:
+      overview: The Domain Categories page allows administrators to configure filtering rules for various
+        domain categories. Categories are grouped by risk level (Low, Normal, Moderate, High), and administrators
+        can set the status (Allow, Recommend, Block) for each category using toggle switches. The page
+        provides tools to bulk-update statuses and save and apply changes immediately.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Changes the value of all category categories to the specified status.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the current page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:22/tab:1:
+    category: RECURSIVE DNS
+    page: Domain Categories
+    tab: Notification
+    equivalent_tabs: []
+    content:
+      overview: The Notification tab allows administrators to configure email and syslog notification
+        settings for domain category events. It supports defining email parameters such as event duration,
+        recurrence interval, and recipients, as well as syslog parameters including facility level and
+        server selection.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Displays help information for the current page.
+      interaction_sections: []
+      page_sections:
+      - 'Email: Configures email notification parameters including event duration, recurrence interval,
+        and recipients.'
+      - 'Syslog: Configures syslog notification parameters including facility level and server destination.'
+      field_descriptions:
+      - 'Email－Event Duration: Specifies the duration of the event for email notifications.'
+      - 'Email－Recurrence Interval: Defines the time interval at which email notifications are sent repeatedly.'
+      - 'Email－Recipient: Selects the recipient for email notifications.'
+      - 'Syslog－Facility Level: Selects the facility level for syslog messages.'
+      - 'Syslog－Syslog Server: Selects the destination syslog server.'
+      best_practices: []
+      restrictions: []
+  menu:23/tab:0:
+    category: RECURSIVE DNS
+    page: Top Level Domain
+    tab: TLDs
+    equivalent_tabs: []
+    content:
+      overview: The TLDs Filtering Setting page allows administrators to view, filter, and manage Top
+        Level Domains. It provides tools to sort the list, select multiple entries, and apply bulk status
+        changes to specific categories.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Sorts the list of Top Level Domains alphabetically.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Enables multiple selection mode to apply actions to several TLDs simultaneously.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Changes the value of all category categories to the specified status.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Displays help and usage information for the TLDs Filtering Setting page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:23/tab:1:
+    category: RECURSIVE DNS
+    page: Top Level Domain
+    tab: Notification
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure notification settings for Top Level Domain
+        events. It provides controls to define email notification parameters, such as event duration and
+        recurrence interval, and to set up syslog forwarding by specifying the facility level and target
+        server.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Opens the help panel to display descriptions and usage instructions for the page
+          controls.
+      interaction_sections: []
+      page_sections:
+      - 'Email: Configures the parameters for sending email notifications, including event duration, recurrence
+        interval, and recipient selection.'
+      - 'Syslog: Configures the parameters for forwarding syslog messages, including the facility level
+        and the target syslog server.'
+      field_descriptions:
+      - 'Email－Event Duration: Specifies the duration of the event for the notification.'
+      - 'Email－Recurrence Interval: Defines the time interval at which the notification is repeated.'
+      - 'Email－Recipient: Selects the recipient for the email notification.'
+      - 'Syslog－Facility Level: Selects the facility level for the syslog message.'
+      - 'Syslog－Syslog Server: Selects the target syslog server to receive the messages.'
+      best_practices: []
+      restrictions: []
+  menu:24:
+    category: RECURSIVE DNS
+    page: Sinkhole
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Sinkhole page allows administrators to configure the status and device address for
+        the sinkhole feature. It includes controls to enable or disable the sinkhole and to specify the
+        target address.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the help panel for the Sinkhole configuration page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save and apply the changes immediately.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - 'Sinkhole－Address: Specifies the IP address to be used for the sinkhole.'
+      best_practices: []
+      restrictions: []
+  menu:25:
+    category: AUTHORITATIVE DNS
+    page: Zones
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Zones page allows administrators to configure and manage Domain Name Service settings.
+        It provides the capability to add and configure Domain and PTR entries, including detailed Start
+        of Authority (SOA) parameters such as server names, contact information, and timing intervals.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the context-sensitive help panel for the Domain Name Service configuration.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Opens the configuration form to add a new Domain entry.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Opens the configuration form to add a new PTR entry.
+      interaction_sections:
+      - action_id: button-2
+        title: Add Domain
+        overview: Configures the parameters for a new Domain entry, including the operating method, domain
+          name, and Start of Authority (SOA) details.
+        field_descriptions:
+        - 'Operating Method: Selects the operational mode for the domain configuration.'
+        - 'Domain Name: Specifies the name of the domain to be managed.'
+        - 'Server: Defines the server name associated with the Start of Authority record.'
+        - 'Email: Specifies the contact email address for the Start of Authority record.'
+        - 'Serial: Sets the serial number for the Start of Authority record.'
+        - 'Refresh Interval: Defines the interval in seconds for refreshing the zone data.'
+        - 'Retry Interval: Defines the interval in seconds for retrying failed refresh attempts.'
+        - 'Expire Time: Sets the time in seconds after which the zone data is considered expired.'
+        - 'Cache Time: Sets the time in seconds for which negative responses are cached.'
+      - action_id: button-4
+        title: Add PTR
+        overview: Configures the parameters for a new PTR entry, including the operating method, PTR address,
+          and Start of Authority (SOA) details.
+        field_descriptions:
+        - 'Operating Method: Selects the operational mode for the PTR configuration.'
+        - 'PTR: Specifies the PTR address or identifier.'
+        - 'Server: Defines the server name associated with the Start of Authority record.'
+        - 'Email: Specifies the contact email address for the Start of Authority record.'
+        - 'Serial: Sets the serial number for the Start of Authority record.'
+        - 'Refresh Interval: Defines the interval in seconds for refreshing the zone data.'
+        - 'Retry Interval: Defines the interval in seconds for retrying failed refresh attempts.'
+        - 'Expire Time: Sets the time in seconds after which the zone data is considered expired.'
+        - 'Cache Time: Sets the time in seconds for which negative responses are cached.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:26/tab:0:
+    category: AUTHORITATIVE DNS
+    page: Health Rules
+    tab: Policy
+    equivalent_tabs: []
+    content:
+      overview: The Health Rules Policy page allows administrators to create and manage health monitoring
+        rules. It provides a configuration interface to define interface parameters, detection methods,
+        and healthy check thresholds such as intervals, timeouts, and pass/fail counts.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the configuration page to create a new health rule entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for the available actions.
+      interaction_sections:
+      - action_id: button-0
+        title: Interface
+        overview: Configures the interface parameters and healthy check settings for a new health rule.
+        field_descriptions:
+        - 'Name: Enter a name for the health rule.'
+        - 'Interface: Select the interface type and specific interface.'
+        - 'Detection Method: Select the method used to detect the health status.'
+        - 'Monitor Address: Enter the address to be monitored.'
+        - 'Interval: Enter the interval for the healthy check in seconds.'
+        - 'Timeout: Enter the timeout duration for the check in milliseconds.'
+        - 'Request Count: Enter the number of requests to be sent.'
+        - 'Pass Count: Enter the number of successful requests required to pass.'
+        - 'Failure Round: Enter the number of failure rounds allowed.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:26/tab:1:
+    category: AUTHORITATIVE DNS
+    page: Health Rules
+    tab: Gateway
+    equivalent_tabs: []
+    content:
+      overview: The Gateway tab allows administrators to configure network gateway parameters, including
+        the interface and address, to support health rule monitoring.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the configuration page to create a new gateway entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed gateway entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: Gateway
+        overview: Defines the parameters for a new gateway configuration.
+        field_descriptions:
+        - 'Name: Enter a name for the gateway entry.'
+        - 'Interface: Select the interface type and the specific interface to be used.'
+        - 'Address: Enter the address associated with the gateway.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:27/tab:0:
+    category: TI HUB
+    page: External Feeds
+    tab: Setting
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure the External Feeds service, including enabling
+        the service and HTTP protocol, and defining access control rules based on IP addresses.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the help documentation for the External Feeds settings.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save the current configuration settings for the External Feeds service.
+      interaction_sections: []
+      page_sections:
+      - 'Service: Configure the operational status and network access controls for the external feed service.'
+      - 'API: Configure the API-related parameters for the external feed service.'
+      field_descriptions:
+      - 'Service－Access Control: Define the network address and subnet mask to restrict access to the
+        service.'
+      best_practices: []
+      restrictions: []
+  menu:27/tab:1:
+    category: TI HUB
+    page: External Feeds
+    tab: HTTP
+    equivalent_tabs: []
+    content:
+      overview: The HTTP tab allows administrators to configure external threat feeds by specifying source
+        URLs and refresh intervals. It supports the creation and management of feed entries to import
+        external security data into the system.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new HTTP threat feed entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed threat feed entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for page actions.
+      interaction_sections:
+      - action_id: button-0
+        title: Threat Feed - HTTP
+        overview: Configures the parameters for a new HTTP threat feed source.
+        field_descriptions:
+        - 'Name: Enter a unique identifier for the threat feed.'
+        - 'URL: Enter the source address for the threat feed data.'
+        - 'Interval: Specify the refresh frequency in hours, with a valid range from 1 to 65000.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:27/tab:2:
+    category: TI HUB
+    page: External Feeds
+    tab: RPZ
+    equivalent_tabs: []
+    content:
+      overview: The RPZ page allows administrators to configure external threat feed sources for RPZ (Response
+        Policy Zone) integration. Administrators can add new feed entries by specifying the source address,
+        policy name, and timing parameters such as TTL and refresh intervals.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new RPZ threat feed entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed RPZ threat feed entries.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays help and usage instructions for the RPZ page.
+      interaction_sections:
+      - action_id: button-0
+        title: Threat Feed - RPZ
+        overview: Configures the parameters for a new RPZ threat feed entry.
+        field_descriptions:
+        - 'RPZ Name: The name of the RPZ feed.'
+        - 'Address: The address of the feed source.'
+        - 'Policy Name: The name of the policy associated with the feed.'
+        - 'TTL: The time-to-live value in seconds, with a minimum of 10.'
+        - 'Refresh Interval: The interval in seconds for refreshing the feed, with a minimum of 10.'
+        - 'Timeout: The timeout value in seconds, with a minimum of 10.'
+        - 'Action: The action to be taken for the feed.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:28:
+    category: TI HUB
+    page: Blacklist
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Blacklist page allows administrators to manage domain blocking rules. It supports
+        adding new entries, uploading configuration files, and removing existing entries. The page provides
+        a detailed view of each entry's status, type, and matching method.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Uploads a new configuration file to the system.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Adds a new entry to the blacklist.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Removes entries from the blacklist.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Displays the help panel for this page.
+      interaction_sections:
+      - action_id: button-1
+        title: Block Domain
+        overview: Configure the parameters for a new blacklist entry.
+        field_descriptions:
+        - 'Type: Select the type of the entry.'
+        - 'Content: Enter the content to be blocked.'
+        - 'Description: Provide a description for the entry.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:29/tab:0:
+    category: TI HUB
+    page: Exceptions
+    tab: Whitelist
+    equivalent_tabs: []
+    content:
+      overview: The Whitelist page allows administrators to manage exception entries by adding, uploading,
+        or removing specific domains or addresses. Administrators can configure entry details such as
+        status, type, and matching subtype to define how the system handles these exceptions.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Upload a new configuration file to import whitelist entries.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Add a new whitelist entry by specifying the type, content, and description.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Remove selected whitelist entries from the list.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Display help and usage instructions for the whitelist management page.
+      interaction_sections:
+      - action_id: button-1
+        title: Whitelist
+        overview: Configure the parameters for a new whitelist entry, including its status, matching type,
+          and specific content.
+        field_descriptions:
+        - 'Type: Select the category of the whitelist entry, such as Domain.'
+        - 'Content: Enter the specific value or address to be whitelisted.'
+        - 'Description: Provide a text description for the entry to document its purpose.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:29/tab:1:
+    category: TI HUB
+    page: Exceptions
+    tab: Behavior
+    equivalent_tabs: []
+    content:
+      overview: The Behavior tab allows administrators to configure and manage behavior rules within the
+        Exceptions module. Administrators can create new rules by specifying a name and domain, and can
+        delete existing rules as needed.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Create a new behavior rule entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Delete the currently selected behavior rule entry.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Display help information and usage instructions for the Behavior tab.
+      interaction_sections:
+      - action_id: button-0
+        title: Behavior
+        overview: Configure the parameters for a new behavior rule entry.
+        field_descriptions:
+        - 'Name: Enter a name to identify the behavior rule.'
+        - 'Domain: Enter the domain associated with the behavior rule.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:30:
+    category: SYSTEM
+    page: Name Server
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Name Server page allows administrators to manage DNS resolution settings by adding,
+        editing, and removing name server entries. Administrators can define the network address, port,
+        and load-balancing parameters (QPS, Order, and Weight) for each server to control how DNS queries
+        are processed and distributed.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new name server entry to the configuration.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected name server entries from the configuration.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for the available actions.
+      interaction_sections:
+      - action_id: button-0
+        title: Name Server
+        overview: Defines the parameters for a new name server entry, including its identity, network
+          location, and load-balancing attributes.
+        field_descriptions:
+        - 'Name: The identifier for the name server entry.'
+        - 'Server Group: The group to which the name server belongs.'
+        - 'Address: The network address of the name server.'
+        - 'Port: The port number used for communication with the name server.'
+        - 'QPS: The maximum queries per second limit for the name server.'
+        - 'Order: The priority order of the name server in the resolution sequence.'
+        - 'Weight: The relative weight used for load balancing among name servers.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:31:
+    category: SYSTEM
+    page: Server Pools
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The Server Pools page allows administrators to manage server groups by adding, removing,
+        and viewing their configurations. It provides a list of existing groups and a detail view for
+        the selected entry.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new server group entry to the list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected server group entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the Server Pools page.
+      interaction_sections:
+      - action_id: button-0
+        title: Server Group
+        overview: Defines the parameters for a new server group entry.
+        field_descriptions:
+        - 'Name: Enter the name for the new server group.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:32:
+    category: SYSTEM
+    page: Syslog Servers
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage syslog server configurations. It supports adding
+        new entries with specific name, target, and port settings, as well as removing existing entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new syslog server entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected syslog server entries.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel for this page.
+      interaction_sections:
+      - action_id: button-0
+        title: Syslog Servers
+        overview: Configures the parameters for a new syslog server entry.
+        field_descriptions:
+        - 'Name: Enter a name for the syslog server entry.'
+        - 'Target: Enter the target address for the syslog server.'
+        - 'Port: Enter the port number for the syslog server.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:33/tab:0:
+    category: SYSTEM
+    page: Config Sync
+    tab: Settings
+    equivalent_tabs: []
+    content:
+      overview: The Config Sync Settings page allows administrators to configure the operational parameters
+        of a device. It provides controls to set the device status, define its role (e.g., Secondary),
+        and input the necessary Device ID and Device Key for authentication.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display help information and usage instructions for the configuration settings.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save the current configuration settings.
+      interaction_sections: []
+      page_sections:
+      - 'Configuration: Defines the operational status, role, and identification credentials for the device.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:33/tab:1:
+    category: SYSTEM
+    page: Config Sync
+    tab: Member
+    equivalent_tabs: []
+    content:
+      overview: The Config Sync Member page allows administrators to manage member-related settings. The
+        interface includes controls for adding new entries (currently disabled) and accessing help documentation.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-3
+        include: true
+        confidence: 0.85
+        description: Display help information and usage instructions for the current page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:0:
+    category: SYSTEM
+    page: Notification
+    tab: Mail Server
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to configure the mail server settings for sending notifications.
+        It includes parameters for the server address, port, sender details, and authentication method.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      interaction_sections: []
+      page_sections:
+      - 'Configuration: Provides input fields for configuring the mail server connection and sender details.'
+      field_descriptions:
+      - 'Configuration－Mail Server: Specifies the hostname or IP address of the SMTP server.'
+      - 'Configuration－Service Port: Specifies the network port used for the mail server connection.'
+      - 'Configuration－Sender: Specifies the email address used as the sender for notifications.'
+      - 'Configuration－Sender Name: Specifies the display name associated with the sender email address.'
+      - 'Configuration－Authentication: Selects the authentication method required by the mail server.'
+      best_practices: []
+      restrictions: []
+  menu:34/tab:1:
+    category: SYSTEM
+    page: Notification
+    tab: Recipient
+    equivalent_tabs: []
+    content:
+      overview: The Recipient tab allows administrators to manage recipient groups for the notification
+        system. Administrators can add new recipient groups by specifying a name and the associated recipients,
+        and can remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Adds a new recipient group and opens a new configuration page.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Removes entries from this page. Only for entries already committed.
+      - action_id: button-3
+        include: true
+        confidence: 0.9
+        description: Displays the built-in help panel for the current page.
+      interaction_sections:
+      - action_id: button-1
+        title: Recipient
+        overview: Defines a new recipient group by specifying a name and the associated recipients.
+        field_descriptions:
+        - 'Name: Enter the name for the new recipient group.'
+        - 'Recipient: Enter the recipients associated with this group.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:2:
+    category: SYSTEM
+    page: Notification
+    tab: Event Rule
+    equivalent_tabs: []
+    content:
+      overview: The Event Rule page allows administrators to configure event alert rules. Users can create
+        new rules by specifying the event type, specific event, and rule criteria to define when alerts
+        are triggered.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Create a new event alert rule.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Remove existing event alert rules.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Display help and usage instructions for the Event Rule page.
+      interaction_sections:
+      - action_id: button-0
+        title: Event Alert
+        overview: Configure the parameters for a new event alert rule.
+        field_descriptions:
+        - 'Name: Enter a name for the event alert rule.'
+        - 'Event Type: Select the type of event to monitor.'
+        - 'Event: Select the specific event to trigger the alert.'
+        - 'Rule: Enter the rule criteria for the alert.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:3:
+    category: SYSTEM
+    page: Notification
+    tab: Alarms
+    equivalent_tabs: []
+    content:
+      overview: The Alarms tab provides a centralized view of system alarm events, allowing administrators
+        to search and review alarm details such as event type, level, and trigger values.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog to filter alarm records by specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Displays the help panel containing usage instructions and feature descriptions.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:4:
+    category: SYSTEM
+    page: Notification
+    tab: Alert
+    equivalent_tabs: []
+    content:
+      overview: The Alert tab within the Notification module allows administrators to review and search
+        historical alert records. It provides a detailed log of events including notification time, event
+        type, and status, facilitating the monitoring and auditing of system alerts.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog to filter alert records by specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for available actions and filters.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:35:
+    category: MANAGEMENT
+    page: User
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: The User page allows administrators to manage system user accounts. It provides functionality
+        to add new users with specific permissions and credentials, view existing user details, and remove
+        committed user entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new user entry to the system.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected user entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help and description panel for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: User
+        overview: Defines the credentials and access level for a new user account.
+        field_descriptions:
+        - 'Account: The unique identifier or username for the new user.'
+        - 'Permission: The access level assigned to the user, such as Read or Write.'
+        - 'Email: The email address associated with the user account.'
+        - 'Password: The initial password for the user account.'
+        - 'Re-confirm: Re-enter the password to verify the input.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:36/tab:0:
+    category: MANAGEMENT
+    page: Network
+    tab: IPv4, IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: The Network page allows administrators to configure and manage network interfaces for
+        both IPv4 and IPv6 protocols. It provides a list of interfaces with key parameters such as Name,
+        Device, Address, and MTU, along with a detail panel for viewing specific settings.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:37/tab:0:
+    category: MANAGEMENT
+    page: Secondary IP
+    tab: Interface
+    equivalent_tabs: []
+    content:
+      overview: The Secondary IP Interface page allows administrators to configure and manage additional
+        IP addresses assigned to network interfaces. Administrators can add new secondary IP entries by
+        specifying the target device and address details, or remove existing entries to manage the network
+        configuration.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new secondary IP entry to the interface.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected secondary IP entries from the interface.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays help and documentation for the Secondary IP configuration.
+      interaction_sections:
+      - action_id: button-0
+        title: ( Interface ) Secondary IP
+        overview: Configures the parameters for a new secondary IP address assigned to a specific network
+          interface.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the secondary IP entry.'
+        - 'Device: Select the network interface to which the secondary IP will be assigned.'
+        - 'Address: Enter the IP address value.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:37/tab:1:
+    category: MANAGEMENT
+    page: Secondary IP
+    tab: VLAN
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage secondary IP addresses assigned to VLAN interfaces.
+        It provides functionality to add new IP entries with specific device and address configurations,
+        as well as to remove existing entries from the system.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new secondary IP entry to the VLAN interface.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected secondary IP entries from the configuration.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for page actions and fields.
+      interaction_sections:
+      - action_id: button-0
+        title: ( VLAN ) Secondary IP
+        overview: Configures a new secondary IP address for the selected VLAN interface.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the secondary IP entry.'
+        - 'Device: Select the target network interface or device to which the IP address will be assigned.'
+        - 'Address: Enter the IP address to be assigned to the interface.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:38/tab:0:
+    category: MANAGEMENT
+    page: VLAN
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage VLAN configurations for IPv4 networks. It provides
+        functionality to add new VLAN entries with specific parameters such as name, identifier, type,
+        and IP addressing, as well as the ability to remove existing entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new VLAN entry to the configuration list.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes existing VLAN entries from the configuration list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel and usage instructions for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: VLAN
+        overview: Configures the parameters for a new VLAN entry, including identification, type, and
+          network settings.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the VLAN.'
+        - 'VID: Enter the VLAN Identifier number.'
+        - 'Type: Select the VLAN type from the available options.'
+        - 'Device: Select the network device associated with this VLAN.'
+        - 'Address: Enter the IP address for the VLAN interface.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:38/tab:1:
+    category: MANAGEMENT
+    page: VLAN
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage VLAN configurations for IPv6. It provides functionality
+        to add new VLAN entries with specific parameters such as VID, type, and address, as well as the
+        ability to remove existing entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new VLAN entry for IPv6 configuration.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes existing VLAN entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays help and usage instructions for the VLAN configuration page.
+      interaction_sections:
+      - action_id: button-0
+        title: VLAN
+        overview: Configures the parameters for a new VLAN entry, including identification, type, and
+          network addressing.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the VLAN.'
+        - 'VID: Enter the VLAN Identifier number.'
+        - 'Type: Select the VLAN type from the available options.'
+        - 'Device: Select the network device associated with this VLAN.'
+        - 'Address: Enter the IPv6 address for the VLAN.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:39/tab:0:
+    category: MANAGEMENT
+    page: Routing
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage IPv4 static routes. It provides functionality
+        to add new route entries by specifying destination, type, device, nexthop, and metric, as well
+        as to remove existing saved entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new IPv4 static route entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected static route entries from the configuration.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the Routing page.
+      interaction_sections:
+      - action_id: button-0
+        title: ( IPv4 ) Static Route
+        overview: Defines the parameters for a new IPv4 static route entry.
+        field_descriptions:
+        - 'Destination: Specifies the target network address for the route.'
+        - 'Type: Selects the type of the route entry.'
+        - 'Device: Selects the network interface associated with the route.'
+        - 'Nexthop: Specifies the next hop address for the route.'
+        - 'Metric: Specifies the metric value for the route.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:39/tab:1:
+    category: MANAGEMENT
+    page: Routing
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage IPv6 static routes by adding, deleting, and
+        configuring entries. It provides a form to define route parameters such as destination, type,
+        device, next hop, and metric.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new IPv6 static route entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected IPv6 static route entries from the system.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel for the IPv6 static route configuration.
+      interaction_sections:
+      - action_id: button-0
+        title: ( IPv6 ) Static Route
+        overview: Configures the parameters for a new IPv6 static route entry.
+        field_descriptions:
+        - 'Destination: Specifies the IPv6 destination network address.'
+        - 'Type: Selects the type of the static route.'
+        - 'Device: Selects the network interface associated with the route.'
+        - 'Nexthop: Specifies the next hop address for the route.'
+        - 'Metric: Specifies the metric value for the route.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:40/tab:0:
+    category: MANAGEMENT
+    page: Administration
+    tab: General
+    equivalent_tabs: []
+    content:
+      overview: The General tab of the Administration page allows administrators to configure fundamental
+        device settings, including the device name, domain, and DNS name servers. It also provides controls
+        to define password complexity requirements, such as length and character type constraints, to
+        enforce security standards.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save changes to the Device Name section.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Save changes to the Name Server section.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Save changes to the Password Complexity section.
+      interaction_sections: []
+      page_sections:
+      - 'Device Name: Configure the device''s identification name and domain.'
+      - 'Name Server: Configure the primary and secondary DNS server addresses.'
+      - 'Password Complexity: Define the security requirements for user passwords.'
+      field_descriptions:
+      - 'Device Name－Name: The name assigned to the device.'
+      - 'Device Name－Domain: The domain associated with the device.'
+      - 'Name Server－Primary: The IP address of the primary DNS server.'
+      - 'Name Server－Secondary: The IP address of the secondary DNS server.'
+      - 'Password Complexity－Min Length: The minimum number of characters required for a password.'
+      - 'Password Complexity－Max Length: The maximum number of characters allowed for a password.'
+      - 'Password Complexity－Min Uppercase: The minimum number of uppercase letters required in a password.'
+      - 'Password Complexity－Min Lowercase: The minimum number of lowercase letters required in a password.'
+      - 'Password Complexity－Min Special Char.: The minimum number of special characters required in a
+        password.'
+      - 'Password Complexity－Min Numeric: The minimum number of numeric digits required in a password.'
+      best_practices: []
+      restrictions: []
+  menu:40/tab:1:
+    category: MANAGEMENT
+    page: Administration
+    tab: Time
+    equivalent_tabs: []
+    content:
+      overview: The Time tab allows administrators to view the current system time and configure time-related
+        settings, including the time zone, NTP synchronization status, and custom time values.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Saves and applies the changes immediately.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the current page.
+      interaction_sections: []
+      page_sections:
+      - 'Date & Time: Displays the current system time and allows configuration of time zone, NTP synchronization,
+        and custom time settings.'
+      field_descriptions:
+      - 'Date & Time－Time Zone: Selects the geographic time zone for the system clock.'
+      best_practices: []
+      restrictions: []
+  menu:40/tab:2:
+    category: MANAGEMENT
+    page: Administration
+    tab: Device Access
+    equivalent_tabs: []
+    content:
+      overview: The Device Access page allows administrators to manage rules that control network access
+        for specific devices. Administrators can add, edit, and delete rules to define which source addresses
+        are allowed or blocked from accessing specific services.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new device access rule entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes selected device access rule entries.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays help and usage instructions for the Device Access page.
+      interaction_sections:
+      - action_id: button-0
+        title: Add Rule
+        overview: Configures the parameters for a new device access rule, including its position in the
+          rule list and specific access criteria.
+        field_descriptions:
+        - 'Target: Selects the existing rule entry before or after which the new rule will be inserted.'
+        - 'Name: Specifies the identifier for the new rule.'
+        - 'Source Address: Defines the source IP address or network range for the rule.'
+        - 'Services: Selects the specific services or ports to which the rule applies.'
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:40/tab:3:
+    category: MANAGEMENT
+    page: Administration
+    tab: API
+    equivalent_tabs: []
+    content:
+      overview: The API tab allows administrators to configure the system's API access by managing the
+        service status and defining the necessary authentication credentials (API Key and Secret Key).
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display help and documentation for the API configuration settings.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Save the current API configuration settings.
+      interaction_sections: []
+      page_sections:
+      - 'Configuration: Allows administrators to manage the API service status and credentials.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:41/tab:0:
+    category: MANAGEMENT
+    page: Firmware
+    tab: Firmware
+    equivalent_tabs: []
+    content:
+      overview: The Firmware page provides a centralized interface for managing device licensing, system
+        updates, and data optimization settings. Administrators can review active product licenses, upload
+        new license or firmware files, and configure data collection preferences.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Upload a new license file to activate or update product features.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Upload a new firmware file to update the system version.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Confirm the current Data Optimization settings.
+      interaction_sections: []
+      page_sections:
+      - 'License: Displays device identification details and lists active product licenses with their
+        expiration dates.'
+      - 'Firmware: Displays the current system and web-page versions and provides an interface for uploading
+        firmware updates.'
+      - 'Data Optimization: Displays the status of the data collection feature used to improve application
+        performance and detection accuracy.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:41/tab:1:
+    category: MANAGEMENT
+    page: Firmware
+    tab: Backup & Restore
+    equivalent_tabs: []
+    content:
+      overview: The Backup & Restore page allows administrators to manage system configuration backups
+        and recovery. It provides tools to download current settings, restore from a backup file, control
+        system power states, and reset the device to factory defaults.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display help and usage documentation for the current page.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Download a backup copy of the current configuration.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Upload a previous backup copy to initiate the restore process.
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: Restart the system after saving changes.
+      - action_id: button-7
+        include: true
+        confidence: 0.95
+        description: Turn the system off after saving changes.
+      - action_id: button-8
+        include: true
+        confidence: 0.95
+        description: Reset all system settings to factory defaults.
+      interaction_sections: []
+      page_sections:
+      - 'Manual Backup: Provides the option to download a backup of the current configuration.'
+      - 'Backup Restore: Allows the upload of a backup file to restore the system configuration.'
+      - 'Reboot & ShutDown: Controls the system power state, allowing for a reboot or shutdown.'
+      - 'Restore Factory Default: Enables the reset of the system to its original factory settings.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:41/tab:2:
+    category: MANAGEMENT
+    page: Firmware
+    tab: Category
+    equivalent_tabs: []
+    content:
+      overview: The Category tab allows administrators to monitor the status of content category subscriptions,
+        configure pattern settings, and upload new category files.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help and documentation for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.9
+        description: Refresh the pattern status information to retrieve the latest subscription data.
+      - action_id: button-2
+        include: true
+        confidence: 0.9
+        description: Apply the current pattern settings.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Upload a new file to the category.
+      interaction_sections: []
+      page_sections:
+      - 'Pattern Status: Displays the current version and last update time for each content category subscription.'
+      - 'Pattern Setting: Provides configuration options for pattern-related settings, such as proxy settings.'
+      - 'Upload Category: Allows the administrator to upload a new file to the category.'
+      field_descriptions:
+      - 'Pattern Setting－Proxy: Configures the proxy settings for the pattern.'
+      best_practices: []
+      restrictions: []
+  menu:42:
+    category: MANAGEMENT
+    page: Certificates
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage the Certificate Authority, Web interface, and
+        DoH/DoT/DNSCrypt certificates. It provides controls to generate or re-sign certificates, upload
+        custom certificates, download backups, and update certificate details such as organization and
+        common name.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the help panel to display usage instructions for the certificate management
+          page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Generates a new Certificate Authority certificate or re-signs the current one.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Downloads a backup copy of the Certificate Authority certificate.
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: Updates the details of the existing Certificate Authority certificate.
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: Generates a new Web certificate or re-signs the current one.
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: Uploads a new Web certificate to the system.
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: Downloads a backup copy of the Web certificate.
+      - action_id: button-7
+        include: true
+        confidence: 0.95
+        description: Updates the details of the existing Web certificate.
+      - action_id: button-8
+        include: true
+        confidence: 0.95
+        description: Generates a new DoH/DoT/DNSCrypt certificate or re-signs the current one.
+      - action_id: button-9
+        include: true
+        confidence: 0.95
+        description: Uploads a new DoH/DoT/DNSCrypt certificate to the system.
+      - action_id: button-10
+        include: true
+        confidence: 0.95
+        description: Downloads a backup copy of the DoH/DoT/DNSCrypt certificate.
+      - action_id: button-11
+        include: true
+        confidence: 0.95
+        description: Updates the details of the existing DoH/DoT/DNSCrypt certificate.
+      interaction_sections: []
+      page_sections:
+      - 'Certificate Authority: Configuration area for managing the internal Certificate Authority used
+        to sign other certificates.'
+      - 'Web Certificate: Configuration area for managing the certificate used for the web interface.'
+      - 'DoH/DoT/DNSCrypt Certificate: Configuration area for managing the certificate used for DNS-over-HTTPS,
+        DNS-over-TLS, and DNSCrypt services.'
+      field_descriptions:
+      - 'Certificate Authority－Country: The country code or name for the Certificate Authority.'
+      - 'Certificate Authority－State or Province: The state or province for the Certificate Authority.'
+      - 'Certificate Authority－Locality: The city or locality for the Certificate Authority.'
+      - 'Certificate Authority－Organization: The organization name for the Certificate Authority.'
+      - 'Certificate Authority－Organizational Unit: The organizational unit for the Certificate Authority.'
+      - 'Certificate Authority－Common Name: The common name for the Certificate Authority.'
+      - 'Web Certificate－Country: The country code or name for the Web certificate.'
+      - 'Web Certificate－State or Province: The state or province for the Web certificate.'
+      - 'Web Certificate－Locality: The city or locality for the Web certificate.'
+      - 'Web Certificate－Organization: The organization name for the Web certificate.'
+      - 'Web Certificate－Organizational Unit: The organizational unit for the Web certificate.'
+      - 'Web Certificate－Common Name: The common name for the Web certificate.'
+      - 'DoH/DoT/DNSCrypt Certificate－Country: The country code or name for the DoH/DoT/DNSCrypt certificate.'
+      - 'DoH/DoT/DNSCrypt Certificate－State or Province: The state or province for the DoH/DoT/DNSCrypt
+        certificate.'
+      - 'DoH/DoT/DNSCrypt Certificate－Locality: The city or locality for the DoH/DoT/DNSCrypt certificate.'
+      - 'DoH/DoT/DNSCrypt Certificate－Organization: The organization name for the DoH/DoT/DNSCrypt certificate.'
+      - 'DoH/DoT/DNSCrypt Certificate－Organizational Unit: The organizational unit for the DoH/DoT/DNSCrypt
+        certificate.'
+      - 'DoH/DoT/DNSCrypt Certificate－Common Name: The common name for the DoH/DoT/DNSCrypt certificate.'
+      best_practices: []
+      restrictions: []
+  menu:43/tab:0:
+    category: MANAGEMENT
+    page: Diagnostics
+    tab: Clear Cache
+    equivalent_tabs: []
+    content:
+      overview: The Clear Cache tab allows administrators to configure and execute DNS cache clearing
+        operations by specifying the matching type and target domain. It also provides a utility to download
+        diagnostic logs for historical analysis and troubleshooting.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Saves and applies the cache clearing configuration immediately.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Downloads the diagnostic logs to a local directory.
+      interaction_sections: []
+      page_sections:
+      - 'Clear Cache: Configures the parameters for clearing the DNS cache, including the matching type
+        and target domain.'
+      - 'Diagnostic Logs: Provides a description of the log backup function and an action to download
+        historical logs.'
+      field_descriptions:
+      - 'Clear Cache－Domain: Specifies the domain name to be targeted for the cache clearing operation.'
+      best_practices: []
+      restrictions: []
+  menu:43/tab:1:
+    category: MANAGEMENT
+    page: Diagnostics
+    tab: Ping
+    equivalent_tabs: []
+    content:
+      overview: The Ping tab allows administrators to execute network diagnostic requests by specifying
+        the target destination, network zone, and IP address family. The results of the ping operation
+        are displayed in the Result section.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the current page.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Send the ping request using the specified parameters and display the output in the
+          Result section.
+      interaction_sections: []
+      page_sections:
+      - 'Ping: Configure the parameters for the network diagnostic request.'
+      - 'Result: Display the output of the executed ping request.'
+      field_descriptions:
+      - 'Ping－Destination: The target address to be pinged.'
+      best_practices: []
+      restrictions: []
+  menu:43/tab:2:
+    category: MANAGEMENT
+    page: Diagnostics
+    tab: Dig
+    equivalent_tabs: []
+    content:
+      overview: The Dig tab provides a diagnostic tool for executing DNS queries. Administrators can configure
+        the query parameters, including the destination, record type, and DNS server, to retrieve and
+        analyze DNS responses.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display help and usage instructions for the Dig tool.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Send the DNS query request using the specified parameters.
+      interaction_sections: []
+      page_sections:
+      - 'Dig: Configure parameters for the DNS query, including zone, address family, destination, query
+        type, and DNS server.'
+      - 'Result: Display the output and response from the executed DNS query.'
+      field_descriptions:
+      - 'Dig－Destination: The target host or domain name to query.'
+      - 'Dig－Type: The specific DNS record type to request.'
+      - 'Dig－DNS Server: The IP address of the DNS server to use for the query.'
+      best_practices: []
+      restrictions: []
+  menu:43/tab:3:
+    category: MANAGEMENT
+    page: Diagnostics
+    tab: Traceroute
+    equivalent_tabs: []
+    content:
+      overview: The Traceroute tab provides a diagnostic tool to trace the network path to a specified
+        destination. Administrators can configure the source zone, IP family, and target address to execute
+        the test and view the resulting hop-by-hop path in the results section.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display the built-in help panel for the Traceroute diagnostics tool.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Send the traceroute request using the specified parameters and display the output
+          in the results area.
+      interaction_sections: []
+      page_sections:
+      - 'Traceroute: Configuration area for defining the network zone, IP family, and destination address
+        for the diagnostic test.'
+      - 'Result: Output area that displays the path and hop information generated by the traceroute command.'
+      field_descriptions:
+      - 'Traceroute－Destination: The target IP address or hostname to which the network path will be traced.'
+      best_practices: []
+      restrictions: []
+  menu:43/tab:4:
+    category: MANAGEMENT
+    page: Diagnostics
+    tab: Connectivity
+    equivalent_tabs: []
+    content:
+      overview: The Connectivity tab provides a diagnostic interface for executing network connectivity
+        tests. Administrators can initiate the tests to verify network reachability and review the results
+        in the designated output area.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Display contextual help and usage instructions for the Connectivity diagnostics.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Send the request to start the connectivity tests and display the output in the Results
+          box.
+      interaction_sections: []
+      page_sections:
+      - 'Result: Displays the output of the connectivity tests.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []

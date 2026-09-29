@@ -9,6 +9,8 @@ from pathlib import Path
 
 import yaml
 
+from document.manual_content import apply_manual_content
+
 from services.vllm_service import (
     MODEL_NAME,
     assess_tab_equivalence,
@@ -718,7 +720,7 @@ def save_cache(
         print(e)
 
 
-def generate_manual_section(page):
+def generate_ai_manual_section(page):
 
     cache_file = get_cache_file(page)
 
@@ -817,3 +819,9 @@ def generate_manual_section(page):
         }
 
         return result
+
+
+def generate_manual_section(page):
+    """Return AI/cache content with human-editable YAML applied last."""
+
+    return apply_manual_content(page, generate_ai_manual_section(page))

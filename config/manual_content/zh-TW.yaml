@@ -1,0 +1,2567 @@
+# Human-editable content used by the generated manual.
+# Edit values under content; category/page/tab are lookup labels.
+# Run python3 scripts/sync_manual_content.py after a new crawl to add
+# missing pages without overwriting existing human edits.
+
+version: 1
+language: zh-TW
+pages:
+  menu:0:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 安全主控台（Security Console）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 安全主控台提供網路裝置的安全風險概覽，包含裝置統計、流量與連線卸載效能比較，以及網路攻擊階段分析。
+      business_value: ''
+      button_descriptions: []
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:0:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 歷史記錄（History Logs）
+    tab: 代理（Proxy）
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供代理（Proxy）歷史記錄的檢視與管理，允許管理員依據時間範圍與特定欄位（如來源、查詢名稱、回應代碼）進行搜尋與篩選。系統可顯示詳細的 DNS 查詢資訊，並支援將查詢結果下載為報表以供後續分析。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或條件篩選歷史記錄。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 下載目前查詢結果的資料報表。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:1:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 歷史記錄（History Logs）
+    tab: 防火牆（Firewall）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供防火牆歷史記錄的檢視與管理功能。管理員可依據時間範圍查詢流量日誌，並透過搜尋與篩選功能分析特定的網路請求、來源 IP 及處理動作。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或條件篩選防火牆歷史記錄。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 下載目前查詢結果的防火牆歷史記錄報表。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:2:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 歷史記錄（History Logs）
+    tab: 新觀察（New Observed）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 DNS 歷史記錄的檢視與分析功能，管理員可依據時間範圍查詢新觀察到的 DNS 查詢事件，並透過搜尋與篩選功能檢視特定來源、網域或回應類型的詳細資訊。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或條件篩選歷史記錄資料。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 下載目前查詢結果的資料報表。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:3:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 歷史記錄（History Logs）
+    tab: 新回應（New Responded）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 DNS 新回應（New Responded）的歷史記錄查詢功能。管理員可透過時間範圍與欄位篩選檢視詳細的回應紀錄，並可將結果匯出報表。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或條件篩選歷史記錄。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 下載目前查詢結果的資料報表。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:1/tab:4:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 歷史記錄（History Logs）
+    tab: Sinkhole
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 Sinkhole 功能的歷史記錄查詢功能，管理員可依據時間範圍與特定欄位條件篩選事件，並檢視包含 DNS 協定、來源與目的資訊的詳細記錄，同時支援將查詢結果下載為報表。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或欄位條件篩選 Sinkhole 歷史記錄。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 下載目前查詢結果的資料報表。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:0:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 排名報表（Top Reports）
+    tab: 代理（Proxy）
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供代理流量的排名報表，管理員可依據安全儀錶、主機、類別、名稱及網域及類型及代碼等維度，檢視特定時間範圍內的 Top 10 統計資料。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 切換至安全儀錶檢視模式
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 切換至主機檢視模式
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 切換至類別檢視模式
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 切換至名稱及網域檢視模式
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: 切換至類型及代碼檢視模式
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:1:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 排名報表（Top Reports）
+    tab: 防火牆（Firewall）
+    equivalent_tabs: []
+    content:
+      overview: 本功能提供防火牆排名報表，允許管理員依據安全儀錶、主機、名稱及網域或類型及代碼等不同維度檢視已阻擋流量的統計資料，並可自訂時間範圍以分析特定時段的安全活動。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 切換至安全儀錶檢視模式
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 切換至主機檢視模式
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 切換至名稱及網域檢視模式
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 切換至類型及代碼檢視模式
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:2:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 排名報表（Top Reports）
+    tab: 權威域服務（Authority）
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供權威域服務的安全儀錶檢視，允許管理員依據時間範圍與記錄類型（如已阻擋）檢視 IPv4 與 IPv6 的阻擋主機排名統計。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 切換至安全儀錶檢視模式
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:2/tab:3:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 排名報表（Top Reports）
+    tab: 系統（System）
+    equivalent_tabs: []
+    content:
+      overview: 本功能提供系統排名報表，用於檢視特定時間範圍內的系統活動統計。目前畫面主要展示 CPU 使用率的排名資訊，並支援自訂日期範圍以載入對應的歷史資料。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:3/tab:0:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 排程報表（Schedule Reports）
+    tab: 報表清單（Report List）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理排程報表，允許管理員新增、設定與移除定期執行的報表任務。管理員可透過新增功能設定執行時間、日期範圍、匯出類型、檔案格式（PDF/CSV）及記錄類型（代理/系統資源），以滿足不同營運數據的自動化產出需求。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增排程報表設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的排程報表項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 報表清單
+        overview: 設定新排程報表的執行時間、日期範圍、匯出類型、檔案格式與記錄類型。
+        field_descriptions:
+        - 匯出類型：選擇報表的匯出類型。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:3/tab:1:
+    category: 域名洞悉（DOMAIN INSIGHTS）
+    page: 排程報表（Schedule Reports）
+    tab: 週期性報表（Periodical Report）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理週期性報表的排程設定，可設定每日特定時間觸發資料匯出程序。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections:
+      - 週期性報表：顯示週期性報表的執行狀態與排程設定。
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:4/tab:0:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 威脅探查（Threat Insight）
+    tab: 潛在威脅主機（Potential Threat Hosts）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於監控並列出網路中潛在的威脅主機。系統會依據偵測到的風險指標（如惡意行為、新網域等）計算風險分數，並依嚴重程度顯示受影響的裝置清單，供管理員進行後續的詳細檢視與處置。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 檢視該筆潛在威脅主機的詳細資訊
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 檢視該筆潛在威脅主機的詳細資訊
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 切換至上一頁資料
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 切換至下一頁資料
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:4/tab:1:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 威脅探查（Threat Insight）
+    tab: 查詢行為與報告（Query Behaviors）
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供威脅探查的查詢行為與報告檢視，允許管理員透過日期篩選、IP 搜尋及多種檢視模式（如危害類別、NAQ、JTD 等）分析 DNS 查詢資料。系統顯示威脅評分、危害類別雷達圖，並提供偽裝名稱與查詢網域的詳細統計表格，支援依查詢數與名稱數量排序，以協助識別潛在威脅。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 返回上一個畫面
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-8
+        include: true
+        confidence: 0.95
+        description: 切換至危害類別檢視模式
+      - action_id: button-9
+        include: true
+        confidence: 0.95
+        description: 切換至 NAQ 檢視模式
+      - action_id: button-10
+        include: true
+        confidence: 0.95
+        description: 切換至 JTD 檢視模式
+      - action_id: button-11
+        include: true
+        confidence: 0.95
+        description: 切換至 QBR 檢視模式
+      - action_id: button-12
+        include: true
+        confidence: 0.95
+        description: 切換至 SND 檢視模式
+      - action_id: button-13
+        include: true
+        confidence: 0.95
+        description: 切換至 ABQ 檢視模式
+      - action_id: button-14
+        include: true
+        confidence: 0.95
+        description: 切換至無效名稱查詢檢視模式
+      - action_id: button-15
+        include: true
+        confidence: 0.95
+        description: 切換至公雲服務和連接國別檢視模式
+      - action_id: button-16
+        include: true
+        confidence: 0.95
+        description: 依查詢數對偽裝名稱表格進行排序
+      - action_id: button-17
+        include: true
+        confidence: 0.95
+        description: 依名稱數量對查詢網域表格進行排序
+      - action_id: button-18
+        include: true
+        confidence: 0.95
+        description: 依查詢數對查詢網域表格進行排序
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:5:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 放大攻擊（Amplification）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供放大攻擊（Amplification）的統計監控介面，管理員可檢視前七天及特定日期的攻擊趨勢圖表，並透過來源與網域統計表格分析查詢數，以掌握放大攻擊的來源與影響範圍。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 依查詢數對來源資料進行排序
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 依查詢數對網域資料進行排序
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:6:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 隧道攻擊（Tunneling）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供隧道攻擊（Tunneling）的統計分析，管理員可檢視前七天內的活動趨勢，並透過威脅情資特徵與動態名稱兩個視圖，分析來源與網域的查詢次數及名稱數量。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 切換至威脅情資特徵統計視圖
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 切換至動態名稱統計視圖
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 依查詢數對來源資料進行排序
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: 依名稱數量對網域資料進行排序
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: 依查詢數對網域資料進行排序
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:7:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 殭屍網路（Botnet Insight）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 本功能提供殭屍網路（Botnet Insight）的統計分析與監控介面。管理員可檢視前七天的活動趨勢圖表，並透過威脅情資特徵與動態名稱兩種檢視模式，分析來源、查詢數、網域及頂級網域等詳細資訊。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 切換至威脅情資特徵檢視模式
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 切換至動態名稱檢視模式
+      - action_id: button-4
+        include: true
+        confidence: 0.9
+        description: 依查詢數對資料進行排序
+      - action_id: button-5
+        include: true
+        confidence: 0.9
+        description: 依查詢數對資料進行排序
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:8:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 公雲存取（Cloud Access）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 公雲存取頁面提供雲端服務存取活動的統計與詳細列表，管理員可檢視特定日期範圍內的來源、雲端供應商、國家及查詢數，並透過排序功能分析存取趨勢。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 依查詢數對表格資料進行降冪排序
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:9:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 首次觀察（First Observed）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供 DNS 首次觀察活動的統計分析，包含前七天趨勢圖表與詳細資料檢視。管理員可切換檢視首次查詢與首次回應資訊，並透過來源、網域、記錄類型等欄位進行排序與分析。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 切換至首次查詢資訊檢視模式
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 切換至首次回應資訊檢視模式
+      - action_id: button-4
+        include: true
+        confidence: 0.9
+        description: 依查詢數對首次查詢資訊表格進行排序
+      - action_id: button-5
+        include: true
+        confidence: 0.9
+        description: 依名稱數量對首次查詢資訊表格進行排序
+      - action_id: button-6
+        include: true
+        confidence: 0.9
+        description: 依查詢數對首次回應資訊表格進行排序
+      - action_id: button-7
+        include: true
+        confidence: 0.9
+        description: 依可疑程度對首次回應資訊表格進行排序
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:10:
+    category: 威脅洞悉（SCOUTEYE）
+    page: 威脅情報（Operation Intel）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 威脅情報（Operation Intel）頁面提供安全監控儀表板，彙整裝置、網域、勒索軟體群組、威脅行為者及惡意軟體的偵測統計。管理員可透過日期範圍篩選特定時段的威脅活動，並利用各區塊的詳細資訊功能深入分析高風險項目。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:11/tab:0:
+    category: 網路設定（CONFIGURE）
+    page: 網路位址（Network）
+    tab: IPv4、IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: 此功能提供 IPv4 與 IPv6 網路位址的獨立管理介面，允許管理員檢視與配置網路介面的 IP 位址、MTU 及 SPAN 狀態。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:12/tab:0:
+    category: 網路設定（CONFIGURE）
+    page: 次要位址（Secondary IP）
+    tab: 介面（Interface）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理網路介面的次要 IP 地址設定。管理員可透過此頁面新增、移除介面的次要 IP 位址，並指定對應的裝置與網路前綴長度，以滿足多 IP 位址或特定網路架構的需求。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增介面次要 IP 地址設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的次要 IP 地址設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增介面次要 IP 地址
+        overview: 設定介面次要 IP 地址所需的參數。
+        field_descriptions:
+        - 名稱：輸入次要 IP 地址的識別名稱。
+        - 裝置：選擇要設定次要 IP 地址的網路介面。
+        - 地址：輸入次要 IP 地址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:12/tab:1:
+    category: 網路設定（CONFIGURE）
+    page: 次要位址（Secondary IP）
+    tab: VLAN
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理 VLAN 的次要 IP 地址設定。管理員可透過此頁面新增、編輯或移除次要 IP 位址，並指定對應的網路介面與位址參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 VLAN 次要 IP 地址設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的次要 IP 地址設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 VLAN 次要 IP 地址
+        overview: 設定 VLAN 次要 IP 地址的相關參數。
+        field_descriptions:
+        - 名稱：輸入設定的識別名稱。
+        - 裝置：選擇要綁定的網路介面。
+        - 地址：輸入 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:12/tab:2:
+    category: 網路設定（CONFIGURE）
+    page: 次要位址（Secondary IP）
+    tab: 網路聚合（Bond）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理網路聚合（Bond）介面的次要 IP 位址。管理員可透過此頁面新增、編輯或移除次要 IP 位址設定，並指定對應的裝置與 IP 位址參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增網路聚合的次要 IP 位址設定。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的次要 IP 位址設定。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: 新增網路聚合次要 IP 位址
+        overview: 設定網路聚合介面所需的次要 IP 位址參數。
+        field_descriptions:
+        - 名稱：輸入該次要 IP 位址設定的識別名稱。
+        - 裝置：選擇要綁定次要 IP 位址的網路聚合裝置。
+        - 地址：輸入次要 IP 位址的數值。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:13/tab:0:
+    category: 網路設定（CONFIGURE）
+    page: VLAN
+    tab: IPv4、IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: 此功能提供 VLAN 的設定管理，包含 IPv4 與 IPv6 兩個獨立頁籤。管理員可透過新增功能建立 VLAN 項目，並設定名稱、VID、記錄類型、裝置及 IP 位址等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 VLAN 設定項目。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 VLAN 設定項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: VLAN
+        overview: 設定 VLAN 的相關參數，包含名稱、識別碼、記錄類型、裝置與 IP 位址。
+        field_descriptions:
+        - 名稱：輸入 VLAN 的識別名稱。
+        - VID：輸入 VLAN 識別碼。
+        - 記錄類型：選擇該 VLAN 的記錄類型。
+        - 裝置：選擇要綁定的網路裝置。
+        - 地址：輸入 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:14/tab:0:
+    category: 網路設定（CONFIGURE）
+    page: 網路聚合（Bond）
+    tab: IPv4、IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: 此頁面用於管理網路聚合（Bond）設定，提供 IPv4 與 IPv6 兩個獨立頁籤供管理員分別配置不同協定版本的位址。管理員可透過新增功能建立聚合介面，設定聚合模式、散列演算法、成員裝置及網路位址參數，並可管理既有的聚合項目。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增網路聚合（Bond）設定項目
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的網路聚合設定項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增網路聚合
+        overview: 設定新的網路聚合（Bond）介面參數，包含聚合模式、散列演算法、成員裝置與網路位址配置。
+        field_descriptions:
+        - 名稱：輸入此網路聚合介面的識別名稱。
+        - 模式：選擇網路聚合的運作模式（例如 Balance-RR）。
+        - Hash：選擇散列演算法（例如 Layer 2）。
+        - 裝置：選擇要加入此聚合的實體網路介面。
+        - 地址：輸入 IPv4 位址。
+        - MTU：輸入最大傳輸單位（MTU）數值。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:15/tab:0:
+    category: 網路設定（CONFIGURE）
+    page: 橋接設定（Bridge）
+    tab: 基本設定（General）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供橋接功能的基本設定，管理員可在此設定橋接的運作模式（Drop-In 或 DPR），並檢視橋接相關資訊列表。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      interaction_sections: []
+      page_sections:
+      - 運作模式：設定橋接功能的運作模式。
+      - 列表：顯示橋接相關資訊的列表。
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:15/tab:1:
+    category: 網路設定（CONFIGURE）
+    page: 橋接設定（Bridge）
+    tab: IPv4、IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: 此功能用於管理網路橋接（Bridge）設定，提供 IPv4 與 IPv6 兩個獨立頁籤供管理員分別配置。管理員可透過此頁面新增橋接項目，設定包含名稱、裝置選擇及 IP 位址等參數，並可移除已儲存的設定項目。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增橋接設定項目
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的橋接設定項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 橋接
+        overview: 設定新橋接項目的相關參數。
+        field_descriptions:
+        - 名稱：輸入橋接項目的識別名稱。
+        - 裝置：選擇要加入橋接的網路介面。
+        - 地址：輸入橋接的 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:16/tab:0:
+    category: 網路設定（CONFIGURE）
+    page: 路由設定（Routing）
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 IPv4 靜態路由設定，管理員可透過此功能新增、編輯或移除路由項目，並設定目的網段、記錄類型、裝置、Nexthop 及 Metric 等參數，以控制網路流量的轉發路徑。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 IPv4 靜態路由設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已選取的 IPv4 靜態路由項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示 IPv4 靜態路由設定的操作說明
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 IPv4 靜態路由
+        overview: 設定新的 IPv4 靜態路由參數，包含目的網段、記錄類型、裝置、Nexthop 及 Metric。
+        field_descriptions:
+        - 目的：輸入目的網段地址。
+        - 記錄類型：選擇路由記錄的類型。
+        - 裝置：選擇用於轉發流量的介面。
+        - Nexthop：輸入下一跳路由器的 IP 位址。
+        - Metric：輸入路由指標值。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:16/tab:1:
+    category: 網路設定（CONFIGURE）
+    page: 路由設定（Routing）
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理 IPv6 靜態路由設定，允許管理員新增、編輯及刪除路由項目。管理員可透過新增功能設定目的位址、前綴長度、記錄類型、裝置、Nexthop 及 Metric 等參數，以定義
+        IPv6 封包的轉送路徑。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 IPv6 靜態路由設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 IPv6 靜態路由項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 IPv6 靜態路由
+        overview: 設定 IPv6 靜態路由所需的參數。
+        field_descriptions:
+        - 目的：輸入 IPv6 目的位址。
+        - 記錄類型：選擇路由記錄的類型。
+        - 裝置：選擇用於轉送封包的介面。
+        - Nexthop：輸入下一跳位址。
+        - Metric：輸入路由指標值。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:17:
+    category: 域名防火牆（DNS FIREWALL）
+    page: 服務（Services）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 DNS 服務設定，允許管理員新增、編輯及移除服務項目，並設定 DNS 協定、介面與聆聽位址等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增服務設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已提交至系統的服務項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 服務
+        overview: 設定新服務所需的參數。
+        field_descriptions:
+        - 名稱：輸入服務的名稱。
+        - 描述：輸入服務的描述資訊。
+        - DNS協定：選擇服務使用的 DNS 協定。
+        - 介面：選擇服務綁定的網路介面。
+        - 聆聽位址：選擇服務監聽的位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:18:
+    category: 域名防火牆（DNS FIREWALL）
+    page: 規則（Rules）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理安全規則，允許管理員建立、編輯與移除規則。規則可設定目標位置、安全策略（包含來源位址、請求名稱、請求類型與動作）以及 DDoS 防護狀態，以實現精細化的流量控制與安全防護。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 建立新的規則
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已選取的規則
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增規則
+        overview: 設定新規則的參數，包含目標位置、安全策略與 DDoS 防護設定。
+        field_descriptions:
+        - 目標：選擇規則應套用的目標位置。
+        - 名稱：輸入規則的名稱。
+        - 說明：輸入規則的詳細說明。
+        - 動作：選擇規則觸發時執行的動作。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:19/tab:0:
+    category: 域名防火牆（DNS FIREWALL）
+    page: 動態阻擋（Dynamic Block）
+    tab: 規則 1～3（Rule 1–3）
+    equivalent_tabs:
+    - 規則 1（Rule 1）
+    - 規則 2（Rule 2）
+    - 規則 3（Rule 3）
+    content:
+      overview: 動態阻擋功能提供三組獨立的規則配置（規則 1 至 規則 3），允許管理員依據 IP 範圍、查詢速率、RCode 速率、RCode 比值及 QType 速率設定自動阻擋條件。管理員可針對各規則設定觸發門檻、持續時間與阻擋時間，以自動識別並阻擋異常
+        DNS 流量來源。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections:
+      - IP 範圍：設定規則適用的 IP 位址範圍，包含狀態、動作（排除或包括）以及 IPv4 與 IPv6 位址的新增功能。
+      - 查詢速率：設定針對 DNS 查詢速率的動態阻擋條件，包含速率門檻、持續時間與阻擋時間。
+      - RCode 速率：設定針對回應代碼（RCode）速率的動態阻擋條件，包含速率門檻、持續時間與阻擋時間。
+      - RCode 比值：設定針對回應代碼（RCode）比值的動態阻擋條件，包含比值門檻、持續時間、阻擋時間與最小回應次數。
+      - QType 速率：設定針對查詢類型（QType）速率的動態阻擋條件，包含速率門檻、持續時間與阻擋時間。
+      field_descriptions:
+      - 查詢速率－速率：設定觸發動態阻擋的查詢速率門檻。
+      - 查詢速率－持續時間：設定達到速率門檻需持續的時間。
+      - 查詢速率－阻擋時間：設定觸發後阻擋來源的持續時間。
+      - RCode 速率－速率：設定觸發動態阻擋的 RCode 速率門檻。
+      - RCode 速率－持續時間：設定達到速率門檻需持續的時間。
+      - RCode 速率－阻擋時間：設定觸發後阻擋來源的持續時間。
+      - RCode 比值－比值：設定觸發動態阻擋的 RCode 比值門檻。
+      - RCode 比值－持續時間：設定達到比值門檻需持續的時間。
+      - RCode 比值－阻擋時間：設定觸發後阻擋來源的持續時間。
+      - RCode 比值－最小回應次數：設定計算比值時所需的最小回應次數。
+      - QType 速率－速率：設定觸發動態阻擋的 QType 速率門檻。
+      - QType 速率－持續時間：設定達到速率門檻需持續的時間。
+      - QType 速率－阻擋時間：設定觸發後阻擋來源的持續時間。
+      best_practices: []
+      restrictions: []
+  menu:20/tab:0:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 轉送伺服器（Forwarders）
+    tab: 靜態（Static）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理靜態 DNS 轉送路由，允許管理員針對特定網域設定 IPv4 與 IPv6 的主要及次要轉送伺服器，並控制路由狀態與迴避查詢選項。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增靜態轉送路由設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已選取的靜態轉送路由
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示靜態轉送路由的操作說明
+      interaction_sections:
+      - action_id: button-0
+        title: 靜態路由
+        overview: 設定靜態轉送路由的網域、狀態與 IPv4/IPv6 轉送伺服器。
+        field_descriptions:
+        - 網域：輸入要轉送的網域名稱。
+        - 主要：輸入 IPv4 主要轉送伺服器的 IP 位址。
+        - 次要：輸入 IPv4 次要轉送伺服器的 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:20/tab:1:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 轉送伺服器（Forwarders）
+    tab: 預設（Default）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於設定 DNS 轉送伺服器的預設路由參數，管理員可在此啟用或停用 IPv4 與 IPv6 的轉送功能，並設定主要與次要的轉送伺服器位址。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 捨棄變更並返回上一頁
+      interaction_sections: []
+      page_sections:
+      - 預設路由：設定 DNS 轉送伺服器的預設路由參數，包含狀態、優先順序及 IPv4/IPv6 的主要與次要伺服器位址。
+      field_descriptions:
+      - 預設路由－主要：輸入主要 DNS 轉送伺服器的位址。
+      - 預設路由－次要：輸入次要 DNS 轉送伺服器的位址。
+      best_practices: []
+      restrictions: []
+  menu:21:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 安全搜尋（SafeSearch）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理安全搜尋（SafeSearch）的啟用狀態，並顯示支援的搜尋引擎清單（包括 Bing、Pixabay、Google、DuckDuckGo、Yandex 及 Brave）。管理員可透過狀態開關控制安全搜尋功能的開啟或關閉，並可儲存設定或檢視操作說明。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 儲存目前的安全搜尋設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟安全搜尋功能的操作說明與幫助
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:22/tab:0:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 網域類別（Domain Categories）
+    tab: 種類（Categories）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理網域類別的防護狀態，允許管理員依風險等級（Low、Normal、Moderate、High）檢視並設定各類別（如廣告、惡意軟體、釣魚等）的允許或阻擋策略。管理員可針對單一類別進行調整，或使用「變更全部」功能快速套用全域狀態，並透過「儲存變更」將設定提交至系統。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 將所有網域類別的狀態變更為指定值。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:22/tab:1:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 網域類別（Domain Categories）
+    tab: 告警（Notification）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於設定網域類別（Domain Categories）的告警通知機制。管理員可配置電子郵件與 Syslog 兩種通知方式，包括設定觸發條件（如事件持續時間、發生間隔次數）、指定收件人，以及選擇
+        Syslog 事件類別與目標伺服器。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 儲存設定並立即套用變更
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections:
+      - 電子郵箱：設定透過電子郵件發送告警的觸發條件與接收對象。
+      - Syslog：設定透過 Syslog 協定發送告警的事件類別與目標伺服器。
+      field_descriptions:
+      - 電子郵箱－事件持續時間：設定觸發電子郵件告警所需的事件持續時間。
+      - 電子郵箱－事件發生間隔次數：設定觸發電子郵件告警所需的事件發生間隔次數。
+      - 電子郵箱－收件人：選擇接收告警電子郵件的收件人。
+      - Syslog－事件類別：選擇用於 Syslog 告警的事件類別。
+      - Syslog－Syslog 伺服器：選擇接收 Syslog 告警訊息的伺服器。
+      best_practices: []
+      restrictions: []
+  menu:23/tab:0:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 頂級網域（Top Level Domain）
+    tab: 頂級網域（TLDs）
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供頂級網域防護設定的管理介面，允許管理員檢視、篩選並調整各頂級網域的防護狀態與風險等級。管理員可透過排序、多選模式及批量變更功能，對網域防護策略進行集中管理與設定。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 對頂級網域列表進行排序
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 切換多選模式以進行批量操作
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 變更所有類別網域的狀態
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:23/tab:1:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: 頂級網域（Top Level Domain）
+    tab: 告警（Notification）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於設定頂級網域（Top Level Domain）的告警通知機制，管理員可配置電子郵箱與 Syslog 兩種通知方式的觸發條件與參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections:
+      - 電子郵箱：設定透過電子郵件發送告警的觸發條件與通知對象。
+      - Syslog：設定透過 Syslog 協定發送告警的事件類別與目標伺服器。
+      field_descriptions:
+      - 電子郵箱－事件持續時間：設定事件持續多久後觸發電子郵件告警。
+      - 電子郵箱－事件發生間隔次數：設定事件發生的間隔次數以觸發電子郵件告警。
+      - 電子郵箱－收件人：選擇接收告警通知的電子郵件地址。
+      - Syslog－事件類別：選擇用於 Syslog 告警的事件分類。
+      - Syslog－Syslog 伺服器：選擇接收 Syslog 告警訊息的伺服器。
+      best_practices: []
+      restrictions: []
+  menu:24:
+    category: 遞迴查詢服務（RECURSIVE DNS）
+    page: DNS 沉洞（Sinkhole）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 本功能提供 DNS 沉洞（Sinkhole）的設定介面，管理員可啟用或停用該功能，並指定對應的 IP 位址。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      interaction_sections: []
+      page_sections:
+      - Sinkhole：提供 DNS 沉洞功能的狀態控制與 IP 位址設定。
+      field_descriptions:
+      - Sinkhole－IP地址：輸入 DNS 沉洞功能所使用的 IP 位址。
+      best_practices: []
+      restrictions: []
+  menu:25:
+    category: 權威伺服器（AUTHORITATIVE DNS）
+    page: 區域（Zones）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 DNS 網域與 PTR 記錄。管理員可在此新增網域與 PTR 設定，並配置相關的 DNS 起始授權記錄參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 新增網域設定
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 新增 PTR 設定
+      interaction_sections:
+      - action_id: button-2
+        title: 新增網域設定
+        overview: 設定新網域所需的參數與 DNS 起始授權記錄。
+        field_descriptions:
+        - 操作類型：選擇網域的操作模式。
+        - 網域名：輸入要管理的網域名稱。
+        - 服務器：輸入 DNS 起始授權記錄中的伺服器名稱。
+        - 電子郵箱：輸入 DNS 起始授權記錄中的聯絡電子郵件。
+        - 序號：輸入 DNS 起始授權記錄的序號。
+        - 更新間隔：設定 DNS 起始授權記錄的更新間隔時間。
+        - 重試間隔：設定 DNS 起始授權記錄的重試間隔時間。
+        - 到期時間：設定 DNS 起始授權記錄的到期時間。
+        - 快取時間：設定 DNS 起始授權記錄的快取時間。
+      - action_id: button-4
+        title: 新增 PTR 設定
+        overview: 設定 PTR 記錄所需的參數與 DNS 起始授權記錄。
+        field_descriptions:
+        - 操作類型：選擇 PTR 的操作模式。
+        - PTR：輸入 PTR 記錄的名稱。
+        - 服務器：輸入 DNS 起始授權記錄中的伺服器名稱。
+        - 電子郵箱：輸入 DNS 起始授權記錄中的聯絡電子郵件。
+        - 序號：輸入 DNS 起始授權記錄的序號。
+        - 更新間隔：設定 DNS 起始授權記錄的更新間隔時間。
+        - 重試間隔：設定 DNS 起始授權記錄的重試間隔時間。
+        - 到期時間：設定 DNS 起始授權記錄的到期時間。
+        - 快取時間：設定 DNS 起始授權記錄的快取時間。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:26/tab:0:
+    category: 權威伺服器（AUTHORITATIVE DNS）
+    page: 健康規則（Health Rules）
+    tab: 安全策略（Policy）
+    equivalent_tabs: []
+    content:
+      overview: 本功能用於建立與管理健康規則，允許管理員針對特定介面設定檢測方式與參數，以監控網路或服務的可用性。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟新增健康規則的設定頁面。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的健康規則項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示功能說明與操作指引。
+      interaction_sections:
+      - action_id: button-0
+        title: 介面
+        overview: 設定健康規則的監控目標與檢測參數。
+        field_descriptions:
+        - 名稱：輸入規則的識別名稱。
+        - 介面：選擇監控的實體介面。
+        - 檢測方式：選擇健康狀態的檢測方法。
+        - 監聽 IP 地址：輸入要監控的 IP 位址。
+        - 間隔：設定執行檢測的時間間隔。
+        - 逾時：設定檢測請求的逾時時間。
+        - 請求次數：設定檢測的總請求次數。
+        - 成功次數：設定判定為健康所需的成功次數。
+        - 失敗回數：設定判定為不健康所需的失敗次數。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:26/tab:1:
+    category: 權威伺服器（AUTHORITATIVE DNS）
+    page: 健康規則（Health Rules）
+    tab: 閘道（Gateway）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於設定與管理閘道（Gateway）的健康檢查規則。管理員可透過新增功能定義包含名稱、介面與 IP 地址的檢查參數，並可移除已儲存的規則項目，以維護閘道監控策略。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟閘道健康規則的新增設定頁面。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已提交至系統的健康規則項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示目前頁面的操作說明與功能指引。
+      interaction_sections:
+      - action_id: button-0
+        title: 閘道
+        overview: 設定閘道健康檢查規則的相關參數。
+        field_descriptions:
+        - 名稱：輸入該健康規則的識別名稱。
+        - 介面：選擇用於健康檢查的實體介面。
+        - IP地址：輸入用於健康檢查的目標 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:27/tab:0:
+    category: 威脅情資（TI HUB）
+    page: 外部來源（External Feeds）
+    tab: 設定（Setting）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於設定外部來源（External Feeds）的服務參數，包含啟用服務與 HTTP 協定，並透過存取管控清單(ACL)定義允許的來源地址。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存目前頁面的設定變更
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - 服務－存取管控清單(ACL)：設定允許存取外部來源服務的來源地址與網段。
+      best_practices: []
+      restrictions: []
+  menu:27/tab:1:
+    category: 威脅情資（TI HUB）
+    page: 外部來源（External Feeds）
+    tab: HTTP
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理 HTTP 協定的外部威脅情報來源。管理員可新增、編輯或移除來源設定，並指定抓取間隔與對應的阻擋或允許動作，以動態更新防護清單。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 HTTP 威脅情報來源設定。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 HTTP 威脅情報來源設定。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示 HTTP 威脅情報來源功能的操作說明。
+      interaction_sections:
+      - action_id: button-0
+        title: 威脅情報來源 - HTTP
+        overview: 設定新的 HTTP 威脅情報來源參數。
+        field_descriptions:
+        - 名稱：輸入該威脅情報來源的識別名稱。
+        - URL：輸入威脅情報來源的 HTTP 位址。
+        - 間隔：設定抓取威脅情報的頻率，範圍為 1 至 65000。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:27/tab:2:
+    category: 威脅情資（TI HUB）
+    page: 外部來源（External Feeds）
+    tab: RPZ
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理外部威脅情報來源的 RPZ 設定，允許管理員新增、編輯與刪除來源，並設定 IP 位址、策略名稱、TTL、更新間隔、逾時及處理動作等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增外部威脅情報來源的 RPZ 設定。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的外部威脅情報來源設定。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: 威脅情報來源 - RPZ
+        overview: 設定外部威脅情報來源的 RPZ 參數，包含來源識別、連線資訊與更新策略。
+        field_descriptions:
+        - RPZ 名稱：輸入 RPZ 的識別名稱。
+        - IP地址：輸入外部來源的 IP 位址。
+        - 策略名稱：輸入對應的 RPZ 策略名稱。
+        - TTL：設定生存時間，最小值為 10。
+        - 更新間隔：設定資料更新的間隔時間，最小值為 10。
+        - 逾時：設定逾時時間，最小值為 10。
+        - 動作：選擇處理威脅情報的動作。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:28:
+    category: 威脅情資（TI HUB）
+    page: 黑名單（Blacklist）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理黑名單（阻擋清單），允許管理員新增、上傳、移除及檢視阻擋項目。管理員可透過新增功能設定記錄類型、內容與說明，並透過上傳功能匯入設定檔。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 上傳新的阻擋清單設定檔
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 新增新的阻擋清單項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的阻擋清單項目
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-1
+        title: 阻擋清單
+        overview: 設定新阻擋清單項目的參數。
+        field_descriptions:
+        - 記錄類型：選擇要阻擋的記錄類型。
+        - 內容：輸入要阻擋的具體內容。
+        - 說明：輸入該項目的說明資訊。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:29/tab:0:
+    category: 威脅情資（TI HUB）
+    page: 例外清單（Exceptions）
+    tab: Whitelist
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理例外清單（Whitelist），允許管理員新增、上傳、刪除例外項目，並查看項目的詳細設定與狀態。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 上傳新的設定檔以匯入例外清單。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 新增例外清單項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的例外清單項目。
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-1
+        title: Whitelist
+        overview: 設定新的例外清單項目，包含記錄類型、內容與說明。
+        field_descriptions:
+        - 記錄類型：選擇要設定的記錄類型。
+        - 內容：輸入例外清單的具體內容。
+        - 說明：輸入該項目的備註說明。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:29/tab:1:
+    category: 威脅情資（TI HUB）
+    page: 例外清單（Exceptions）
+    tab: Behavior
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理例外清單中的 Behavior 設定項目。管理員可透過此頁面新增、刪除例外項目，並設定項目的狀態、名稱與對應的網域，以定義特定網域在系統中的例外行為。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增例外清單的 Behavior 設定項目
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已選取的例外清單項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: Behavior
+        overview: 設定例外清單的 Behavior 項目，包含狀態、名稱與網域資訊。
+        field_descriptions:
+        - 名稱：輸入該例外清單項目的識別名稱。
+        - 網域：輸入需要套用例外規則的網域內容。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:30:
+    category: 系統設定（SYSTEM）
+    page: 名稱伺服器（Name Server）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理名稱伺服器（Name Server）設定，允許管理員新增、編輯及移除名稱伺服器。管理員可設定名稱、伺服器群、地址、通訊埠、QPS、順位及權重等參數，以控制 DNS
+        解析的負載分配與優先順序。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增名稱伺服器設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的名稱伺服器設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示操作說明與功能指引
+      interaction_sections:
+      - action_id: button-0
+        title: 名稱服務器
+        overview: 設定新增名稱伺服器所需的各項參數。
+        field_descriptions:
+        - 名稱：輸入名稱伺服器的識別名稱。
+        - 服務器群：選擇該名稱伺服器所屬的伺服器群組。
+        - 地址：輸入名稱伺服器的網路位址。
+        - 通訊埠：輸入名稱伺服器使用的通訊埠號碼。
+        - QPS：設定每秒查詢數量的限制值。
+        - 順位：設定該名稱伺服器的優先順序。
+        - 權重：設定該名稱伺服器的負載權重。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:31:
+    category: 系統設定（SYSTEM）
+    page: 伺服器池（Server Pools）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理伺服器群組（Server Pools），管理員可在此檢視現有群組、新增新的伺服器群組設定，或移除已儲存的群組項目。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增伺服器群組設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的伺服器群組項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示操作說明與功能指引
+      interaction_sections:
+      - action_id: button-0
+        title: 服務器群
+        overview: 輸入新伺服器群組的名稱以建立設定。
+        field_descriptions:
+        - 名稱：輸入伺服器群組的名稱。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:32:
+    category: 系統設定（SYSTEM）
+    page: 記錄服務（Syslog Servers）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於設定與管理系統日誌伺服器（Syslog Servers），允許管理員新增、編輯與移除日誌傳輸目標，並指定傳輸協定、通訊埠與目標位址。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增系統日誌伺服器設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的系統日誌伺服器設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 系統日誌服務器
+        overview: 設定新的系統日誌伺服器參數。
+        field_descriptions:
+        - 名稱：輸入該系統日誌伺服器的識別名稱。
+        - 目標：輸入系統日誌伺服器的目標位址。
+        - 通訊埠：輸入系統日誌伺服器使用的通訊埠號碼。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:33/tab:0:
+    category: 系統設定（SYSTEM）
+    page: 設定同步（Config Sync）
+    tab: 設定（Settings）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理設定同步（Config Sync）功能，管理員可在此啟用或停用同步機制，並設定設備的角色（如次要）與驗證憑證（設備 ID 與金鑰），以建立設備間的設定同步連線。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存目前的設定同步參數
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:33/tab:1:
+    category: 系統設定（SYSTEM）
+    page: 設定同步（Config Sync）
+    tab: 成員（Member）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理設定同步（Config Sync）的成員清單，管理員可在此新增成員、解除同步連結，並查看相關功能說明。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增成員設定
+      - action_id: button-2
+        include: true
+        confidence: 0.9
+        description: 解除成員同步連結
+      - action_id: button-3
+        include: true
+        confidence: 0.9
+        description: 顯示功能說明與操作指引
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:0:
+    category: 系統設定（SYSTEM）
+    page: 通知（Notification）
+    tab: 郵件服務器（Mail Server）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於設定系統通知功能所使用的郵件伺服器參數，包含伺服器位址、服務埠、寄件人資訊與驗證方式，以建立系統發送郵件通知的基礎連線設定。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - 設定－郵件伺服器：輸入用於發送通知郵件的 SMTP 伺服器位址。
+      - 設定－服務埠：輸入郵件伺服器使用的通訊埠號。
+      - 設定－寄件人：輸入發送通知郵件所使用的電子郵件地址。
+      - 設定－寄件人名稱：輸入顯示在收件者郵件中的寄件人顯示名稱。
+      - 設定－驗證：選擇與郵件伺服器連線時所使用的身份驗證方式。
+      best_practices: []
+      restrictions: []
+  menu:34/tab:1:
+    category: 系統設定（SYSTEM）
+    page: 通知（Notification）
+    tab: 收件人（Recipient）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理通知系統的收件人設定，管理員可透過此頁面新增、移除收件人群組，並設定對應的收件人清單。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 新增收件人群組設定。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的收件人設定項目。
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-1
+        title: 新增收件人
+        overview: 設定新的收件人群組名稱與對應的收件人清單。
+        field_descriptions:
+        - 名稱：輸入收件人群組的識別名稱。
+        - 收件人：輸入該群組包含的收件人清單。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:2:
+    category: 系統設定（SYSTEM）
+    page: 通知（Notification）
+    tab: 事件規則（Event Rule）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理事件告警規則，允許管理員依據特定的事件類型與事件條件建立監控規則，並設定觸發後的動作（如發送電子郵件或記錄至 Syslog）。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增事件告警規則。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的事件規則。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: 事件告警
+        overview: 設定新的事件告警規則，包含事件條件與觸發動作。
+        field_descriptions:
+        - 名稱：輸入該事件告警規則的識別名稱。
+        - 事件類型：選擇要監控的事件分類。
+        - 事件：選擇具體要觸發告警的事件項目。
+        - 規則：輸入用於判斷事件是否觸發告警的條件或邏輯。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:3:
+    category: 系統設定（SYSTEM）
+    page: 通知（Notification）
+    tab: 警報（Alarms）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於檢視與管理警報事件記錄，管理員可透過搜尋功能依時間範圍篩選事件，並查看包含事件類型、等級、規則及觸發值等詳細資訊。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或條件篩選事件記錄。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:34/tab:4:
+    category: 系統設定（SYSTEM）
+    page: 通知（Notification）
+    tab: 警示（Alert）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供警示（Alert）記錄的檢視與管理功能，管理員可透過搜尋功能依時間範圍篩選警示事件，並查看包含事件類型、等級、規則及狀態等詳細資訊，以掌握系統運作狀況。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟搜尋對話框，以關鍵字或條件篩選警示記錄。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:35:
+    category: 設備管理（MANAGEMENT）
+    page: 帳號管理（User）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理系統用戶帳號，提供帳號列表檢視、新增用戶帳號（含帳號、權限、電子郵箱與密碼設定）以及移除已提交帳號的功能。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增新的用戶帳號
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的用戶帳號
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 用戶名
+        overview: 設定新用戶帳號的詳細資訊。
+        field_descriptions:
+        - 帳號：輸入用戶的登入帳號名稱。
+        - 權限：選擇該用戶的系統權限等級。
+        - 電子郵箱：輸入用戶的電子郵件地址。
+        - 密碼：設定用戶的登入密碼。
+        - 再次確認：再次輸入密碼以確認設定正確。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:36/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: 網路位址（Network）
+    tab: IPv4、IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
+    content:
+      overview: 此功能提供網路介面的 IPv4 與 IPv6 位址設定管理，允許管理員檢視與配置網路介面的裝置、位址及 MTU 參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:37/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: 次要位址（Secondary IP）
+    tab: 介面（Interface）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理網路介面的次要 IP 地址，允許管理員為特定介面新增、編輯或移除額外的 IP 位址設定，以支援複雜的網路環境配置。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增介面次要 IP 地址設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的次要 IP 地址設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示操作說明與功能指引
+      interaction_sections:
+      - action_id: button-0
+        title: 新增介面次要 IP 地址
+        overview: 設定介面次要 IP 地址的相關參數。
+        field_descriptions:
+        - 名稱：輸入該次要 IP 設定的識別名稱。
+        - 裝置：選擇要綁定次要 IP 的網路介面。
+        - 地址：輸入次要 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:37/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: 次要位址（Secondary IP）
+    tab: VLAN
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理 VLAN 的次要 IP 地址設定。管理員可透過此頁面新增、編輯或移除 VLAN 介面下的次要 IP 位址，並指定其名稱、綁定裝置及 IP 位址參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 VLAN 次要 IP 地址設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的次要 IP 地址設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 VLAN 次要 IP 地址
+        overview: 設定 VLAN 次要 IP 地址所需的參數。
+        field_descriptions:
+        - 名稱：輸入該次要 IP 地址設定的識別名稱。
+        - 裝置：選擇要綁定次要 IP 地址的網路介面或裝置。
+        - 地址：輸入次要 IP 地址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:38/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: VLAN
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 VLAN IPv4 的設定管理功能，管理員可透過新增、編輯與刪除操作維護 VLAN 項目，並設定名稱、VID、記錄類型、裝置與 IPv4 位址等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 建立新的 VLAN IPv4 設定項目。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 VLAN IPv4 設定項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: VLAN
+        overview: 設定新的 VLAN IPv4 項目所需的參數。
+        field_descriptions:
+        - 名稱：輸入 VLAN 的識別名稱。
+        - VID：輸入 VLAN 識別碼。
+        - 記錄類型：選擇該 VLAN 項目的記錄類型。
+        - 裝置：選擇要綁定的網路裝置。
+        - 地址：輸入 IPv4 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:38/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: VLAN
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 VLAN 的 IPv6 網路設定。管理員可透過此頁籤新增、檢視及移除 VLAN 的 IPv6 地址配置，並設定 VLAN 識別代碼（VID）、關聯裝置及地址前綴長度等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 VLAN IPv6 設定項目
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 VLAN IPv6 設定項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 VLAN IPv6 設定
+        overview: 輸入 VLAN 識別資訊、關聯裝置與 IPv6 地址參數以建立新的設定項目。
+        field_descriptions:
+        - 名稱：輸入 VLAN 的識別名稱。
+        - VID：輸入 VLAN 識別代碼。
+        - 記錄類型：選擇該設定項目的記錄分類。
+        - 裝置：選擇要關聯的網路裝置。
+        - 地址：輸入 IPv6 地址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:39/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: 路由設定（Routing）
+    tab: IPv4
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 IPv4 靜態路由設定，允許管理員新增、檢視及移除路由項目。新增路由時可設定目的位址、記錄類型、裝置、Nexthop 及 Metric 等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 IPv4 靜態路由設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 IPv4 靜態路由項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: ( IPv4 ) 靜態路由
+        overview: 設定 IPv4 靜態路由所需的參數。
+        field_descriptions:
+        - 目的：輸入路由目的位址。
+        - 記錄類型：選擇路由記錄的類型。
+        - 裝置：選擇路由所屬的裝置。
+        - Nexthop：輸入下一跳位址。
+        - Metric：輸入路由的度量值。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:39/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: 路由設定（Routing）
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 IPv6 靜態路由設定。管理員可在此新增、檢視及移除 IPv6 路由項目，並設定目的位址、記錄類型、裝置、Nexthop 及 Metric 等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 IPv6 靜態路由設定
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 IPv6 靜態路由項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 顯示操作說明與功能指引
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 IPv6 靜態路由
+        overview: 設定新的 IPv6 靜態路由參數，包含目的位址、記錄類型、裝置、Nexthop 及 Metric。
+        field_descriptions:
+        - 目的：輸入 IPv6 目的位址。
+        - 記錄類型：選擇路由記錄的類型。
+        - 裝置：選擇用於轉送封包的介面或裝置。
+        - Nexthop：輸入下一跳位址。
+        - Metric：輸入路由指標值。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:40/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: 系統設定（Administration）
+    tab: 基本設定（General）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供系統基本參數的設定功能，包含裝置名稱與網域、名稱服務器（DNS）位址，以及密碼複雜度規則。管理員可透過各區塊的儲存按鈕獨立更新對應的設定項目。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存裝置名稱設定
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 儲存名稱服務器設定
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: 儲存密碼複雜度設定
+      interaction_sections: []
+      page_sections:
+      - 裝置名稱：設定裝置的識別名稱與網域資訊。
+      - 名稱服務器：設定主要與次要的 DNS 解析位址。
+      - 密碼複雜度：設定使用者密碼的長度與字元組成規則。
+      field_descriptions:
+      - 裝置名稱－名稱：輸入裝置的識別名稱。
+      - 裝置名稱－網域：輸入裝置所屬的網域名稱。
+      - 名稱服務器－主要：輸入主要 DNS 服務器的位址。
+      - 名稱服務器－次要：輸入次要 DNS 服務器的位址。
+      - 密碼複雜度－最小長度：設定密碼允許的最少字元數。
+      - 密碼複雜度－最大長度：設定密碼允許的最多字元數。
+      - 密碼複雜度－至少幾個大寫：設定密碼中必須包含的大寫字母數量。
+      - 密碼複雜度－至少幾個小寫：設定密碼中必須包含的小寫字母數量。
+      - 密碼複雜度－至少幾個特殊符號：設定密碼中必須包含的特殊符號數量。
+      - 密碼複雜度－至少幾個數字：設定密碼中必須包含的數字數量。
+      best_practices: []
+      restrictions: []
+  menu:40/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: 系統設定（Administration）
+    tab: 時間（Time）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於設定系統的時間參數，包含時區選擇、NTP 同步狀態與自定時間顯示。管理員可在此調整系統時區以符合營運需求，並確認時間同步機制。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 儲存目前頁面的設定並立即套用變更
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections:
+      - 日期 & 時間：提供系統時間參數的設定與顯示。
+      field_descriptions:
+      - 日期 & 時間－時區：設定系統運作的時區。
+      best_practices: []
+      restrictions: []
+  menu:40/tab:2:
+    category: 設備管理（MANAGEMENT）
+    page: 系統設定（Administration）
+    tab: 裝置存取（Device Access）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理裝置存取規則，允許管理員新增、編輯或移除規則，以控制特定來源位址對特定服務的存取權限（允許或阻擋）。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增裝置存取規則
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的裝置存取規則
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增規則
+        overview: 設定新裝置存取規則的參數，包含規則位置、狀態、名稱、IP 類型、來源位址、服務與動作。
+        field_descriptions:
+        - 目標：選擇規則插入的相對位置。
+        - 名稱：輸入規則的識別名稱。
+        - 來源位址：選擇來源位址的類型（如地址）。
+        - 服務：選擇規則適用的服務項目。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:40/tab:3:
+    category: 設備管理（MANAGEMENT）
+    page: 系統設定（Administration）
+    tab: 應用接口（API）
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理系統 API 介面的存取設定，管理員可透過此頁面啟用或停用 API 服務，並設定對應的 API Key 與 Secret Key 以控制外部系統的存取權限。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存目前頁面的 API 設定
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:41/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: 韌體資訊（Firmware）
+    tab: 軔體（Firmware）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供設備授權資訊、韌體版本狀態及數據處理優化設定的檢視與管理功能。管理員可於此頁面查看授權效期、上傳新的授權或韌體檔案，並確認數據收集授權的狀態。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 上傳新的授權檔案
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 上傳新的韌體檔案
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 確認並套用數據處理優化的設定
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:41/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: 韌體資訊（Firmware）
+    tab: 備份與還原（Backup & Restore）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供系統設定的備份與還原管理功能，包含手動下載備份、上傳備份檔案進行還原、系統重啟與關機操作，以及將系統還原為出廠預設值的選項。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 下載目前系統設定的備份檔案
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: 上傳備份檔案並執行還原程序
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: 重啟系統
+      - action_id: button-7
+        include: true
+        confidence: 0.95
+        description: 關閉系統電源
+      - action_id: button-8
+        include: true
+        confidence: 0.95
+        description: 將系統設定還原為出廠預設值
+      interaction_sections: []
+      page_sections:
+      - 手動備份：提供下載目前系統設定備份的功能。
+      - 還原備份：提供上傳備份檔案以還原系統設定的功能。
+      - 重啟與關機：提供重啟或關閉系統的操作選項。
+      - 還原出廠設定：提供將系統設定與資料還原為出廠預設值的操作選項。
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:41/tab:2:
+    category: 設備管理（MANAGEMENT）
+    page: 韌體資訊（Firmware）
+    tab: 特徵類別（Category）
+    equivalent_tabs: []
+    content:
+      overview: 本頁面提供特徵類別（Category）的管理功能，包含檢視各訂閱類別的版本與更新狀態、設定情資特徵代理參數，以及上傳新的特徵類別檔案。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.9
+        description: 重新同步特徵狀態資訊
+      - action_id: button-2
+        include: true
+        confidence: 0.9
+        description: 確認並套用情資特徵設定
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 上傳新的特徵類別檔案
+      interaction_sections: []
+      page_sections:
+      - 特徵狀態：顯示各訂閱類別的目前版本與最後更新時間。
+      - 情資特徵設定：提供代理相關參數的設定功能。
+      - 上傳類別：提供檔案上傳功能以更新特徵類別。
+      field_descriptions:
+      - 情資特徵設定－代理：設定情資特徵的代理參數。
+      best_practices: []
+      restrictions: []
+  menu:42:
+    category: 設備管理（MANAGEMENT）
+    page: 憑證管理（Certificates）
+    tab: null
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 CA 憑證、網頁憑證及 DoH/DoT/DNSCrypt 憑證的集中管理功能。管理員可在此設定憑證的詳細資訊（如國家、組織、通用名稱等），並執行憑證的重新產生、上傳、下載備份及編輯等操作。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 重新產生或重新簽署 CA 憑證
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 下載 CA 憑證的備份副本
+      - action_id: button-3
+        include: true
+        confidence: 0.95
+        description: 編輯 CA 憑證的詳細資訊
+      - action_id: button-4
+        include: true
+        confidence: 0.95
+        description: 重新產生或重新簽署網頁憑證
+      - action_id: button-5
+        include: true
+        confidence: 0.95
+        description: 上傳新的網頁憑證
+      - action_id: button-6
+        include: true
+        confidence: 0.95
+        description: 下載網頁憑證的備份副本
+      - action_id: button-7
+        include: true
+        confidence: 0.95
+        description: 編輯網頁憑證的詳細資訊
+      - action_id: button-8
+        include: true
+        confidence: 0.95
+        description: 重新產生或重新簽署 DoH/DoT/DNSCrypt 憑證
+      - action_id: button-9
+        include: true
+        confidence: 0.95
+        description: 上傳新的 DoH/DoT/DNSCrypt 憑證
+      - action_id: button-10
+        include: true
+        confidence: 0.95
+        description: 下載 DoH/DoT/DNSCrypt 憑證的備份副本
+      - action_id: button-11
+        include: true
+        confidence: 0.95
+        description: 編輯 DoH/DoT/DNSCrypt 憑證的詳細資訊
+      interaction_sections: []
+      page_sections:
+      - CA 憑證：管理 CA 憑證的詳細資訊與憑證操作。
+      - 網頁憑證：管理網頁憑證的詳細資訊與憑證操作。
+      - DoH/DoT/DNSCrypt 憑證：管理 DoH/DoT/DNSCrypt 憑證的詳細資訊與憑證操作。
+      field_descriptions:
+      - CA 憑證－國家：輸入憑證發行機構的國家代碼。
+      - CA 憑證－省份：輸入憑證發行機構所在的省份或地區。
+      - CA 憑證－地點：輸入憑證發行機構所在的城市或地點。
+      - CA 憑證－組織：輸入憑證發行機構的組織名稱。
+      - CA 憑證－組織單位：輸入憑證發行機構內部的組織單位名稱。
+      - CA 憑證－通用名稱：輸入憑證的通用名稱（Common Name）。
+      - 網頁憑證－國家：輸入憑證發行機構的國家代碼。
+      - 網頁憑證－省份：輸入憑證發行機構所在的省份或地區。
+      - 網頁憑證－地點：輸入憑證發行機構所在的城市或地點。
+      - 網頁憑證－組織：輸入憑證發行機構的組織名稱。
+      - 網頁憑證－組織單位：輸入憑證發行機構內部的組織單位名稱。
+      - 網頁憑證－通用名稱：輸入憑證的通用名稱（Common Name）。
+      - DoH/DoT/DNSCrypt 憑證－國家：輸入憑證發行機構的國家代碼。
+      - DoH/DoT/DNSCrypt 憑證－省份：輸入憑證發行機構所在的省份或地區。
+      - DoH/DoT/DNSCrypt 憑證－地點：輸入憑證發行機構所在的城市或地點。
+      - DoH/DoT/DNSCrypt 憑證－組織：輸入憑證發行機構的組織名稱。
+      - DoH/DoT/DNSCrypt 憑證－組織單位：輸入憑證發行機構內部的組織單位名稱。
+      - DoH/DoT/DNSCrypt 憑證－通用名稱：輸入憑證的通用名稱（Common Name）。
+      best_practices: []
+      restrictions: []
+  menu:43/tab:0:
+    category: 設備管理（MANAGEMENT）
+    page: 診斷工具（Diagnostics）
+    tab: 清除快取（Clear Cache）
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供清除快取與診斷日誌功能，管理員可設定記錄類型與網域以清除特定快取，並可下載診斷日誌以進行後續分析。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 儲存並立即套用變更
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 下載診斷日誌至本地目錄
+      interaction_sections: []
+      page_sections:
+      - 清除快取：提供設定記錄類型與網域以執行快取清除操作。
+      - 診斷日誌：提供備份歷史日誌的功能。
+      field_descriptions:
+      - 清除快取－網域：輸入欲清除快取的網域名稱。
+      best_practices: []
+      restrictions: []
+  menu:43/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: 診斷工具（Diagnostics）
+    tab: Ping
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供 Ping 網路診斷工具，允許管理員設定區域、IP 類型與目的地，以執行連線測試並檢視結果。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 執行 Ping 測試並顯示結果
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - Ping－目的：輸入要進行 Ping 測試的目標位址。
+      best_practices: []
+      restrictions: []
+  menu:43/tab:2:
+    category: 設備管理（MANAGEMENT）
+    page: 診斷工具（Diagnostics）
+    tab: Dig
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供 DNS 查詢工具，允許管理員設定查詢目的、記錄類型與 DNS 伺服器，並執行查詢以檢視解析結果。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 使用目前輸入的參數發送 DNS 查詢請求
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - Dig－目的：輸入要查詢的網域名稱或 IP 位址。
+      - Dig－記錄類型：選擇要查詢的 DNS 記錄類型。
+      - Dig－DNS 伺服器：輸入要進行查詢的 DNS 伺服器位址。
+      best_practices: []
+      restrictions: []
+  menu:43/tab:3:
+    category: 設備管理（MANAGEMENT）
+    page: 診斷工具（Diagnostics）
+    tab: Traceroute
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 Traceroute 網路診斷工具，管理員可設定區域、服務、IP 類型及目的位址，並執行請求以檢視網路路徑追蹤結果。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟 Traceroute 功能的操作說明與使用幫助
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 使用目前設定的參數執行 Traceroute 請求
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - Traceroute－目的：輸入要進行網路路徑追蹤的目標位址。
+      best_practices: []
+      restrictions: []
+  menu:43/tab:4:
+    category: 設備管理（MANAGEMENT）
+    page: 診斷工具（Diagnostics）
+    tab: 連線狀態確認（Connectivity）
+    equivalent_tabs: []
+    content:
+      overview: 此功能提供連線狀態確認工具，管理員可執行連線測試以驗證網路連線狀況，並檢視測試結果。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 發送請求以啟動連線測試，測試結果將顯示於下方結果區塊
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
