@@ -17,6 +17,86 @@ LANGUAGES = ("en", "zh-TW")
 sys.path.insert(0, str(PROJECT_ROOT))
 
 
+CONTENT_FILE_HEADERS = {
+    "en": """# Human-editable content used by the generated English manual.
+#
+# File structure and field guide
+# version: Schema version. Do not change it manually.
+# language: Language of this file. Keep this value as en.
+# pages: All editable manual pages, keyed by a stable menu/tab identifier.
+# menu:.../tab:...: Stable page identifier used to match crawler metadata. Do not rename it.
+# category: Category label shown for reference and easier searching.
+# page: Page label shown for reference and easier searching.
+# tab: Tab label; null means that the page has no tab.
+# equivalent_tabs: Tabs merged into this entry because they share the same content.
+# content: Values below this key are written into the generated manual.
+#   overview: Main description of what the page does.
+#   business_value: Why the page is useful to an administrator or organization.
+#   button_descriptions: Explanations for visible, documentable buttons.
+#     action_id: Stable crawler identifier for the button. Do not rename it.
+#     include: true includes the button in the manual; false hides it.
+#     confidence: AI confidence from 0 to 1. It is reference information only.
+#     description: Reader-facing explanation of what the button does.
+#   interaction_sections: Forms or panels opened by a button.
+#     action_id: Button identifier that opens this form or panel. Do not rename it.
+#     title: Heading used for the opened form or panel.
+#     overview: Short explanation of the form or panel.
+#     field_descriptions: List of field explanations inside the opened form or panel.
+#   page_sections: Explanations for charts, status cards, tables, and other page areas.
+#   field_descriptions: Explanations for fields visible directly on the page or in record details.
+#   best_practices: Recommended operating practices for this page.
+#   restrictions: Limitations, prerequisites, and cautions for this page.
+#
+# Editing notes
+# - Text after # is a comment and is not included in the manual.
+# - Keep the existing indentation, action_id values, and page identifiers.
+# - Use [] for an intentionally empty list, '' for empty text, and null for no tab.
+# - Quote a value when it contains YAML-sensitive characters and parsing fails.
+# - Run this script after a new crawl. Existing human edits are preserved unless
+#   --overwrite is explicitly supplied.
+
+""",
+    "zh-TW": """# 產生繁體中文手冊時使用的可人工編輯內容。
+#
+# 檔案結構與欄位說明
+# version：YAML 結構版本，請勿手動修改。
+# language：此檔案的語言，請保持為 zh-TW。
+# pages：所有可編輯的手冊頁面，並以穩定的選單／頁籤識別碼分類。
+# menu:.../tab:...：用於對應爬蟲 Metadata 的穩定頁面識別碼，請勿改名。
+# category：分類名稱，供閱讀與搜尋使用。
+# page：功能頁名稱，供閱讀與搜尋使用。
+# tab：頁籤名稱；null 代表該功能頁沒有頁籤。
+# equivalent_tabs：因內容相同而合併到此頁的其他頁籤。
+# content：此欄位下的內容會寫入最後產生的手冊。
+#   overview：說明這個功能頁的主要用途。
+#   business_value：說明此功能對管理員或組織的使用價值。
+#   button_descriptions：頁面上可放入手冊的按鈕說明清單。
+#     action_id：爬蟲產生的穩定按鈕識別碼，請勿改名。
+#     include：true 會在手冊顯示該按鈕；false 會將它隱藏。
+#     confidence：AI 判斷信心值，範圍為 0 到 1，僅供參考。
+#     description：手冊中給讀者閱讀的按鈕功能說明。
+#   interaction_sections：點選按鈕後開啟的表單或設定面板。
+#     action_id：用於開啟該表單或面板的按鈕識別碼，請勿改名。
+#     title：該表單或面板在手冊中使用的標題。
+#     overview：該表單或面板的簡短功能說明。
+#     field_descriptions：該表單或面板內部的欄位說明清單。
+#   page_sections：圖表、狀態卡、表格與其他頁面區塊的說明。
+#   field_descriptions：頁面上或資料列明細中可直接看到的欄位說明。
+#   best_practices：操作此頁面時的建議做法。
+#   restrictions：此頁面的限制、先決條件與注意事項。
+#
+# 編輯注意事項
+# - # 後方的文字是註解，不會出現在手冊中。
+# - 請保留原有縮排、action_id 與頁面識別碼。
+# - 故意保留空清單時使用 []，空文字使用 ''，沒有頁籤時使用 null。
+# - 若內容含有 YAML 特殊字元而無法讀取，請將整段文字加上引號。
+# - 完成新一次爬取後執行此程式。除非明確加上 --overwrite，
+#   否則不會覆蓋已有的人工修改。
+
+""",
+}
+
+
 def load_existing(path):
     if not path.is_file():
         return {}
@@ -64,12 +144,7 @@ def preserve_existing_content(
 
 def write_content_file(path, language, pages):
     path.parent.mkdir(parents=True, exist_ok=True)
-    header = (
-        "# Human-editable content used by the generated manual.\n"
-        "# Edit values under content; category/page/tab are lookup labels.\n"
-        "# Run python3 scripts/sync_manual_content.py after a new crawl to add\n"
-        "# missing pages without overwriting existing human edits.\n\n"
-    )
+    header = CONTENT_FILE_HEADERS[language]
     payload = {"version": 1, "language": language, "pages": pages}
     rendered = yaml.safe_dump(
         payload,

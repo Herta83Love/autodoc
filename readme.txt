@@ -159,6 +159,19 @@ config/manual_content/zh-TW.yaml
 
 每個頁面以穩定的 `menu:.../tab:...` 識別碼保存，旁邊也會列出分類、頁面與頁籤名稱，方便搜尋。可直接修改各頁 `content` 內的功能概述、使用價值、按鈕說明、互動區塊、頁面區塊、欄位說明、最佳實務與限制事項。產生文件時，這些 YAML 內容會在最後套用，因此不需要編輯雜湊命名的 AI Cache。
 
+兩份 YAML 檔案開頭都有完整欄位註解。`en.yaml` 使用英文說明，`zh-TW.yaml` 使用繁體中文說明；註解只是編輯指南，不會寫入最後手冊。常用欄位如下：
+
+- `overview`：功能頁的主要用途。
+- `business_value`：此功能對管理員或組織的使用價值。
+- `button_descriptions`：按鈕是否顯示及其功能說明。
+- `interaction_sections`：按鈕開啟後的表單、設定面板與其欄位。
+- `page_sections`：圖表、狀態卡、表格與其他頁面區塊。
+- `field_descriptions`：頁面欄位與展開記錄明細的說明。
+- `best_practices`：建議的操作方式。
+- `restrictions`：限制、先決條件與注意事項。
+
+`menu:.../tab:...` 、`action_id` 和縮排用於程式對應資料，請勿修改。若只要調整手冊文字，修改描述類欄位即可。
+
 重新爬取或增加頁面後，執行：
 
 bash:

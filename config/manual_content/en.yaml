@@ -1,7 +1,39 @@
-# Human-editable content used by the generated manual.
-# Edit values under content; category/page/tab are lookup labels.
-# Run python3 scripts/sync_manual_content.py after a new crawl to add
-# missing pages without overwriting existing human edits.
+# Human-editable content used by the generated English manual.
+#
+# File structure and field guide
+# version: Schema version. Do not change it manually.
+# language: Language of this file. Keep this value as en.
+# pages: All editable manual pages, keyed by a stable menu/tab identifier.
+# menu:.../tab:...: Stable page identifier used to match crawler metadata. Do not rename it.
+# category: Category label shown for reference and easier searching.
+# page: Page label shown for reference and easier searching.
+# tab: Tab label; null means that the page has no tab.
+# equivalent_tabs: Tabs merged into this entry because they share the same content.
+# content: Values below this key are written into the generated manual.
+#   overview: Main description of what the page does.
+#   business_value: Why the page is useful to an administrator or organization.
+#   button_descriptions: Explanations for visible, documentable buttons.
+#     action_id: Stable crawler identifier for the button. Do not rename it.
+#     include: true includes the button in the manual; false hides it.
+#     confidence: AI confidence from 0 to 1. It is reference information only.
+#     description: Reader-facing explanation of what the button does.
+#   interaction_sections: Forms or panels opened by a button.
+#     action_id: Button identifier that opens this form or panel. Do not rename it.
+#     title: Heading used for the opened form or panel.
+#     overview: Short explanation of the form or panel.
+#     field_descriptions: List of field explanations inside the opened form or panel.
+#   page_sections: Explanations for charts, status cards, tables, and other page areas.
+#   field_descriptions: Explanations for fields visible directly on the page or in record details.
+#   best_practices: Recommended operating practices for this page.
+#   restrictions: Limitations, prerequisites, and cautions for this page.
+#
+# Editing notes
+# - Text after # is a comment and is not included in the manual.
+# - Keep the existing indentation, action_id values, and page identifiers.
+# - Use [] for an intentionally empty list, '' for empty text, and null for no tab.
+# - Quote a value when it contains YAML-sensitive characters and parsing fails.
+# - Run this script after a new crawl. Existing human edits are preserved unless
+#   --overwrite is explicitly supplied.
 
 version: 1
 language: en
