@@ -51,7 +51,18 @@ pages:
       business_value: ''
       button_descriptions: []
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'Reconnaissance: A metric tracking the scanning and enumeration of target network resources.'
+      - TRAFFIC OFFLOADED：Compare amount of bandwidth is capable to be offload from wire with actually
+        configured
+      - CONNECTION(S) OFFLOADED：Compare number of connection(s) is capable to be offload from gateway
+        appliance with actually configured
+      - DNS ENUMERATION：Queries gathering all possible DNS records to build map of target’s internet presence
+      - DOMAIN FLUXING：Queries for unique, non-existent subdomains or names
+      - MALICIOUS DOMAINS：Query domains categorized in Botnet, Malware and Ransomware
+      - USRA INTELLIGENCE：Queries matched URMAZI Security Research Academy IoC Intelligence
+      - RANSOM GROUP：Number of ransom group found from matches of USRA Intelligence
+      - THREAT ACTOR：Number of threat actor found from matches of USRA Intelligence
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -80,7 +91,35 @@ pages:
         description: Displays the help panel with instructions for using the search and filter functions.
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 'Action: Indicates how the system handled the DNS event, such as allowing or blocking it.'
+      - 'ID: Displays the unique identifier assigned to the log event.'
+      - 'From: Displays the source IP address that sent the DNS query.'
+      - 'Type: Displays the DNS record type shown in this log entry, such as A or CNAME.'
+      - 'Query Name: Displays the fully qualified domain name requested by the client.'
+      - 'Category: Displays the category assigned to the queried domain or matched object.'
+      - 'Response Code: Displays the DNS response code, such as NOERROR or SERVFAIL.'
+      - 'Server ID: Identifies the DNS service or server associated with the event.'
+      - 'Family: Displays whether the network traffic used IPv4 or IPv6.'
+      - 'Protocol: Displays the transport protocol used for the DNS exchange, such as UDP or TCP.'
+      - 'Src. Port: Displays the source port used by the client.'
+      - 'To: Displays the destination IP address that received the DNS query.'
+      - 'Dst. Port: Displays the destination port used by the DNS service.'
+      - 'Count: Displays the number of response records associated with the event.'
+      - 'Response Domain: Displays the domain name returned in the DNS response.'
+      - 'TTL: Displays the response record time to live in seconds.'
+      - 'Response Result: Displays the address, domain, or data returned by the DNS response.'
+      - 'Bytes: Displays the size of the DNS message in bytes.'
+      - 'Hit: Displays the domain or value that matched the applicable category or rule.'
+      - 'New Observed: Indicates whether the queried domain was observed for the first time.'
+      - 'Tags: Displays labels assigned to the event, such as new-query-name or new-response.'
+      - 'Latency: Displays the time required to process or receive the DNS response.'
+      - 'DNSSEC Validation: Displays the DNSSEC validation state of the response.'
+      - 'New Responded: Indicates whether this response result was observed for the first time.'
+      - 'Response Time: Displays the date and time when the DNS response was recorded.'
+      - 'Query Type: Displays the DNS record type requested by the original query.'
+      - 'Category Type: Displays the data type used as the basis for categorization, such as QNAME.'
+      - 'Trigger: Displays the pattern or value that caused the category or rule match.'
       best_practices: []
       restrictions: []
   menu:1/tab:1:
@@ -108,16 +147,43 @@ pages:
         description: Displays the help panel with descriptions for the available filter and search controls.
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 'Action: Indicates how the firewall handled the DNS event, such as allowing or blocking it.'
+      - 'ID: Displays the unique identifier assigned to the log event.'
+      - 'From: Displays the source IP address that sent the DNS query.'
+      - 'Type: Displays the DNS record type shown in the log list.'
+      - 'Query Name: Displays the fully qualified domain name requested by the client.'
+      - 'Tags: Displays labels assigned to the event.'
+      - 'Category: Displays the category assigned to the queried domain or matched object.'
+      - 'Hit: Displays the domain or value that matched the applicable category or rule.'
+      - 'Trigger: Displays the pattern or value that caused the category or rule match.'
+      - 'Category Type: Displays the data type used as the basis for categorization.'
+      - 'To: Displays the destination IP address that received the DNS query.'
+      - 'Dst. Port: Displays the destination port used by the DNS service.'
+      - 'Latency: Displays the time required to process or receive the DNS response.'
+      - 'Family: Displays whether the network traffic used IPv4 or IPv6.'
+      - 'Server ID: Identifies the DNS service or server associated with the event.'
+      - 'New Observed: Indicates whether the queried domain was observed for the first time.'
+      - 'New Responsed: Indicates whether the response result was observed for the first time.'
+      - 'Protocol: Displays the transport protocol used for the DNS exchange.'
+      - 'Query Time: Displays the date and time when the DNS query was recorded.'
+      - 'Bytes: Displays the size of the DNS message in bytes.'
+      - 'Response Code: Displays the DNS response code, such as NOERROR or SERVFAIL.'
+      - 'Response Result: Displays the address, domain, or data returned by the DNS response.'
+      - 'Response Domain: Displays the domain name returned in the DNS response.'
+      - 'Count: Displays the number of response records associated with the event.'
+      - 'Response Time: Displays the date and time when the DNS response was recorded.'
+      - 'TTL: Displays the response record time to live in seconds.'
+      - 'Response Type: Displays the DNS record type returned in the response.'
+      - 'Src. Port: Displays the source port used by the client.'
+      - 'Validated: Displays the validation state reported for the event.'
       best_practices: []
       restrictions: []
   menu:1/tab:2:
     category: DOMAIN INSIGHTS
     page: History Logs
-    tab: New Observed, New Responded
-    equivalent_tabs:
-    - New Observed
-    - New Responded
+    tab: New Observed
+    equivalent_tabs: []
     content:
       overview: The History Logs page provides a detailed view of DNS query events, categorized into 'New
         Observed' and 'New Responded' tabs. It allows administrators to filter, search, and export log
@@ -138,7 +204,92 @@ pages:
         description: Displays the help panel with instructions for using the search and filter features.
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 'Action: Indicates how the system handled the DNS event.'
+      - 'ID: Displays the unique identifier assigned to the log event.'
+      - 'From: Displays the source IP address that sent the DNS query.'
+      - 'Response Type: Displays the DNS record type returned in the response.'
+      - 'Query Name: Displays the fully qualified domain name requested by the client.'
+      - 'Category: Displays the category assigned to the queried domain or matched object.'
+      - 'Response Code: Displays the DNS response code, such as NOERROR or SERVFAIL.'
+      - 'Server ID: Identifies the DNS service or server associated with the event.'
+      - 'Family: Displays whether the network traffic used IPv4 or IPv6.'
+      - 'Protocol: Displays the transport protocol used for the DNS exchange.'
+      - 'Src. Port: Displays the source port used by the client.'
+      - 'To: Displays the destination IP address that received the DNS query.'
+      - 'Dst. Port: Displays the destination port used by the DNS service.'
+      - 'Count: Displays the number of response records associated with the event.'
+      - 'Response Domain: Displays the domain name returned in the DNS response.'
+      - 'TTL: Displays the response record time to live in seconds.'
+      - 'Response Result: Displays the address, domain, or data returned by the DNS response.'
+      - 'Bytes: Displays the size of the DNS message in bytes.'
+      - 'Hit: Displays the domain or value that matched the applicable category or rule.'
+      - 'New Observed: Indicates whether the queried domain was observed for the first time.'
+      - 'Tags: Displays labels assigned to the event.'
+      - 'Latency: Displays the time required to process or receive the DNS response.'
+      - 'DNSSEC Validation: Displays the DNSSEC validation state of the response.'
+      - 'New Responded: Indicates whether this response result was observed for the first time.'
+      - 'Response Time: Displays the date and time when the DNS response was recorded.'
+      - 'Query Type: Displays the DNS record type requested by the original query.'
+      - 'Category Type: Displays the data type used as the basis for categorization.'
+      - 'Trigger: Displays the pattern or value that caused the category or rule match.'
+      best_practices: []
+      restrictions: []
+  menu:1/tab:3:
+    category: DOMAIN INSIGHTS
+    page: History Logs
+    tab: New Responded
+    equivalent_tabs: []
+    content:
+      overview: The New Responded tab provides a detailed log of DNS queries for domains that have been
+        newly responded to by the system. Administrators can filter these records by various criteria
+        and expand entries to view comprehensive response details, including source information, response
+        codes, and security validation status.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Opens the search dialog to filter log entries by specific criteria.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Downloads the current list of log records as a report file.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the help panel with descriptions for available actions and filters.
+      interaction_sections: []
+      page_sections: []
+      field_descriptions:
+      - 'Action: Indicates how the system handled the DNS event.'
+      - 'ID: Displays the unique identifier assigned to the log event.'
+      - 'From: Displays the source IP address that sent the DNS query.'
+      - 'Response Type: Displays the DNS record type returned in the response.'
+      - 'Query Name: Displays the fully qualified domain name requested by the client.'
+      - 'Category: Displays the category assigned to the queried domain or matched object.'
+      - 'Response Code: Displays the DNS response code, such as NOERROR or SERVFAIL.'
+      - 'Server ID: Identifies the DNS service or server associated with the event.'
+      - 'Family: Displays whether the network traffic used IPv4 or IPv6.'
+      - 'Protocol: Displays the transport protocol used for the DNS exchange.'
+      - 'Src. Port: Displays the source port used by the client.'
+      - 'To: Displays the destination IP address that received the DNS query.'
+      - 'Dst. Port: Displays the destination port used by the DNS service.'
+      - 'Count: Displays the number of response records associated with the event.'
+      - 'Response Domain: Displays the domain name returned in the DNS response.'
+      - 'TTL: Displays the response record time to live in seconds.'
+      - 'Response Result: Displays the address, domain, or data returned by the DNS response.'
+      - 'Bytes: Displays the size of the DNS message in bytes.'
+      - 'Hit: Displays the domain or value that matched the applicable category or rule.'
+      - 'New Observed: Indicates whether the queried domain was observed for the first time.'
+      - 'Tags: Displays labels assigned to the event.'
+      - 'Latency: Displays the time required to process or receive the DNS response.'
+      - 'DNSSEC Validation: Displays the DNSSEC validation state of the response.'
+      - 'New Responded: Indicates whether this response result was observed for the first time.'
+      - 'Response Time: Displays the date and time when the DNS response was recorded.'
+      - 'Query Type: Displays the DNS record type requested by the original query.'
+      - 'Category Type: Displays the data type used as the basis for categorization.'
+      - 'Trigger: Displays the pattern or value that caused the category or rule match.'
       best_practices: []
       restrictions: []
   menu:1/tab:4:
@@ -453,7 +604,15 @@ pages:
         confidence: 0.95
         description: Sort the lower data table by the 'Hits' column in descending order.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'Threat Score: Displays a vertical bar chart representing the threat score metric.'
+      - 'Threat Insight - Query Behaviors - Chart 2: Displays a vertical bar chart for query behavior
+        analysis.'
+      - 'Threat Insight - Query Behaviors - Chart 3: Displays a radar chart visualizing the distribution
+        of query types including HCQ, NAQ, JTD, QBR, SND, and ABQ.'
+      - 'Threat Insight - Query Behaviors - Chart 4: Displays a detailed breakdown of query behaviors
+        with labels for Hazardous Category Queried, Non-Answered Queries, Jeopardous Top Level Domain,
+        Query Behavior Risk, Suspicious New Domain, and Abnormal Query.'
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -481,7 +640,13 @@ pages:
         confidence: 0.95
         description: Sort the domain table by the number of hits in descending order.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'Amplification - Chart 1: Displays a graphical representation of amplification statistics over
+        the selected period.'
+      - 'Amplification - Chart 2: Displays a graphical representation of amplification statistics over
+        the selected period.'
+      - 'Amplification - Chart 3: Presents a tabular list of amplification data, including source, hit
+        counts, and domain information, with options to sort by hits.'
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -521,7 +686,11 @@ pages:
         confidence: 0.95
         description: Sort the detection from queries table by hits in descending order.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'Tunneling - Chart 1: Displays statistical data for the selected 7-day period.'
+      - 'Tunneling - Chart 2: Displays statistical data for the selected 7-day period.'
+      - 'Tunneling - Chart 3: Presents a detailed table of tunneling activity categorized by ''Threat
+        Intelligence Feed'' and ''Detection from Queries'', listing source, hits, domain, and name count.'
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -560,7 +729,11 @@ pages:
         confidence: 0.95
         description: Sort the data in the Name table by the number of hits in descending order.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - Botnet Insight - Chart 1：Displays the statistics and trend represented by this chart.
+      - Botnet Insight - Chart 2：Displays the statistics and trend represented by this chart.
+      - Botnet Insight - Chart 3：Displays statistics related to Threat Intelligence Feed、Detection from
+        Queries、Source、Hits Sort table by hits in descending order、Hits、Name.
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -584,7 +757,10 @@ pages:
         confidence: 0.95
         description: Sort the table data by the number of hits in descending order.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'Cloud Access - Chart 1: Displays a graphical representation of cloud access activity.'
+      - 'Cloud Access - Chart 2: Displays a graphical representation of cloud access activity.'
+      - 'Cloud Access - Chart 3: Displays a graphical representation of cloud access activity.'
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -628,7 +804,13 @@ pages:
         confidence: 0.95
         description: Sorts the answer table by the suspicious rating in descending order.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'First Observed - Chart 1: Displays a statistical chart for the selected 7-day period.'
+      - 'First Observed - Chart 2: Displays a statistical chart for the selected 7-day period.'
+      - 'First Observed - Chart 3: Displays a statistical chart for the selected 7-day period.'
+      - 'First Observed - Chart 4: Displays a statistical chart for the selected 7-day period.'
+      - 'First Observed - Chart 5: Presents a detailed table of first observed queries and answers, including
+        source, hits, domain, and suspicious status.'
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -649,7 +831,12 @@ pages:
         confidence: 0.95
         description: Access the help documentation and user guide for the Operation Intel page.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - DEVICE：TOP 5 DEVICE DETECTED
+      - DOMAIN：TOP 5 DOMAIN DETECTED
+      - RANSOM GROUP：TOP 5 RANSOMWARE GROUP DETECTED
+      - THREAT ACTOR：TOP 5 THREAT ACTOR DETECTED
+      - MALWARE：TOP 5 MALWARE DETECTED
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -1430,7 +1617,8 @@ pages:
         confidence: 0.95
         description: Save and apply the changes immediately.
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 'Sinkhole: Configure the sinkhole feature status, device address status, and the target address.'
       field_descriptions:
       - 'Sinkhole－Address: Specifies the IP address to be used for the sinkhole.'
       best_practices: []
@@ -1453,40 +1641,54 @@ pages:
       - action_id: button-2
         include: true
         confidence: 0.95
-        description: Opens the configuration form to add a new Domain entry.
+        description: Opens the configuration form to add a new forward (Domain) or reverse (PTR) DNS zone.
       - action_id: button-4
-        include: true
+        include: false
         confidence: 0.95
-        description: Opens the configuration form to add a new PTR entry.
+        description: Covered by the combined Domain or PTR add action above.
       interaction_sections:
       - action_id: button-2
         title: Add Domain
         overview: Configures the parameters for a new Domain entry, including the operating method, domain
           name, and Start of Authority (SOA) details.
         field_descriptions:
-        - 'Operating Method: Selects the operational mode for the domain configuration.'
-        - 'Domain Name: Specifies the name of the domain to be managed.'
-        - 'Server: Defines the server name associated with the Start of Authority record.'
-        - 'Email: Specifies the contact email address for the Start of Authority record.'
-        - 'Serial: Sets the serial number for the Start of Authority record.'
-        - 'Refresh Interval: Defines the interval in seconds for refreshing the zone data.'
-        - 'Retry Interval: Defines the interval in seconds for retrying failed refresh attempts.'
-        - 'Expire Time: Sets the time in seconds after which the zone data is considered expired.'
-        - 'Cache Time: Sets the time in seconds for which negative responses are cached.'
+        - 'Operating Method: Select how the zone is provided: locally (Native), as a zone-transfer master,
+          or as a zone-transfer slave.'
+        - 'Domain Name: Enter the forward lookup zone name for which this server is authoritative, such
+          as example.com.'
+        - 'Server: Enter the primary authoritative DNS server name stored in the SOA MNAME field.'
+        - 'Email: Enter the responsible administrator mailbox stored in the SOA RNAME field.'
+        - 'Serial: Displays the system-generated SOA version number used by secondary servers to detect
+          zone changes.'
+        - 'Refresh Interval: Set how many seconds a secondary server waits before checking the primary
+          server for a newer serial number.'
+        - 'Retry Interval: Set how many seconds a secondary server waits before retrying a failed refresh
+          request.'
+        - 'Expire Time: Set how long a secondary server may continue serving the zone without a successful
+          refresh.'
+        - 'Cache Time: Set the SOA negative-cache TTL for responses indicating that a name or record does
+          not exist.'
       - action_id: button-4
         title: Add PTR
         overview: Configures the parameters for a new PTR entry, including the operating method, PTR address,
           and Start of Authority (SOA) details.
         field_descriptions:
-        - 'Operating Method: Selects the operational mode for the PTR configuration.'
-        - 'PTR: Specifies the PTR address or identifier.'
-        - 'Server: Defines the server name associated with the Start of Authority record.'
-        - 'Email: Specifies the contact email address for the Start of Authority record.'
-        - 'Serial: Sets the serial number for the Start of Authority record.'
-        - 'Refresh Interval: Defines the interval in seconds for refreshing the zone data.'
-        - 'Retry Interval: Defines the interval in seconds for retrying failed refresh attempts.'
-        - 'Expire Time: Sets the time in seconds after which the zone data is considered expired.'
-        - 'Cache Time: Sets the time in seconds for which negative responses are cached.'
+        - 'Operating Method: Select how the reverse zone is provided: locally (Native), as a zone-transfer
+          master, or as a zone-transfer slave.'
+        - 'PTR: Enter the network address for the reverse lookup zone and select whether it is IPv4 or
+          IPv6.'
+        - 'Server: Enter the primary authoritative DNS server name stored in the SOA MNAME field.'
+        - 'Email: Enter the responsible administrator mailbox stored in the SOA RNAME field.'
+        - 'Serial: Displays the system-generated SOA version number used by secondary servers to detect
+          zone changes.'
+        - 'Refresh Interval: Set how many seconds a secondary server waits before checking the primary
+          server for a newer serial number.'
+        - 'Retry Interval: Set how many seconds a secondary server waits before retrying a failed refresh
+          request.'
+        - 'Expire Time: Set how long a secondary server may continue serving the zone without a successful
+          refresh.'
+        - 'Cache Time: Set the SOA negative-cache TTL for responses indicating that a name or record does
+          not exist.'
       page_sections: []
       field_descriptions: []
       best_practices: []
@@ -2844,6 +3046,41 @@ pages:
       interaction_sections: []
       page_sections:
       - 'Result: Displays the output of the connectivity tests.'
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:15/tab:2:
+    category: CONFIGURE
+    page: Bridge
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: This page allows administrators to manage IPv6 bridge entries. It provides functionality
+        to add new bridges by specifying a name, device, and address, as well as to remove existing saved
+        entries.
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: Adds a new IPv6 bridge entry.
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: Removes committed IPv6 bridge entries from the list.
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: Displays the built-in help panel for the current page.
+      interaction_sections:
+      - action_id: button-0
+        title: Bridge
+        overview: Defines the parameters for a new IPv6 bridge entry.
+        field_descriptions:
+        - 'Name: Enter a descriptive name for the bridge entry.'
+        - 'Device: Select the network device associated with the bridge.'
+        - 'Address: Enter the IPv6 address for the bridge.'
+      page_sections: []
       field_descriptions: []
       best_practices: []
       restrictions: []

@@ -48,7 +48,16 @@ pages:
       business_value: ''
       button_descriptions: []
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - TRAFFIC OFFLOADED：比較可從實體網路卸載的頻寬量與實際已設定卸載的頻寬量。
+      - CONNECTION(S) OFFLOADED：比較可從閘道設備卸載的連線數與實際已設定卸載的連線數。
+      - Reconnaissance：顯示針對目標網路資源進行掃描與列舉的偵測指標。
+      - DNS ENUMERATION：顯示收集所有可能 DNS 記錄以建立目標網路存在地圖的查詢指標。
+      - DOMAIN FLUXING：顯示針對唯一且不存在的子網域或名稱進行查詢的指標。
+      - MALICIOUS DOMAINS：顯示被分類為 Botnet、Malware 與 Ransomware 的網域查詢指標。
+      - USRA INTELLIGENCE：顯示與 USRA Security Research Academy IoC 情報匹配的查詢指標。
+      - RANSOM GROUP：顯示從 USRA 情報匹配中發現的勒索軟體群組數量指標。
+      - THREAT ACTOR：顯示從 USRA 情報匹配中發現的威脅行為者數量指標。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -75,7 +84,35 @@ pages:
         description: 開啟操作說明與使用幫助文件。
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 動作：顯示系統對此 DNS 事件採取的處理方式，例如允許或阻擋。
+      - ID：顯示此筆記錄的唯一識別碼。
+      - 來源：顯示送出 DNS 查詢的來源 IP 位址。
+      - 記錄類型：顯示此筆記錄的 DNS 資源記錄類型，例如 A 或 CNAME。
+      - 查詢名稱：顯示用戶端要求查詢的完整網域名稱。
+      - 特徵類別：顯示查詢網域或吻合項目所屬的分類。
+      - 回應代碼：顯示 DNS 回應碼，例如 NOERROR 或 SERVFAIL。
+      - 服務器ID：顯示此事件所使用的 DNS 服務或伺服器識別資訊。
+      - IP版本：顯示此筆流量使用 IPv4 或 IPv6。
+      - DNS協定：顯示 DNS 通訊使用的傳輸協定，例如 UDP 或 TCP。
+      - 來源埠：顯示用戶端送出查詢時使用的來源連接埠。
+      - 目的：顯示接收 DNS 查詢的目的 IP 位址。
+      - 目的埠：顯示 DNS 服務使用的目的連接埠。
+      - 計數：顯示此事件所包含的回應記錄數量。
+      - 回應網域：顯示 DNS 回應中傳回的網域名稱。
+      - TTL：顯示回應記錄的存留時間，單位為秒。
+      - 回應結果：顯示 DNS 回應傳回的位址、網域或其他資料。
+      - Bytes：顯示 DNS 訊息的大小，單位為位元組。
+      - 吻合：顯示與分類或規則相符的網域或資料值。
+      - 新觀察：顯示此查詢網域是否為系統首次觀察到。
+      - 標籤：顯示系統為事件加上的標籤，例如 new-query-name 或 new-response。
+      - 網路延遲：顯示系統處理或收到 DNS 回應所需的時間。
+      - DNSSEC 驗證：顯示 DNS 回應的 DNSSEC 驗證狀態。
+      - 新回應：顯示此回應結果是否為系統首次觀察到。
+      - 回應時間：顯示系統記錄 DNS 回應的日期與時間。
+      - 查詢類型：顯示原始 DNS 查詢要求的資源記錄類型。
+      - 類別類型：顯示系統進行分類時所依據的資料類型，例如 QNAME。
+      - 觸發：顯示造成分類或規則吻合的條件或資料值。
       best_practices: []
       restrictions: []
   menu:1/tab:1:
@@ -101,7 +138,36 @@ pages:
         description: 開啟操作說明與使用幫助文件。
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 動作：顯示防火牆對此 DNS 事件採取的處理方式，例如允許或阻擋。
+      - ID：顯示此筆記錄的唯一識別碼。
+      - 來源：顯示送出 DNS 查詢的來源 IP 位址。
+      - 記錄類型：顯示記錄清單中的 DNS 資源記錄類型。
+      - 查詢名稱：顯示用戶端要求查詢的完整網域名稱。
+      - 標籤：顯示系統為事件加上的標籤。
+      - 特徵類別：顯示查詢網域或吻合項目所屬的分類。
+      - 吻合：顯示與分類或規則相符的網域或資料值。
+      - 觸發：顯示造成分類或規則吻合的條件或資料值。
+      - 類別類型：顯示系統進行分類時所依據的資料類型。
+      - 目的：顯示接收 DNS 查詢的目的 IP 位址。
+      - 目的埠：顯示 DNS 服務使用的目的連接埠。
+      - 網路延遲：顯示系統處理或收到 DNS 回應所需的時間。
+      - IP版本：顯示此筆流量使用 IPv4 或 IPv6。
+      - 服務器ID：顯示此事件所使用的 DNS 服務或伺服器識別資訊。
+      - 新觀察：顯示此查詢網域是否為系統首次觀察到。
+      - 新回應的：顯示此回應結果是否為系統首次觀察到。
+      - DNS協定：顯示 DNS 通訊使用的傳輸協定。
+      - 查詢時間：顯示系統記錄 DNS 查詢的日期與時間。
+      - Bytes：顯示 DNS 訊息的大小，單位為位元組。
+      - 回應代碼：顯示 DNS 回應碼，例如 NOERROR 或 SERVFAIL。
+      - 回應結果：顯示 DNS 回應傳回的位址、網域或其他資料。
+      - 回應網域：顯示 DNS 回應中傳回的網域名稱。
+      - 計數：顯示此事件所包含的回應記錄數量。
+      - 回應時間：顯示系統記錄 DNS 回應的日期與時間。
+      - TTL：顯示回應記錄的存留時間，單位為秒。
+      - 回應類型：顯示 DNS 回應傳回的資源記錄類型。
+      - 來源埠：顯示用戶端送出查詢時使用的來源連接埠。
+      - 已驗證：顯示此事件所回報的驗證狀態。
       best_practices: []
       restrictions: []
   menu:1/tab:2:
@@ -127,7 +193,35 @@ pages:
         description: 開啟操作說明與使用幫助文件。
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 動作：顯示系統對此 DNS 事件採取的處理方式。
+      - ID：顯示此筆記錄的唯一識別碼。
+      - 來源：顯示送出 DNS 查詢的來源 IP 位址。
+      - 回應類型：顯示 DNS 回應傳回的資源記錄類型。
+      - 查詢名稱：顯示用戶端要求查詢的完整網域名稱。
+      - 特徵類別：顯示查詢網域或吻合項目所屬的分類。
+      - 回應代碼：顯示 DNS 回應碼，例如 NOERROR 或 SERVFAIL。
+      - 服務器ID：顯示此事件所使用的 DNS 服務或伺服器識別資訊。
+      - IP版本：顯示此筆流量使用 IPv4 或 IPv6。
+      - DNS協定：顯示 DNS 通訊使用的傳輸協定。
+      - 來源埠：顯示用戶端送出查詢時使用的來源連接埠。
+      - 目的：顯示接收 DNS 查詢的目的 IP 位址。
+      - 目的埠：顯示 DNS 服務使用的目的連接埠。
+      - 計數：顯示此事件所包含的回應記錄數量。
+      - 回應網域：顯示 DNS 回應中傳回的網域名稱。
+      - TTL：顯示回應記錄的存留時間，單位為秒。
+      - 回應結果：顯示 DNS 回應傳回的位址、網域或其他資料。
+      - Bytes：顯示 DNS 訊息的大小，單位為位元組。
+      - 吻合：顯示與分類或規則相符的網域或資料值。
+      - 新觀察：顯示此查詢網域是否為系統首次觀察到。
+      - 標籤：顯示系統為事件加上的標籤。
+      - 網路延遲：顯示系統處理或收到 DNS 回應所需的時間。
+      - DNSSEC 驗證：顯示 DNS 回應的 DNSSEC 驗證狀態。
+      - 新回應：顯示此回應結果是否為系統首次觀察到。
+      - 回應時間：顯示系統記錄 DNS 回應的日期與時間。
+      - 查詢類型：顯示原始 DNS 查詢要求的資源記錄類型。
+      - 類別類型：顯示系統進行分類時所依據的資料類型。
+      - 觸發：顯示造成分類或規則吻合的條件或資料值。
       best_practices: []
       restrictions: []
   menu:1/tab:3:
@@ -153,7 +247,35 @@ pages:
         description: 開啟操作說明與使用幫助文件。
       interaction_sections: []
       page_sections: []
-      field_descriptions: []
+      field_descriptions:
+      - 動作：顯示系統對此 DNS 事件採取的處理方式。
+      - ID：顯示此筆記錄的唯一識別碼。
+      - 來源：顯示送出 DNS 查詢的來源 IP 位址。
+      - 回應類型：顯示 DNS 回應傳回的資源記錄類型。
+      - 查詢名稱：顯示用戶端要求查詢的完整網域名稱。
+      - 特徵類別：顯示查詢網域或吻合項目所屬的分類。
+      - 回應代碼：顯示 DNS 回應碼，例如 NOERROR 或 SERVFAIL。
+      - 服務器ID：顯示此事件所使用的 DNS 服務或伺服器識別資訊。
+      - IP版本：顯示此筆流量使用 IPv4 或 IPv6。
+      - DNS協定：顯示 DNS 通訊使用的傳輸協定。
+      - 來源埠：顯示用戶端送出查詢時使用的來源連接埠。
+      - 目的：顯示接收 DNS 查詢的目的 IP 位址。
+      - 目的埠：顯示 DNS 服務使用的目的連接埠。
+      - 計數：顯示此事件所包含的回應記錄數量。
+      - 回應網域：顯示 DNS 回應中傳回的網域名稱。
+      - TTL：顯示回應記錄的存留時間，單位為秒。
+      - 回應結果：顯示 DNS 回應傳回的位址、網域或其他資料。
+      - Bytes：顯示 DNS 訊息的大小，單位為位元組。
+      - 吻合：顯示與分類或規則相符的網域或資料值。
+      - 新觀察：顯示此查詢網域是否為系統首次觀察到。
+      - 標籤：顯示系統為事件加上的標籤。
+      - 網路延遲：顯示系統處理或收到 DNS 回應所需的時間。
+      - DNSSEC 驗證：顯示 DNS 回應的 DNSSEC 驗證狀態。
+      - 新回應：顯示此回應結果是否為系統首次觀察到。
+      - 回應時間：顯示系統記錄 DNS 回應的日期與時間。
+      - 查詢類型：顯示原始 DNS 查詢要求的資源記錄類型。
+      - 類別類型：顯示系統進行分類時所依據的資料類型。
+      - 觸發：顯示造成分類或規則吻合的條件或資料值。
       best_practices: []
       restrictions: []
   menu:1/tab:4:
@@ -444,7 +566,11 @@ pages:
         confidence: 0.95
         description: 依查詢數對查詢網域表格進行排序
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 威脅評分：顯示與「威脅評分、偽裝名稱、真實名稱、查詢數 Sort table by hits in descending order、查詢數、類型比例」相關的統計資訊。
+      - 威脅探查 - 查詢行為與報告 - 圖表 2：顯示與「偽裝名稱、真實名稱、查詢數 Sort table by hits in descending order、查詢數、類型比例、查詢網域」相關的統計資訊。
+      - 威脅探查 - 查詢行為與報告 - 圖表 3：顯示與「HCQ、NAQ、JTD、QBR、SND、ABQ」相關的統計資訊。
+      - 威脅探查 - 查詢行為與報告 - 圖表 4：顯示與「危害類別、無回應解析、風險頂級域名、查詢類別風險、新查詢可疑網域、潛藏威脅查詢」相關的統計資訊。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -470,7 +596,10 @@ pages:
         confidence: 0.95
         description: 依查詢數對網域資料進行排序
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 放大攻擊 - 圖表 1：顯示前七天統計資料的趨勢圖表。
+      - 放大攻擊 - 圖表 2：顯示前七天統計資料的趨勢圖表。
+      - 放大攻擊 - 圖表 3：以前七天統計資料為基礎，以表格形式呈現來源、查詢數與網域等明細資訊。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -508,7 +637,10 @@ pages:
         confidence: 0.95
         description: 依查詢數對網域資料進行排序
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 隧道攻擊 - 圖表 1：顯示前七天統計資料的趨勢圖表。
+      - 隧道攻擊 - 圖表 2：顯示前七天統計資料的趨勢圖表。
+      - 隧道攻擊 - 圖表 3：顯示前七天統計資料的明細表格，包含威脅情資特徵與動態名稱分類。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -542,7 +674,10 @@ pages:
         confidence: 0.9
         description: 依查詢數對資料進行排序
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 殭屍網路 - 圖表 1：顯示此圖表所代表的統計與趨勢。
+      - 殭屍網路 - 圖表 2：顯示此圖表所代表的統計與趨勢。
+      - 殭屍網路 - 圖表 3：顯示與「威脅情資特徵、動態名稱、來源、查詢數 Sort table by hits in descending order、查詢數、名稱」相關的統計資訊。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -564,7 +699,10 @@ pages:
         confidence: 0.95
         description: 依查詢數對表格資料進行降冪排序
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 公雲存取 - 圖表 1：顯示公雲存取活動的統計圖表與相關資料。
+      - 公雲存取 - 圖表 2：顯示公雲存取活動的統計圖表與相關資料。
+      - 公雲存取 - 圖表 3：顯示公雲存取活動的統計圖表與相關資料。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -606,7 +744,12 @@ pages:
         confidence: 0.9
         description: 依可疑程度對首次回應資訊表格進行排序
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 首次觀察 - 圖表 1：顯示前七天統計資料的圖表。
+      - 首次觀察 - 圖表 2：顯示前七天統計資料的圖表。
+      - 首次觀察 - 圖表 3：顯示前七天統計資料的圖表。
+      - 首次觀察 - 圖表 4：顯示前七天統計資料的圖表。
+      - 首次觀察 - 圖表 5：顯示前七天統計資料的表格，包含首次查詢資訊與首次回應資訊。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -624,19 +767,40 @@ pages:
         confidence: 0.95
         description: 開啟操作說明與使用幫助文件
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - DEVICE：顯示偵測次數最多的前 5 名裝置。
+      - DOMAIN：顯示偵測次數最多的前 5 名網域。
+      - RANSOM GROUP：顯示偵測次數最多的前 5 名勒索軟體組織。
+      - THREAT ACTOR：顯示偵測次數最多的前 5 名威脅行為者。
+      - MALWARE：顯示偵測次數最多的前 5 名惡意軟體。
       field_descriptions: []
       best_practices: []
       restrictions: []
   menu:11/tab:0:
     category: 網路設定（CONFIGURE）
     page: 網路位址（Network）
-    tab: IPv4、IPv6
-    equivalent_tabs:
-    - IPv4
-    - IPv6
+    tab: IPv4
+    equivalent_tabs: []
     content:
       overview: 此功能提供 IPv4 與 IPv6 網路位址的獨立管理介面，允許管理員檢視與配置網路介面的 IP 位址、MTU 及 SPAN 狀態。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:11/tab:1:
+    category: 網路設定（CONFIGURE）
+    page: 網路位址（Network）
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此頁面提供 IPv6 網路位址的設定與管理功能，允許管理員檢視與調整特定端口的網路參數，包含裝置指派、位址配置、MTU 設定及 SPAN 狀態。
       business_value: ''
       button_descriptions:
       - action_id: button-0
@@ -750,10 +914,8 @@ pages:
   menu:13/tab:0:
     category: 網路設定（CONFIGURE）
     page: VLAN
-    tab: IPv4、IPv6
-    equivalent_tabs:
-    - IPv4
-    - IPv6
+    tab: IPv4
+    equivalent_tabs: []
     content:
       overview: 此功能提供 VLAN 的設定管理，包含 IPv4 與 IPv6 兩個獨立頁籤。管理員可透過新增功能建立 VLAN 項目，並設定名稱、VID、記錄類型、裝置及 IP 位址等參數。
       business_value: ''
@@ -784,13 +946,46 @@ pages:
       field_descriptions: []
       best_practices: []
       restrictions: []
+  menu:13/tab:1:
+    category: 網路設定（CONFIGURE）
+    page: VLAN
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此功能用於管理 VLAN 的 IPv6 網路設定。管理員可在此頁面新增、編輯或移除 VLAN 的 IPv6 位址配置，並設定 VLAN 識別碼（VID）、關聯裝置及位址前綴長度等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 VLAN 的 IPv6 設定項目。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 VLAN IPv6 設定項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 VLAN IPv6 設定
+        overview: 設定 VLAN 的 IPv6 網路參數，包含識別資訊、關聯裝置與位址配置。
+        field_descriptions:
+        - 名稱：輸入該 VLAN 設定的識別名稱。
+        - VID：輸入 VLAN 識別碼。
+        - 記錄類型：選擇該筆設定的記錄分類。
+        - 裝置：選擇要關聯的網路裝置。
+        - 地址：輸入 IPv6 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
   menu:14/tab:0:
     category: 網路設定（CONFIGURE）
     page: 網路聚合（Bond）
-    tab: IPv4、IPv6
-    equivalent_tabs:
-    - IPv4
-    - IPv6
+    tab: IPv4
+    equivalent_tabs: []
     content:
       overview: 此頁面用於管理網路聚合（Bond）設定，提供 IPv4 與 IPv6 兩個獨立頁籤供管理員分別配置不同協定版本的位址。管理員可透過新增功能建立聚合介面，設定聚合模式、散列演算法、成員裝置及網路位址參數，並可管理既有的聚合項目。
       business_value: ''
@@ -822,6 +1017,42 @@ pages:
       field_descriptions: []
       best_practices: []
       restrictions: []
+  menu:14/tab:1:
+    category: 網路設定（CONFIGURE）
+    page: 網路聚合（Bond）
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理網路聚合（Bond）的 IPv6 設定。管理員可在此新增、編輯或刪除聚合項目，並設定聚合模式、Hash 演算法、裝置、IPv6 位址及 MTU 等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增網路聚合（Bond）的 IPv6 設定項目。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的網路聚合設定項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: 新增網路聚合
+        overview: 設定新的網路聚合（Bond）參數，包含名稱、模式、Hash 演算法、裝置、IPv6 地址與 MTU。
+        field_descriptions:
+        - 名稱：輸入該網路聚合的識別名稱。
+        - 模式：選擇網路聚合的運作模式（例如 Balance-RR）。
+        - Hash：選擇 Hash 演算法（例如 Layer 2）。
+        - 裝置：選擇要加入此聚合的網路介面裝置。
+        - 地址：輸入 IPv6 位址。
+        - MTU：設定最大傳輸單元（MTU）大小。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
   menu:15/tab:0:
     category: 網路設定（CONFIGURE）
     page: 橋接設定（Bridge）
@@ -849,10 +1080,8 @@ pages:
   menu:15/tab:1:
     category: 網路設定（CONFIGURE）
     page: 橋接設定（Bridge）
-    tab: IPv4、IPv6
-    equivalent_tabs:
-    - IPv4
-    - IPv6
+    tab: IPv4
+    equivalent_tabs: []
     content:
       overview: 此功能用於管理網路橋接（Bridge）設定，提供 IPv4 與 IPv6 兩個獨立頁籤供管理員分別配置。管理員可透過此頁面新增橋接項目，設定包含名稱、裝置選擇及 IP 位址等參數，並可移除已儲存的設定項目。
       business_value: ''
@@ -877,6 +1106,39 @@ pages:
         - 名稱：輸入橋接項目的識別名稱。
         - 裝置：選擇要加入橋接的網路介面。
         - 地址：輸入橋接的 IP 位址。
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:15/tab:2:
+    category: 網路設定（CONFIGURE）
+    page: 橋接設定（Bridge）
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理橋接（Bridge）的 IPv6 網路設定。管理員可在此新增、編輯或移除橋接項目，並設定相關的名稱、裝置與 IPv6 位址參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增橋接 IPv6 設定項目。
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的橋接 IPv6 設定項目。
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件。
+      interaction_sections:
+      - action_id: button-0
+        title: 橋接
+        overview: 設定新的橋接 IPv6 參數。
+        field_descriptions:
+        - 名稱：輸入橋接設定的識別名稱。
+        - 裝置：選擇要加入橋接的網路介面。
+        - 地址：輸入 IPv6 位址。
       page_sections: []
       field_descriptions: []
       best_practices: []
@@ -1308,38 +1570,38 @@ pages:
       - action_id: button-2
         include: true
         confidence: 0.95
-        description: 新增網域設定
+        description: 開啟新增正向解析網域或反向解析 PTR 區域的設定頁面
       - action_id: button-4
-        include: true
+        include: false
         confidence: 0.95
-        description: 新增 PTR 設定
+        description: 已合併於前述新增網域或 PTR 區域操作
       interaction_sections:
       - action_id: button-2
         title: 新增網域設定
         overview: 設定新網域所需的參數與 DNS 起始授權記錄。
         field_descriptions:
-        - 操作類型：選擇網域的操作模式。
-        - 網域名：輸入要管理的網域名稱。
-        - 服務器：輸入 DNS 起始授權記錄中的伺服器名稱。
-        - 電子郵箱：輸入 DNS 起始授權記錄中的聯絡電子郵件。
-        - 序號：輸入 DNS 起始授權記錄的序號。
-        - 更新間隔：設定 DNS 起始授權記錄的更新間隔時間。
-        - 重試間隔：設定 DNS 起始授權記錄的重試間隔時間。
-        - 到期時間：設定 DNS 起始授權記錄的到期時間。
-        - 快取時間：設定 DNS 起始授權記錄的快取時間。
+        - 操作類型：選擇區域由本機提供，或以區域傳送的主要／次要伺服器模式提供。
+        - 網域名：輸入本伺服器具權威性的正向解析區域名稱，例如 example.com。
+        - 伺服器：輸入 SOA 記錄 MNAME 欄位所使用的主要權威 DNS 伺服器名稱。
+        - 電子郵箱：輸入 SOA 記錄 RNAME 欄位所使用的區域管理者聯絡信箱。
+        - 序號：顯示系統產生的 SOA 版本號；次要伺服器會用此值判斷區域資料是否更新。
+        - 更新間隔：設定次要伺服器隔幾秒向主要伺服器檢查較新的序號。
+        - 重試間隔：設定更新失敗後，次要伺服器隔幾秒再次嘗試。
+        - 到期時間：設定次要伺服器在無法成功更新時，仍可繼續提供此區域資料的最長時間。
+        - 快取時間：設定名稱或記錄不存在等否定回應的 SOA 快取時間。
       - action_id: button-4
         title: 新增 PTR 設定
         overview: 設定 PTR 記錄所需的參數與 DNS 起始授權記錄。
         field_descriptions:
-        - 操作類型：選擇 PTR 的操作模式。
-        - PTR：輸入 PTR 記錄的名稱。
-        - 服務器：輸入 DNS 起始授權記錄中的伺服器名稱。
-        - 電子郵箱：輸入 DNS 起始授權記錄中的聯絡電子郵件。
-        - 序號：輸入 DNS 起始授權記錄的序號。
-        - 更新間隔：設定 DNS 起始授權記錄的更新間隔時間。
-        - 重試間隔：設定 DNS 起始授權記錄的重試間隔時間。
-        - 到期時間：設定 DNS 起始授權記錄的到期時間。
-        - 快取時間：設定 DNS 起始授權記錄的快取時間。
+        - 操作類型：選擇反向解析區域由本機提供，或以區域傳送的主要／次要伺服器模式提供。
+        - PTR：輸入反向解析區域所對應的網路位址，並選擇 IPv4 或 IPv6。
+        - 伺服器：輸入 SOA 記錄 MNAME 欄位所使用的主要權威 DNS 伺服器名稱。
+        - 電子郵箱：輸入 SOA 記錄 RNAME 欄位所使用的區域管理者聯絡信箱。
+        - 序號：顯示系統產生的 SOA 版本號；次要伺服器會用此值判斷區域資料是否更新。
+        - 更新間隔：設定次要伺服器隔幾秒向主要伺服器檢查較新的序號。
+        - 重試間隔：設定更新失敗後，次要伺服器隔幾秒再次嘗試。
+        - 到期時間：設定次要伺服器在無法成功更新時，仍可繼續提供此區域資料的最長時間。
+        - 快取時間：設定名稱或記錄不存在等否定回應的 SOA 快取時間。
       page_sections: []
       field_descriptions: []
       best_practices: []
@@ -1434,7 +1696,9 @@ pages:
         confidence: 0.95
         description: 儲存目前頁面的設定變更
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 服務：設定外部來源服務的啟用狀態、HTTP 協定支援及存取管控清單(ACL)。
+      - 應用接口：顯示系統提供的 API 端點資訊，包含 IP、Domain、IP/Domain 及 URL 等資源對應的 URL。
       field_descriptions:
       - 服務－存取管控清單(ACL)：設定允許存取外部來源服務的來源地址與網段。
       best_practices: []
@@ -2026,8 +2290,10 @@ pages:
   menu:38/tab:0:
     category: 設備管理（MANAGEMENT）
     page: VLAN
-    tab: IPv4
-    equivalent_tabs: []
+    tab: IPv4、IPv6
+    equivalent_tabs:
+    - IPv4
+    - IPv6
     content:
       overview: 此頁面提供 VLAN IPv4 的設定管理功能，管理員可透過新增、編輯與刪除操作維護 VLAN 項目，並設定名稱、VID、記錄類型、裝置與 IPv4 位址等參數。
       business_value: ''
@@ -2054,41 +2320,6 @@ pages:
         - 記錄類型：選擇該 VLAN 項目的記錄類型。
         - 裝置：選擇要綁定的網路裝置。
         - 地址：輸入 IPv4 位址。
-      page_sections: []
-      field_descriptions: []
-      best_practices: []
-      restrictions: []
-  menu:38/tab:1:
-    category: 設備管理（MANAGEMENT）
-    page: VLAN
-    tab: IPv6
-    equivalent_tabs: []
-    content:
-      overview: 此頁面用於管理 VLAN 的 IPv6 網路設定。管理員可透過此頁籤新增、檢視及移除 VLAN 的 IPv6 地址配置，並設定 VLAN 識別代碼（VID）、關聯裝置及地址前綴長度等參數。
-      business_value: ''
-      button_descriptions:
-      - action_id: button-0
-        include: true
-        confidence: 0.95
-        description: 新增 VLAN IPv6 設定項目
-      - action_id: button-1
-        include: true
-        confidence: 0.95
-        description: 移除已儲存的 VLAN IPv6 設定項目
-      - action_id: button-2
-        include: true
-        confidence: 0.95
-        description: 開啟操作說明與使用幫助文件
-      interaction_sections:
-      - action_id: button-0
-        title: 新增 VLAN IPv6 設定
-        overview: 輸入 VLAN 識別資訊、關聯裝置與 IPv6 地址參數以建立新的設定項目。
-        field_descriptions:
-        - 名稱：輸入 VLAN 的識別名稱。
-        - VID：輸入 VLAN 識別代碼。
-        - 記錄類型：選擇該設定項目的記錄分類。
-        - 裝置：選擇要關聯的網路裝置。
-        - 地址：輸入 IPv6 地址。
       page_sections: []
       field_descriptions: []
       best_practices: []
@@ -2312,7 +2543,9 @@ pages:
         confidence: 0.95
         description: 確認並套用數據處理優化的設定
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - 授權：顯示設備識別資訊、序號、型號與目前生效的授權清單。
+      - 數據處理優化：顯示數據收集說明與目前啟用狀態。
       field_descriptions: []
       best_practices: []
       restrictions: []
@@ -2570,7 +2803,9 @@ pages:
         confidence: 0.95
         description: 使用目前設定的參數執行 Traceroute 請求
       interaction_sections: []
-      page_sections: []
+      page_sections:
+      - Traceroute：設定 Traceroute 請求的參數，包含區域、IP 類型與目的。
+      - 結果：顯示 Traceroute 執行後的輸出內容。
       field_descriptions:
       - Traceroute－目的：輸入要進行網路路徑追蹤的目標位址。
       best_practices: []
@@ -2593,6 +2828,41 @@ pages:
         confidence: 0.95
         description: 發送請求以啟動連線測試，測試結果將顯示於下方結果區塊
       interaction_sections: []
+      page_sections: []
+      field_descriptions: []
+      best_practices: []
+      restrictions: []
+  menu:38/tab:1:
+    category: 設備管理（MANAGEMENT）
+    page: VLAN
+    tab: IPv6
+    equivalent_tabs: []
+    content:
+      overview: 此頁面用於管理 VLAN 的 IPv6 網路設定。管理員可透過此頁籤新增、檢視及移除 VLAN 的 IPv6 地址配置，並設定 VLAN 識別代碼（VID）、關聯裝置及地址前綴長度等參數。
+      business_value: ''
+      button_descriptions:
+      - action_id: button-0
+        include: true
+        confidence: 0.95
+        description: 新增 VLAN IPv6 設定項目
+      - action_id: button-1
+        include: true
+        confidence: 0.95
+        description: 移除已儲存的 VLAN IPv6 設定項目
+      - action_id: button-2
+        include: true
+        confidence: 0.95
+        description: 開啟操作說明與使用幫助文件
+      interaction_sections:
+      - action_id: button-0
+        title: 新增 VLAN IPv6 設定
+        overview: 輸入 VLAN 識別資訊、關聯裝置與 IPv6 地址參數以建立新的設定項目。
+        field_descriptions:
+        - 名稱：輸入 VLAN 的識別名稱。
+        - VID：輸入 VLAN 識別代碼。
+        - 記錄類型：選擇該設定項目的記錄分類。
+        - 裝置：選擇要關聯的網路裝置。
+        - 地址：輸入 IPv6 地址。
       page_sections: []
       field_descriptions: []
       best_practices: []
