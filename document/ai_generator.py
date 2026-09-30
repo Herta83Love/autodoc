@@ -461,13 +461,16 @@ def normalize_grounded_result(result, page):
         })
 
     for section in page.get("detail_sections") or []:
-        section_name = str(section.get("title") or "").strip()
         for detail in section.get("fields") or []:
             label = str(detail.get("label") or "").strip()
             if not is_public_field_label(label):
                 continue
             allowed_fields.append({
-                "name": f"{section_name}－{label}" if section_name else label,
+                # A detail section title identifies the sampled record (for
+                # example "1 2026-09-30 09:09:58"), not a stable UI section.
+                # Prefixing it made YAML keys change on every crawl and caused
+                # the manual to retain duplicate timestamped field names.
+                "name": label,
                 "label": label,
                 "source": "record_detail",
             })

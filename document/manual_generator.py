@@ -237,7 +237,11 @@ def set_run_font(
 
     run._element.rPr.rFonts.set(qn("w:ascii"), name)
     run._element.rPr.rFonts.set(qn("w:hAnsi"), name)
-    run._element.rPr.rFonts.set(qn("w:eastAsia"), "Microsoft JhengHei")
+    # Heiti TC is available on the supported macOS generation environment and
+    # remains readable through normal font fallback on other Word platforms.
+    # Microsoft JhengHei was not available to the bundled LibreOffice renderer,
+    # causing Traditional Chinese text to disappear during PDF/DOCX QA.
+    run._element.rPr.rFonts.set(qn("w:eastAsia"), "Heiti TC")
 
     if size is not None:
         run.font.size = Pt(size)
@@ -325,7 +329,7 @@ def configure_document_styles(document):
     normal.font.color.rgb = TEXT_BLACK
     normal._element.rPr.rFonts.set(qn("w:ascii"), "Inter")
     normal._element.rPr.rFonts.set(qn("w:hAnsi"), "Inter")
-    normal._element.rPr.rFonts.set(qn("w:eastAsia"), "Microsoft JhengHei")
+    normal._element.rPr.rFonts.set(qn("w:eastAsia"), "Heiti TC")
     normal.paragraph_format.line_spacing = 1.5
     normal.paragraph_format.space_after = Pt(4)
 
@@ -346,7 +350,7 @@ def configure_document_styles(document):
         style.font.color.rgb = color
         style._element.rPr.rFonts.set(qn("w:ascii"), "Inter")
         style._element.rPr.rFonts.set(qn("w:hAnsi"), "Inter")
-        style._element.rPr.rFonts.set(qn("w:eastAsia"), "Microsoft JhengHei")
+        style._element.rPr.rFonts.set(qn("w:eastAsia"), "Heiti TC")
         style.paragraph_format.space_before = Pt(before)
         style.paragraph_format.space_after = Pt(after)
         style.paragraph_format.keep_with_next = True

@@ -123,6 +123,7 @@ def preserve_existing_content(
     generated,
     content_fields,
     merge_new_structured_items,
+    normalize_field_description_items,
 ):
     """Keep human edits while adding any newly supported content fields."""
 
@@ -135,9 +136,14 @@ def preserve_existing_content(
         "page_sections",
         "field_descriptions",
     ):
+        edited = content.get(field)
+        generated_items = generated.get(field)
+        if field == "field_descriptions":
+            edited = normalize_field_description_items(edited)
+            generated_items = normalize_field_description_items(generated_items)
         content[field] = merge_new_structured_items(
-            content.get(field),
-            generated.get(field),
+            edited,
+            generated_items,
         )
     return {field: content[field] for field in content_fields}
 
@@ -164,6 +170,7 @@ def sync(overwrite=False):
         CONTENT_FIELDS,
         manual_content_path,
         merge_new_structured_items,
+        normalize_field_description_items,
         page_content_key,
     )
     from document.manual_generator import (
@@ -203,6 +210,7 @@ def sync(overwrite=False):
                                 content,
                                 CONTENT_FIELDS,
                                 merge_new_structured_items,
+                                normalize_field_description_items,
                             )
                         ),
                     }

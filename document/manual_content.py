@@ -21,6 +21,11 @@ CONTENT_FIELDS = (
 )
 
 
+LEGACY_RECORD_FIELD_PREFIX = re.compile(
+    r"^\s*\d+\s+\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s*[－-]\s*"
+)
+
+
 def manual_content_path(language):
     return CONTENT_DIR / f"{language}.yaml"
 
@@ -30,6 +35,31 @@ def page_content_key(page):
     if not key:
         raise ValueError("頁面缺少 page_key，無法對應 config/manual_content YAML。")
     return key
+
+
+def normalize_field_description_items(items):
+    """Remove unstable record-number/timestamp prefixes from older YAML."""
+
+    normalized = []
+    known = set()
+    for item in deepcopy(items or []):
+        if isinstance(item, str):
+            item = LEGACY_RECORD_FIELD_PREFIX.sub("", item).strip()
+        identity = structured_item_identity(item)
+        if identity and identity in known:
+            continue
+        if identity:
+            known.add(identity)
+        normalized.append(item)
+    return normalized
+
+
+def structured_item_identity(item):
+    if isinstance(item, dict):
+        return str(item.get("action_id") or item.get("title") or "").strip()
+    text = str(item or "").strip()
+    text = LEGACY_RECORD_FIELD_PREFIX.sub("", text)
+    return re.split(r"[：:]", text, maxsplit=1)[0].strip()
 
 
 @lru_cache(maxsize=None)
@@ -65,7 +95,10 @@ def apply_manual_content(page, generated_content):
     result = deepcopy(generated_content)
     for field in CONTENT_FIELDS:
         if field in content:
-            result[field] = deepcopy(content[field])
+            value = deepcopy(content[field])
+            if field == "field_descriptions":
+                value = normalize_field_description_items(value)
+            result[field] = value
 
     # A later crawl may discover a previously hidden chart, record field, or
     # form action. Keep human-edited YAML authoritative for known items while
@@ -79,9 +112,14 @@ def apply_manual_content(page, generated_content):
         "field_descriptions",
     ):
         if field in content:
+            edited = result.get(field)
+            generated = generated_content.get(field)
+            if field == "field_descriptions":
+                edited = normalize_field_description_items(edited)
+                generated = normalize_field_description_items(generated)
             result[field] = merge_new_structured_items(
-                result.get(field),
-                generated_content.get(field),
+                edited,
+                generated,
             )
     return result
 
@@ -92,15 +130,13 @@ def merge_new_structured_items(edited, generated):
     if not isinstance(edited, list) or not isinstance(generated, list):
         return edited
 
-    def identity(item):
-        if isinstance(item, dict):
-            return str(item.get("action_id") or item.get("title") or "").strip()
-        text = str(item or "").strip()
-        return re.split(r"[：:]", text, maxsplit=1)[0].strip()
-
-    known = {identity(item) for item in edited if identity(item)}
+    known = {
+        structured_item_identity(item)
+        for item in edited
+        if structured_item_identity(item)
+    }
     for item in generated:
-        key = identity(item)
+        key = structured_item_identity(item)
         if key and key not in known:
             edited.append(deepcopy(item))
             known.add(key)
