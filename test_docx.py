@@ -105,9 +105,23 @@ def print_asset_warnings(language, missing_screenshots, missing_icons):
 
 
 def pair_chinese_terms(metadata, english_terms):
-    from utils.language_pairing import add_english_terms, find_unpaired_pages
+    from document.manual_content import load_manual_content
+    from utils.language_pairing import (
+        add_english_terms,
+        find_unpaired_pages,
+        restore_missing_localized_pages,
+    )
 
     chinese_pages = metadata["zh-TW"]
+    restored = restore_missing_localized_pages(
+        chinese_pages,
+        metadata["en"],
+        load_manual_content("zh-TW"),
+        "zh-TW",
+    )
+    if restored:
+        print("已從英文 Metadata 補回繁中缺少頁面：" + ", ".join(restored))
+
     add_english_terms(chinese_pages, metadata["en"], english_terms)
     unpaired = find_unpaired_pages(chinese_pages)
 

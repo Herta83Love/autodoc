@@ -37,9 +37,14 @@ from document.manual_generator import (
     generate_docx
 ) 
 
+from document.manual_content import (
+    load_manual_content
+)
+
 from utils.language_pairing import (
     add_english_terms,
-    find_unpaired_pages
+    find_unpaired_pages,
+    restore_missing_localized_pages
 )
 
 
@@ -149,6 +154,17 @@ async def run():
 
         english_metadata = all_metadata.get("en", [])
         chinese_metadata = all_metadata.get("zh-TW", [])
+        restored_pages = restore_missing_localized_pages(
+            chinese_metadata,
+            english_metadata,
+            load_manual_content("zh-TW"),
+            "zh-TW"
+        )
+        if restored_pages:
+            print(
+                "已從英文 Metadata 補回繁中缺少頁面："
+                + ", ".join(restored_pages)
+            )
         add_english_terms(
             chinese_metadata,
             english_metadata,
