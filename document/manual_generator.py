@@ -1574,19 +1574,6 @@ def add_interaction_sections(document, page, sections, language="zh-TW"):
         if overview:
             document.add_paragraph(overview)
 
-        for screenshot_path in flow.get("screenshots", []):
-            if not screenshot_path or not Path(screenshot_path).is_file():
-                continue
-            paragraph = document.add_paragraph()
-            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            try:
-                paragraph.add_run().add_picture(
-                    screenshot_path,
-                    width=Inches(6.2),
-                )
-            except Exception as exc:
-                print(f"操作表單截圖加入失敗: {screenshot_path}: {exc}")
-
         fields = normalize_ai_content(item.get("field_descriptions", []))
         if fields:
             heading = document.add_paragraph()
