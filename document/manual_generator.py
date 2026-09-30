@@ -1276,7 +1276,7 @@ def configure_table_row(row, repeat_header=False):
 
 
 def action_image_size(action):
-    """Return image dimensions for filtering and proportional document sizing."""
+    """Return image dimensions used to filter non-operation controls."""
 
     image = action.get("image")
     if not image or not Path(image).is_file():
@@ -1462,7 +1462,6 @@ def add_action_section(
             "action": action,
             "image": image,
             "description": description,
-            "image_size": image_size,
         })
 
     renderable_actions = group_renderable_actions(
@@ -1501,7 +1500,6 @@ def add_action_section(
 
         image = item["image"]
         description = item["description"]
-        image_size = item["image_size"]
 
         row = table.add_row()
         configure_table_row(row)
@@ -1519,13 +1517,14 @@ def add_action_section(
         image_p.paragraph_format.space_after = Pt(3)
 
         try:
-            width, height = image_size
-            aspect_ratio = width / max(1, height)
-            picture = image_p.add_run()
-            if aspect_ratio > 2:
-                picture.add_picture(image, width=Inches(1.05))
-            else:
-                picture.add_picture(image, width=Inches(0.68))
+            # Source crops vary between 60x30, 66x36 and a few square UI
+            # controls. Fix both dimensions so every documented button has
+            # the same visual footprint in the action table.
+            image_p.add_run().add_picture(
+                image,
+                width=Inches(0.68),
+                height=Inches(0.37),
+            )
         except Exception as exc:
             print(f"按鈕圖片加入失敗: {image}: {exc}")
             continue
