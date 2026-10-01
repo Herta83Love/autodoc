@@ -116,6 +116,16 @@ def load_page_note_entries(language):
     return deepcopy(entries)
 
 
+def load_page_overviews(language):
+    """Load one shared overview for each multi-tab feature page."""
+
+    path = manual_content_path(language)
+    overviews = load_manual_config(language).get("page_overviews") or {}
+    if not isinstance(overviews, dict):
+        raise ValueError(f"{path} 的 page_overviews 必須是 YAML mapping。")
+    return deepcopy(overviews)
+
+
 def apply_manual_content(page, generated_content):
     """Apply explicitly present YAML fields after AI/cache normalization."""
 

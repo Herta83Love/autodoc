@@ -157,6 +157,7 @@ output/manual_content/zh-TW.yaml
 - `document_config`：封面、版本、出版聲明、前言、頁尾與封底文字。
 - `ai_content_corrections`：載入 AI／Cache 後套用的已確認文字修正。
 - `page_notes`：指定功能頁或頁籤顯示給讀者的注意事項。
+- `page_overviews`：多頁籤功能在各頁籤之前共用顯示的頁面概述。
 - `pages`：每個功能頁的概述、按鈕、區塊、欄位、建議與限制。
 
 

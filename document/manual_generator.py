@@ -35,6 +35,7 @@ from document.ai_generator import (
 from document.manual_content import (
     load_document_settings,
     load_page_note_entries,
+    load_page_overviews,
     manual_content_path,
 )
 
@@ -118,6 +119,7 @@ UI_TEXT = {
         "function": "功能說明",
         "interaction_details": "操作後設定",
         "overview": "功能概述",
+        "page_overview": "頁面概述",
         "business_value": "使用價值",
         "page_sections": "畫面組成",
         "fields": "欄位說明",
@@ -146,6 +148,7 @@ UI_TEXT = {
         "function": "Function",
         "interaction_details": "Configuration Details",
         "overview": "Overview",
+        "page_overview": "Page Overview",
         "business_value": "Business Value",
         "page_sections": "Screen Components",
         "fields": "Field Descriptions",
@@ -1086,6 +1089,28 @@ def load_page_notes(language):
     return load_page_note_entries(language)
 
 
+def get_page_overview(items, overviews):
+    """Return the shared overview only when the feature has multiple tabs."""
+
+    if not items:
+        return ""
+
+    tab_count = 0
+    for page in items:
+        equivalent_tabs = page.get("equivalent_tabs") or []
+        tab_count += max(1, len(equivalent_tabs)) if page.get("tab") else 0
+    if tab_count < 2:
+        return ""
+
+    page_key = str(items[0].get("page_key") or "").split("/tab:", 1)[0]
+    entry = overviews.get(page_key) or {}
+    if isinstance(entry, str):
+        return entry.strip()
+    if not isinstance(entry, dict):
+        return ""
+    return str(entry.get("overview") or "").strip()
+
+
 def get_page_notes(page, entries, language):
     """Return explicit YAML notes matching one crawled page or tab."""
 
@@ -1956,6 +1981,7 @@ def generate_docx(
 
     config = load_document_config(language)
     page_note_entries = load_page_notes(language)
+    page_overviews = load_page_overviews(language)
 
     if pages is None:
         metadata_path = (
@@ -2047,6 +2073,14 @@ def generate_docx(
                 rendered_pages.add(
                     page_name
                 )
+
+                page_overview = get_page_overview(items, page_overviews)
+                if page_overview:
+                    document.add_heading(
+                        text_for(language, "page_overview"),
+                        level=4,
+                    )
+                    document.add_paragraph(page_overview)
 
             rendered_tabs = set()
 

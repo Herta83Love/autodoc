@@ -26,6 +26,7 @@ CONTENT_FILE_HEADERS = {
 # document_config: Cover, version, publication, introduction, footer, and back-cover text.
 # ai_content_corrections: Verified text replacements applied after AI/cache loading.
 # page_notes: Reader-facing cautions for selected menu/tab identifiers.
+# page_overviews: Shared introductions shown once before multi-tab feature pages.
 # pages: All editable manual pages, keyed by a stable menu/tab identifier.
 # menu:.../tab:...: Stable page identifier used to match crawler metadata. Do not rename it.
 # category: Category label shown for reference and easier searching.
@@ -67,6 +68,7 @@ CONTENT_FILE_HEADERS = {
 # document_config：封面、版本、出版聲明、前言、頁尾與封底文字。
 # ai_content_corrections：載入 AI／Cache 後套用的已確認文字修正。
 # page_notes：指定功能頁或頁籤顯示給讀者的注意事項。
+# page_overviews：多頁籤功能在各頁籤之前共用顯示的頁面概述。
 # pages：所有可編輯的手冊頁面，並以穩定的選單／頁籤識別碼分類。
 # menu:.../tab:...：用於對應爬蟲 Metadata 的穩定頁面識別碼，請勿改名。
 # category：分類名稱，供閱讀與搜尋使用。
