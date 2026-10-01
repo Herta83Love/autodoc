@@ -3,7 +3,6 @@
 # ============================================================================
 
 import json
-import yaml
 import ast
 import re
 import copy
@@ -33,13 +32,13 @@ from document.ai_generator import (
     collapse_equivalent_tabs,
     generate_manual_section
 )
+from document.manual_content import (
+    load_document_settings,
+    load_page_note_entries,
+    manual_content_path,
+)
 
 bookmark_id = 1
-DOCUMENT_CONFIG = (
-    "config/document.yaml"
-)
-PAGE_NOTES_CONFIG = "config/page_notes.yaml"
-
 ASSET_DIR = Path(__file__).resolve().parent / "assets"
 LOGO_PATH = ASSET_DIR / "urmazi_logo.png"
 COVER_PAGE_PATH = ASSET_DIR / "sentry_cover_page.png"
@@ -1072,33 +1071,19 @@ def normalize_ai_content(data):
 
     return data
 
-def load_document_config():
-
-    with open(
-        DOCUMENT_CONFIG,
-        "r",
-        encoding="utf-8"
-    ) as f:
-
-        return yaml.safe_load(
-            f
+def load_document_config(language):
+    config = load_document_settings(language)
+    if not config:
+        raise ValueError(
+            f"{manual_content_path(language)} 缺少 document_config。"
         )
+    return config
 
 
-def load_page_notes():
+def load_page_notes(language):
     """Load manually maintained notes; absent entries intentionally render nothing."""
 
-    path = Path(PAGE_NOTES_CONFIG)
-    if not path.is_file():
-        return []
-
-    with path.open("r", encoding="utf-8") as file:
-        config = yaml.safe_load(file) or {}
-
-    entries = config.get("entries", [])
-    if not isinstance(entries, list):
-        raise ValueError(f"{PAGE_NOTES_CONFIG} 的 entries 必須是陣列")
-    return entries
+    return load_page_note_entries(language)
 
 
 def get_page_notes(page, entries, language):
@@ -1115,20 +1100,20 @@ def get_page_notes(page, entries, language):
         if tab_indexes is not None:
             if not isinstance(tab_indexes, list):
                 raise ValueError(
-                    f"{PAGE_NOTES_CONFIG} 的 tab_indexes 必須是陣列"
+                    f"{manual_content_path(language)} 的 page_notes.tab_indexes 必須是陣列"
                 )
             if page.get("tab_index") not in tab_indexes:
                 continue
 
-        localized_notes = entry.get("notes", {})
-        if not isinstance(localized_notes, dict):
-            raise ValueError(f"{PAGE_NOTES_CONFIG} 的 notes 必須是物件")
-        notes = localized_notes.get(language_key(language), [])
+        notes = entry.get("notes", [])
+        # Accept the former bilingual shape while old files are being migrated.
+        if isinstance(notes, dict):
+            notes = notes.get(language_key(language), [])
         if isinstance(notes, str):
             notes = [notes]
         if not isinstance(notes, list):
             raise ValueError(
-                f"{PAGE_NOTES_CONFIG} 的 {language_key(language)} 注意事項必須是陣列"
+                f"{manual_content_path(language)} 的 page_notes.notes 必須是陣列"
             )
         result.extend(
             str(note).strip()
@@ -1969,8 +1954,8 @@ def generate_docx(
     global bookmark_id
     bookmark_id = 1
 
-    config = load_document_config()
-    page_note_entries = load_page_notes()
+    config = load_document_config(language)
+    page_note_entries = load_page_notes(language)
 
     if pages is None:
         metadata_path = (

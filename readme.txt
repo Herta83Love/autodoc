@@ -142,19 +142,22 @@ config/config.yaml
 
 `login.language` 用於在登入前選擇 SENTRY 介面語言。若登入頁面的元件或語言值不同，可調整其中的 `selector`、`labels`、`values` 及逾時設定。
 
-封面、出版聲明、前言、版本與封底文字位於：
+### 人工修改文件內容
 
- 
-config/document.yaml
-   
-
-### 人工修改每個頁面的文件內容
-
-中英文每一頁的完整文件內容分別位於：
+中英文文件的所有可維護內容集中於：
 
 
-config/manual_content/en.yaml
-config/manual_content/zh-TW.yaml
+output/manual_content/en.yaml
+output/manual_content/zh-TW.yaml
+
+
+這兩份檔案位於已被 Git 忽略的 `output/` 中，不會隨程式碼提交。搬移到另一台設備時，
+必須連同精簡後的 `output` 資料包一起複製。每份語言檔包含：
+
+- `document_config`：封面、版本、出版聲明、前言、頁尾與封底文字。
+- `ai_content_corrections`：載入 AI／Cache 後套用的已確認文字修正。
+- `page_notes`：指定功能頁或頁籤顯示給讀者的注意事項。
+- `pages`：每個功能頁的概述、按鈕、區塊、欄位、建議與限制。
 
 
 每個頁面以穩定的 `menu:.../tab:...` 識別碼保存，旁邊也會列出分類、頁面與頁籤名稱，方便搜尋。可直接修改各頁 `content` 內的功能概述、使用價值、按鈕說明、互動區塊、頁面區塊、欄位說明、最佳實務與限制事項。產生文件時，這些 YAML 內容會在最後套用，因此不需要編輯雜湊命名的 AI Cache。
@@ -180,13 +183,13 @@ python3 scripts/sync_manual_content.py
 
 此指令只會加入缺少的頁面，預設不覆蓋既有人工修改。只有確定要把所有內容重設成目前 AI／Cache 初稿時，才使用 `--overwrite`。
 
-個別頁面的人工注意事項仍維護在 `config/page_notes.yaml`；沒有設定的頁面不會顯示注意事項區塊。
+個別頁面的人工注意事項維護在各語言 YAML 的 `page_notes`；沒有設定的頁面不會顯示注意事項區塊。
 
 ### 圖表與資料列明細
 
 爬蟲會讀取頁面上圖表、指標卡的標題與官方說明，並寫入 Metadata 的 `visual_sections`。對於會在點選資料列後顯示明細面板的頁面，爬蟲只會開啟一筆具代表性的記錄，擷取其明細欄位與截圖，再關閉面板；結果寫入 `detail_sections`。這個流程只執行讀取與展開，不會儲存、套用或刪除資料。
 
-新爬取的圖表與明細欄位會自動加入文件內容，同時保留 `config/manual_content/*.yaml` 中已有的人工修改。完整爬取後再執行 `python3 scripts/sync_manual_content.py`，即可將新發現的說明項目寫入 YAML，供後續直接編輯。
+新爬取的圖表與明細欄位會自動加入文件內容，同時保留 `output/manual_content/*.yaml` 中已有的人工修改。完整爬取後再執行 `python3 scripts/sync_manual_content.py`，即可將新發現的說明項目寫入 YAML，供後續直接編輯。
 
 ## 完整執行：重新爬取並產生文件
 
@@ -200,7 +203,8 @@ python3 main.py
 完整流程會啟動瀏覽器、登入 SENTRY、執行爬蟲、更新 `output` 內的資料，並產生：
 
  
-output/SENTRY_Manual.docx
+output/SENTRY_Manual_en.docx
+output/SENTRY_Manual_zh-TW.docx
    
 
 ## 快速執行：跳過爬蟲重新產生文件
@@ -214,16 +218,16 @@ python3 test_docx.py
 
 此模式不會開啟瀏覽器、不會登入 SENTRY，也不會重新執行爬蟲；它會直接使用下列既有資料重新產生 Word 文件：
 
-- `output/metadata.json`：頁面、欄位、按鈕及圖片路徑等爬蟲結果
-- `output/screenshots/`：頁面截圖
-- `output/icons/`：畫面操作圖示
+- `output/metadata_en.json`、`output/metadata_zh-TW.json`：雙語頁面、欄位、按鈕及圖片路徑
+- `output/en/`、`output/zh-TW/`：Metadata 實際引用的頁面截圖與操作圖示
 - `output/ai_cache/`：已產生的 AI 說明紀錄
+- `output/manual_content/`：雙語文件全部可人工維護的內容
 
 適合在調整 `document/manual_generator.py`、文件樣式、封面、前言、目錄、標頭或封底時使用，可省去重新登入和爬取所有頁面的時間。
 
 執行前請確認：
 
-1. `output/metadata.json` 存在且包含資料。
+1. `output/metadata_en.json` 與 `output/metadata_zh-TW.json` 存在且包含資料。
 2. Metadata 記錄的截圖與操作圖示仍位於原本路徑。
 3. `output/ai_cache/` 保留先前的 AI 紀錄；若對應 Cache 不存在，文件產生器可能會再次呼叫 vLLM。
 4. 已啟用安裝完成的 Python 虛擬環境。
@@ -231,7 +235,8 @@ python3 test_docx.py
 產生完成後，文件位於：
 
  
-output/SENTRY_Manual.docx
+output/SENTRY_Manual_en.docx
+output/SENTRY_Manual_zh-TW.docx
    
 
 `test_docx.py` 會先檢查 Metadata 格式及圖片是否缺漏；缺少圖片時會在終端機顯示警告。
@@ -240,16 +245,20 @@ output/SENTRY_Manual.docx
 
  
 output/
-├── metadata.json
-├── screenshots/
-├── icons/
-├── html/
+├── metadata_en.json
+├── metadata_zh-TW.json
+├── terms_en.json
+├── en/
+├── zh-TW/
 ├── ai_cache/
-├── manual.md
-└── SENTRY_Manual.docx
+├── manual_content/
+│   ├── en.yaml
+│   └── zh-TW.yaml
+├── SENTRY_Manual_en.docx
+└── SENTRY_Manual_zh-TW.docx
    
 
-請勿在調整文件版面期間刪除 `metadata.json`、`screenshots/`、`icons/` 或 `ai_cache/`，否則無法完整沿用既有資料快速重建文件。
+請勿刪除雙語 Metadata、Metadata 引用的圖片、`ai_cache/` 或 `manual_content/`，否則無法完整沿用既有資料快速重建文件。
 
 ## 文件樣式
 

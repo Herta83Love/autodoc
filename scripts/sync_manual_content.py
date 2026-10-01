@@ -23,6 +23,9 @@ CONTENT_FILE_HEADERS = {
 # File structure and field guide
 # version: Schema version. Do not change it manually.
 # language: Language of this file. Keep this value as en.
+# document_config: Cover, version, publication, introduction, footer, and back-cover text.
+# ai_content_corrections: Verified text replacements applied after AI/cache loading.
+# page_notes: Reader-facing cautions for selected menu/tab identifiers.
 # pages: All editable manual pages, keyed by a stable menu/tab identifier.
 # menu:.../tab:...: Stable page identifier used to match crawler metadata. Do not rename it.
 # category: Category label shown for reference and easier searching.
@@ -61,6 +64,9 @@ CONTENT_FILE_HEADERS = {
 # 檔案結構與欄位說明
 # version：YAML 結構版本，請勿手動修改。
 # language：此檔案的語言，請保持為 zh-TW。
+# document_config：封面、版本、出版聲明、前言、頁尾與封底文字。
+# ai_content_corrections：載入 AI／Cache 後套用的已確認文字修正。
+# page_notes：指定功能頁或頁籤顯示給讀者的注意事項。
 # pages：所有可編輯的手冊頁面，並以穩定的選單／頁籤識別碼分類。
 # menu:.../tab:...：用於對應爬蟲 Metadata 的穩定頁面識別碼，請勿改名。
 # category：分類名稱，供閱讀與搜尋使用。
@@ -102,10 +108,12 @@ def load_existing(path):
         return {}
     with path.open("r", encoding="utf-8") as file:
         config = yaml.safe_load(file) or {}
+    if not isinstance(config, dict):
+        raise ValueError(f"{path} 的最外層必須是 YAML mapping。")
     pages = config.get("pages") or {}
     if not isinstance(pages, dict):
         raise ValueError(f"{path} 的 pages 必須是 YAML mapping。")
-    return pages
+    return config
 
 
 def ordered_content(result, content_fields):
@@ -148,10 +156,16 @@ def preserve_existing_content(
     return {field: content[field] for field in content_fields}
 
 
-def write_content_file(path, language, pages):
+def write_content_file(path, language, pages, existing_config):
     path.parent.mkdir(parents=True, exist_ok=True)
     header = CONTENT_FILE_HEADERS[language]
-    payload = {"version": 1, "language": language, "pages": pages}
+    payload = {"version": 1, "language": language}
+    payload.update({
+        key: value
+        for key, value in existing_config.items()
+        if key not in {"version", "language", "pages"}
+    })
+    payload["pages"] = pages
     rendered = yaml.safe_dump(
         payload,
         allow_unicode=True,
@@ -184,7 +198,8 @@ def sync(overwrite=False):
 
     for language in LANGUAGES:
         path = manual_content_path(language)
-        existing = load_existing(path)
+        existing_config = load_existing(path)
+        existing = existing_config.get("pages") or {}
         synced = {}
         grouped = merge_equivalent_tabs(
             group_pages(prepare_display_pages(metadata[language], language))
@@ -220,7 +235,7 @@ def sync(overwrite=False):
         for key, entry in existing.items():
             synced.setdefault(key, entry)
 
-        write_content_file(path, language, synced)
+        write_content_file(path, language, synced, existing_config)
         print(f"✅ 已同步 {len(synced)} 個頁面：{path}")
 
 

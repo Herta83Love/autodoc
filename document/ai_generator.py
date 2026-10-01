@@ -7,9 +7,10 @@ import hashlib
 import re
 from pathlib import Path
 
-import yaml
-
-from document.manual_content import apply_manual_content
+from document.manual_content import (
+    apply_manual_content,
+    load_ai_content_corrections,
+)
 
 from services.vllm_service import (
     MODEL_NAME,
@@ -21,7 +22,6 @@ from services.vllm_service import (
 CACHE_VERSION = "V6"
 
 CACHE_DIR = Path("output/ai_cache")
-AI_CONTENT_CORRECTIONS_CONFIG = Path("config/ai_content_corrections.yaml")
 
 CACHE_DIR.mkdir(
     parents=True,
@@ -29,20 +29,10 @@ CACHE_DIR.mkdir(
 )
 
 
-def load_ai_content_corrections():
-    if not AI_CONTENT_CORRECTIONS_CONFIG.is_file():
-        return {}
-
-    with AI_CONTENT_CORRECTIONS_CONFIG.open("r", encoding="utf-8") as file:
-        config = yaml.safe_load(file) or {}
-
-    return config.get("replacements") or {}
-
-
 def apply_ai_content_corrections(value, language):
     """Apply verified product facts without mutating the cached AI payload."""
 
-    replacements = load_ai_content_corrections().get(language) or []
+    replacements = load_ai_content_corrections(language)
 
     if isinstance(value, dict):
         return {

@@ -8,7 +8,7 @@ import re
 import yaml
 
 
-CONTENT_DIR = Path("config/manual_content")
+CONTENT_DIR = Path("output/manual_content")
 CONTENT_FIELDS = (
     "overview",
     "business_value",
@@ -33,7 +33,7 @@ def manual_content_path(language):
 def page_content_key(page):
     key = str(page.get("page_key") or "").strip()
     if not key:
-        raise ValueError("頁面缺少 page_key，無法對應 config/manual_content YAML。")
+        raise ValueError("頁面缺少 page_key，無法對應 output/manual_content YAML。")
     return key
 
 
@@ -63,7 +63,7 @@ def structured_item_identity(item):
 
 
 @lru_cache(maxsize=None)
-def load_manual_content(language):
+def load_manual_config(language):
     path = manual_content_path(language)
     if not path.is_file():
         return {}
@@ -71,10 +71,49 @@ def load_manual_content(language):
     with path.open("r", encoding="utf-8") as file:
         config = yaml.safe_load(file) or {}
 
+    if not isinstance(config, dict):
+        raise ValueError(f"{path} 的最外層必須是 YAML mapping。")
+    return config
+
+
+def load_manual_content(language):
+    path = manual_content_path(language)
+    config = load_manual_config(language)
+
     pages = config.get("pages") or {}
     if not isinstance(pages, dict):
         raise ValueError(f"{path} 的 pages 必須是 YAML mapping。")
     return pages
+
+
+def load_document_settings(language):
+    """Load the language-specific document shell from the unified YAML."""
+
+    path = manual_content_path(language)
+    settings = load_manual_config(language).get("document_config") or {}
+    if not isinstance(settings, dict):
+        raise ValueError(f"{path} 的 document_config 必須是 YAML mapping。")
+    return deepcopy(settings)
+
+
+def load_ai_content_corrections(language):
+    """Load deterministic prose replacements from the unified YAML."""
+
+    path = manual_content_path(language)
+    replacements = load_manual_config(language).get("ai_content_corrections") or []
+    if not isinstance(replacements, list):
+        raise ValueError(f"{path} 的 ai_content_corrections 必須是陣列。")
+    return deepcopy(replacements)
+
+
+def load_page_note_entries(language):
+    """Load reader-facing page notes from the unified YAML."""
+
+    path = manual_content_path(language)
+    entries = load_manual_config(language).get("page_notes") or []
+    if not isinstance(entries, list):
+        raise ValueError(f"{path} 的 page_notes 必須是陣列。")
+    return deepcopy(entries)
 
 
 def apply_manual_content(page, generated_content):
