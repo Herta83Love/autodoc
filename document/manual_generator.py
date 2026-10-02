@@ -180,21 +180,6 @@ def bilingual_name(local_name, english_name):
     return f"{local_name}（{english_name}）"
 
 
-ZH_TW_TERMINOLOGY = {
-    "網域洞察（Domain Insights）": "域名洞悉（DOMAIN INSIGHTS）",
-    "名稱服務器": "名稱伺服器",
-    "事件記錄": "警報",
-    "必須立刻採取應對行動": "警示",
-}
-
-
-def normalize_zh_tw_terminology(value):
-    value = str(value or "")
-    for source, target in ZH_TW_TERMINOLOGY.items():
-        value = value.replace(source, target)
-    return value
-
-
 def prepare_display_pages(pages, language):
 
     display_pages = copy.deepcopy(pages)
@@ -203,10 +188,9 @@ def prepare_display_pages(pages, language):
         return display_pages
 
     for page in display_pages:
-        page["category"] = normalize_zh_tw_terminology(page.get("category"))
-        page["page"] = normalize_zh_tw_terminology(page.get("page"))
-        if page.get("tab"):
-            page["tab"] = normalize_zh_tw_terminology(page.get("tab"))
+        # The localized SENTRY GUI is the terminology authority. Do not
+        # translate or rewrite labels captured by the crawler; English is
+        # appended only as a reference term below.
         page["category"] = bilingual_name(
             page.get("category"),
             page.get("english_category")
@@ -1902,7 +1886,6 @@ def add_introduction(
 
         for paragraph_text in section_data["paragraphs"]:
             if language_key(language) == "zh-TW":
-                paragraph_text = normalize_zh_tw_terminology(paragraph_text)
                 paragraph_text = paragraph_text.replace("主控台 （", "主控台（")
             paragraph = document.add_paragraph(paragraph_text)
 
