@@ -167,6 +167,29 @@ async def _wait_for_tab_transition(
     )
 
 
+async def _click_tab(locator, tab_name, timeout_ms=3000):
+    """Click a tab even when SENTRY's route content overlaps its hit area.
+
+    On History Logs, the right-most Dynamic Block tab is visually present but
+    the route view can paint its date-range text over the link. Playwright's
+    normal pointer click then waits until timeout because that text intercepts
+    pointer events. A DOM click still follows the same Vue link handler and is
+    safe here because the target was already discovered as a visible tab.
+    """
+
+    try:
+        await locator.click(timeout=timeout_ms)
+        return
+    except Exception as exc:
+        reason = str(exc).splitlines()[0] or type(exc).__name__
+        print(
+            f"⚠️ Tab {tab_name} 的一般點擊遭頁面元素遮擋，"
+            f"改用 DOM 點擊：{reason}"
+        )
+
+    await locator.evaluate("element => element.click()")
+
+
 async def _visible_tab_names(frame, tabs):
     route_links = frame.locator(".route_link a")
     route_names = []
@@ -442,7 +465,10 @@ async def crawl_pages(
                         """)
 
                         if not is_active:
-                            await locator.first.click()
+                            await _click_tab(
+                                locator.first,
+                                tab_name,
+                            )
                             await _wait_for_tab_transition(
                                 frame,
                                 tab_name,
