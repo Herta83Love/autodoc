@@ -54,7 +54,14 @@ async def crawl_language(browser, config, language_cfg):
     print(f"\n========== LANGUAGE: {language_code} ==========\n")
 
     context = await browser.new_context(
-        ignore_https_errors=True
+        ignore_https_errors=True,
+        # SENTRY's History Logs page has six fixed-width tabs. Playwright's
+        # default 1280px viewport leaves only about 1100px for the iframe,
+        # which wraps Dynamic Block into the content area and corrupts the
+        # screenshot. Keep the documented desktop layout wide enough for all
+        # tabs and use a stable size across different host displays.
+        viewport={"width": 1920, "height": 1080},
+        screen={"width": 1920, "height": 1080},
     )
     page = await context.new_page()
 
