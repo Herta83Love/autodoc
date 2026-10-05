@@ -655,14 +655,43 @@ def build_toc_targets(grouped):
     return targets
 
 
-def extract_pdf_page_texts(pdf_path, pdfinfo, pdftotext):
-    info = subprocess.run(
-        [pdfinfo, str(pdf_path)],
-        text=True,
+def _decode_process_output(data):
+    """Decode tool output from UTF-8 or the Windows console code page."""
+
+    if not data:
+        return ""
+
+    for encoding in ("utf-8", "cp950"):
+        try:
+            return data.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+
+    return data.decode("utf-8", errors="replace")
+
+
+def _run_text(command, timeout):
+    completed = subprocess.run(
+        command,
         capture_output=True,
-        timeout=60,
-        check=True,
-    ).stdout
+        timeout=timeout,
+        check=False,
+    )
+    return (
+        completed.returncode,
+        _decode_process_output(completed.stdout),
+        _decode_process_output(completed.stderr),
+    )
+
+
+def extract_pdf_page_texts(pdf_path, pdfinfo, pdftotext):
+    return_code, info, error = _run_text([pdfinfo, str(pdf_path)], timeout=60)
+
+    if return_code != 0:
+        raise RuntimeError(
+            "無法讀取 PDF 頁數。\n" + (error or info or "未知錯誤").strip()
+        )
+
     match = re.search(r"^Pages:\s+(\d+)\s*$", info, re.MULTILINE)
 
     if not match:
@@ -671,7 +700,7 @@ def extract_pdf_page_texts(pdf_path, pdfinfo, pdftotext):
     page_texts = []
 
     for page_number in range(1, int(match.group(1)) + 1):
-        text = subprocess.run(
+        return_code, text, error = _run_text(
             [
                 pdftotext,
                 "-f", str(page_number),
@@ -680,11 +709,14 @@ def extract_pdf_page_texts(pdf_path, pdfinfo, pdftotext):
                 str(pdf_path),
                 "-",
             ],
-            text=True,
-            capture_output=True,
             timeout=60,
-            check=True,
-        ).stdout
+        )
+
+        if return_code != 0:
+            raise RuntimeError(
+                f"無法讀取 PDF 第 {page_number} 頁。\n"
+                + (error or text or "未知錯誤").strip()
+            )
         lines = {
             normalize_pdf_line(line)
             for line in text.splitlines()
@@ -841,7 +873,7 @@ def materialize_toc_page_numbers(output_path, grouped):
 
     with tempfile.TemporaryDirectory(prefix="autodoc_toc_") as temp_dir:
         source_path = Path(output_path).resolve()
-        result = subprocess.run(
+        return_code, stdout, stderr = _run_text(
             [
                 soffice,
                 "--headless",
@@ -849,16 +881,13 @@ def materialize_toc_page_numbers(output_path, grouped):
                 "--outdir", temp_dir,
                 str(source_path),
             ],
-            text=True,
-            capture_output=True,
             timeout=300,
-            check=False,
         )
 
         pdf_path = Path(temp_dir) / f"{source_path.stem}.pdf"
 
-        if result.returncode != 0 or not pdf_path.is_file():
-            details = (result.stderr or result.stdout or "未知錯誤").strip()
+        if return_code != 0 or not pdf_path.is_file():
+            details = (stderr or stdout or "未知錯誤").strip()
             raise RuntimeError(
                 "LibreOffice 無法完成文件分頁。\n" + details
             )
@@ -1059,12 +1088,7 @@ def normalize_ai_content(data):
     return data
 
 def load_document_config(language):
-    config = load_document_settings(language)
-    if not config:
-        raise ValueError(
-            f"{manual_content_path(language)} 缺少 document_config。"
-        )
-    return config
+    return load_document_settings(language)
 
 
 def load_page_notes(language):

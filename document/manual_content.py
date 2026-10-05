@@ -9,6 +9,7 @@ import yaml
 
 
 CONTENT_DIR = Path("output/manual_content")
+DOCUMENT_CONFIG_PATH = Path("config/document.yaml")
 CONTENT_FIELDS = (
     "overview",
     "business_value",
@@ -86,14 +87,87 @@ def load_manual_content(language):
     return pages
 
 
-def load_document_settings(language):
-    """Load the language-specific document shell from the unified YAML."""
+def _language_key(language):
+
+    return "en" if str(language).lower().startswith("en") else "zh-TW"
+
+
+def load_config_document():
+    """Load the default preface stored in config/document.yaml."""
+
+    if not DOCUMENT_CONFIG_PATH.is_file():
+        return {}
+
+    with DOCUMENT_CONFIG_PATH.open("r", encoding="utf-8") as file:
+        config = yaml.safe_load(file) or {}
+
+    if not isinstance(config, dict):
+        raise ValueError(f"{DOCUMENT_CONFIG_PATH} 的最外層必須是 YAML mapping。")
+    return config
+
+
+def document_settings_from_config(language):
+    """Return one language's preface from config/document.yaml."""
+
+    raw = load_config_document()
+    if not raw:
+        return {}
+
+    key = _language_key(language)
+    locales = raw.get("locales") or {}
+    localized = locales.get(key) if isinstance(locales, dict) else None
+
+    # locales.<language> may be a complete document shell. A partial locale
+    # only overrides the shared top-level sections from older files.
+    if isinstance(localized, dict) and localized.get("document") and localized.get("introduction"):
+        return deepcopy(localized)
+
+    if not isinstance(raw.get("document"), dict):
+        return {}
+
+    resolved = deepcopy(raw)
+    resolved.pop("locales", None)
+    if isinstance(localized, dict):
+        resolved.update(localized)
+    return resolved
+
+
+def load_output_document_settings(language):
+    """Return document_config from the output manual YAML, if present."""
 
     path = manual_content_path(language)
     settings = load_manual_config(language).get("document_config") or {}
     if not isinstance(settings, dict):
         raise ValueError(f"{path} 的 document_config 必須是 YAML mapping。")
-    return deepcopy(settings)
+    return settings
+
+
+def load_document_settings(language):
+    """Load the preface, preferring output when it differs from config."""
+
+    key = _language_key(language)
+    base = document_settings_from_config(language)
+    output_settings = load_output_document_settings(language)
+    output_path = manual_content_path(language)
+
+    if output_settings and output_settings != base:
+        print(
+            f"{key}: output 的文件前言與 config/document.yaml 不一致，"
+            f"改以 {output_path.as_posix()} 為準"
+        )
+        return deepcopy(output_settings)
+
+    if not base:
+        raise ValueError(
+            "找不到文件前言。請在 config/document.yaml 提供內容，"
+            f"或在 {output_path.as_posix()} 提供 document_config。"
+        )
+
+    if output_settings:
+        print(f"{key}: 文件前言與 config/document.yaml 一致")
+    else:
+        print(f"{key}: 使用 config/document.yaml 的文件前言")
+    return deepcopy(base)
 
 
 def load_ai_content_corrections(language):

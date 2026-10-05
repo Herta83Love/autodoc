@@ -155,6 +155,8 @@ output/manual_content/zh-TW.yaml
 必須連同精簡後的 `output` 資料包一起複製。每份語言檔包含：
 
 - `document_config`：封面、版本、出版聲明、前言、頁尾與封底文字。
+  預設內容寫在 `config/document.yaml`。沒有這段時仍可產生文件。
+  若語言 YAML 的 `document_config` 與 `config/document.yaml` 不一致，產生文件時以 `output` 為準。
 - `ai_content_corrections`：載入 AI／Cache 後套用的已確認文字修正。
 - `page_notes`：指定功能頁或頁籤顯示給讀者的注意事項。
 - `page_overviews`：多頁籤功能在各頁籤之前共用顯示的頁面概述。
