@@ -53,6 +53,9 @@ def load_bilingual_metadata():
         "英文介面名稱",
         required=False
     )
+    from utils.file_helper import localize_output_tree
+
+    metadata = localize_output_tree(metadata, PROJECT_ROOT)
     return metadata, english_terms
 
 
@@ -60,7 +63,10 @@ def resolve_output_asset(path_value):
     if not path_value:
         return None
 
-    path = Path(path_value)
+    from utils.file_helper import localize_output_path
+
+    localized = localize_output_path(path_value, PROJECT_ROOT)
+    path = Path(localized)
     return path if path.is_absolute() else PROJECT_ROOT / path
 
 
