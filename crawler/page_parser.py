@@ -174,6 +174,132 @@ async def analyze_page(
 
     field_details = list(field_details_by_key.values())
 
+    # Read-only rows, list cards and the unpair prompt have a public label
+    # without a visible input. Switches and two-choice selectors are included
+    # here as well so a hidden checkbox cannot drop the field.
+    labeled_rows = await frame.evaluate("""
+    () => {
+        const shown = element => {
+            if (!element) return false;
+            for (let node = element; node; node = node.parentElement) {
+                const style = window.getComputedStyle(node);
+                if (style.display === 'none' || style.visibility === 'hidden') {
+                    return false;
+                }
+            }
+            return true;
+        };
+        const directText = (container, selector) => {
+            if (!container) return '';
+            const node = container.querySelector(`:scope > ${selector}`);
+            return node ? (node.innerText || '').replace(/\\s+/g, ' ').trim() : '';
+        };
+        const choiceOptions = widget => {
+            const values = [];
+            widget.querySelectorAll('p').forEach(node => {
+                const value = (node.innerText || '').replace(/\\s+/g, ' ').trim();
+                if (value && !values.includes(value)) values.push(value);
+            });
+            return values;
+        };
+        const rows = [];
+        const seen = new Set();
+        const add = (section, label, options) => {
+            label = String(label || '').replace(/\\s+/g, ' ').trim();
+            section = String(section || '').replace(/\\s+/g, ' ').trim();
+            if (!label || label.length > 80) return;
+            const key = section + '\\n' + label;
+            if (seen.has(key)) return;
+            seen.add(key);
+            rows.push({section, label, options: options || []});
+        };
+
+        document.querySelectorAll('.operation-conf-item').forEach(item => {
+            if (!shown(item)) return;
+            const widget = item.querySelector('[id="mazi-switch"], .mazi-switch-pick');
+            const block = item.closest('.operation-conf-block');
+            add(
+                directText(block, '.title'),
+                directText(item, '.field'),
+                widget ? choiceOptions(widget) : []
+            );
+        });
+
+        document.querySelectorAll('p.sub_title').forEach(node => {
+            if (!shown(node) || node.closest('.modal, .hint-modal')) return;
+            add('', node.innerText, []);
+        });
+
+        const legendOptions = () => Array.from(
+            document.querySelectorAll('.action-prompt')
+        ).map(node => (node.innerText || '').replace(/\\s+/g, ' ').trim())
+        .filter(value => value && !/變更|儲存|change all|save change|sorting|mutiple|multiple selection|^排序$|^多選/i.test(value));
+
+        document.querySelectorAll('.risk-level').forEach(level => {
+            const options = legendOptions();
+            level.querySelectorAll('.category .alias').forEach(alias => {
+                add(directText(level, '.risk-header'), alias.innerText, options);
+            });
+        });
+
+        if (document.querySelector('.tlds-area')) {
+            const search = document.querySelector('input.search');
+            if (search && shown(search)) {
+                add('', search.getAttribute('placeholder') || '', []);
+            }
+            document.querySelectorAll('.type').forEach(box => {
+                if (box.closest('.tlds-area')) return;
+                const chips = Array.from(box.children).filter(node =>
+                    node.tagName === 'DIV'
+                    && (node.classList.contains('low') || node.classList.contains('gtld')
+                        || node.classList.contains('changed'))
+                );
+                if (!chips.length) return;
+                Array.from(box.children).forEach(node => {
+                    if (node.tagName === 'DIV' && shown(node)) add('', node.innerText, []);
+                });
+            });
+            const policy = legendOptions();
+            if (policy.length) add('', policy[0], policy);
+        }
+
+        document.querySelectorAll('.hint-modal .modal-body').forEach(body => {
+            const prompt = Array.from(body.childNodes)
+                .filter(node => node.nodeType === Node.TEXT_NODE)
+                .map(node => (node.textContent || '').replace(/\\s+/g, ' ').trim())
+                .filter(Boolean)
+                .join(' ');
+            const selected = body.querySelector('.vs__selected');
+            const option = selected
+                ? (selected.innerText || '').replace(/\\s+/g, ' ').trim()
+                : '';
+            add('', prompt, option ? [option] : []);
+        });
+
+        return rows;
+    }
+    """)
+    known_fields = {
+        (detail["section"], detail["label"]) for detail in field_details
+    }
+    for row in labeled_rows or []:
+        section = str(row.get("section") or "").strip()
+        label = str(row.get("label") or "").strip()
+        if not label or (section, label) in known_fields:
+            continue
+        known_fields.add((section, label))
+        field_details.append({
+            "internal_name": "",
+            "section": section,
+            "label": label,
+            "options": [
+                str(option).strip()
+                for option in row.get("options") or []
+                if str(option).strip()
+            ],
+            "kind": "display",
+        })
+
     #
     # Buttons
     #
@@ -212,9 +338,13 @@ async def analyze_page(
                 'th'
             )
         )
-        .map(x =>
-            x.innerText.trim()
-        )
+        .map(cell => {
+            const line = String(cell.innerText || '')
+                .split(/\\n/)
+                .map(value => value.trim())
+                .find(value => value && !/sort table by/i.test(value));
+            return line || '';
+        })
         .filter(Boolean);
 
     }
@@ -292,6 +422,24 @@ async def analyze_page(
     table_headers = clean_items(
         table_headers
     )
+    known_fields = {
+        (detail["section"], detail["label"]) for detail in field_details
+    }
+    for header in table_headers:
+        if header.casefold() in {"no.", "no"}:
+            continue
+        if ("", header) in known_fields:
+            continue
+        known_fields.add(("", header))
+        field_details.append({
+            "internal_name": "",
+            "section": "",
+            "label": header,
+            "options": [],
+            "kind": "table",
+        })
+        if header not in fields:
+            fields.append(header)
 
     headings = clean_items(
         headings

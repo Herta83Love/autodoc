@@ -253,14 +253,29 @@ def merge_new_structured_items(edited, generated):
     if not isinstance(edited, list) or not isinstance(generated, list):
         return edited
 
-    known = {
-        structured_item_identity(item)
-        for item in edited
-        if structured_item_identity(item)
-    }
-    for item in generated:
+    known = {}
+    for item in edited:
         key = structured_item_identity(item)
         if key and key not in known:
-            edited.append(deepcopy(item))
-            known.add(key)
+            known[key] = item
+    for item in generated:
+        key = structured_item_identity(item)
+        if not key:
+            continue
+        current = known.get(key)
+        if current is None:
+            copied = deepcopy(item)
+            edited.append(copied)
+            known[key] = copied
+            continue
+        if (
+            isinstance(current, dict)
+            and isinstance(item, dict)
+            and isinstance(current.get("field_descriptions"), list)
+            and isinstance(item.get("field_descriptions"), list)
+        ):
+            current["field_descriptions"] = merge_new_structured_items(
+                current.get("field_descriptions"),
+                item.get("field_descriptions"),
+            )
     return edited

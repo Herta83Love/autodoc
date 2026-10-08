@@ -28,7 +28,8 @@ VISUAL_SECTIONS_SCRIPT = r"""
     const usefulLabel = value => {
         value = cleanLabel(value);
         if (!value || value === '_' || /^[-+]?\d[\d,.%]*$/.test(value)) return false;
-        if (/^(loading|no data)$/i.test(value)) return false;
+        if (/^(loading|no data|載入中)$/i.test(value)) return false;
+        if (/sort table by/i.test(value)) return false;
         if (/^\d{4}[-/]\d{1,2}[-/]\d{1,2}/.test(value)) return false;
         return value.length <= 100;
     };
@@ -85,10 +86,6 @@ VISUAL_SECTIONS_SCRIPT = r"""
         + '.chartWindow > .cloudAccess, .chartWindow > .first-observed'
     );
     if (threatRoot && visible(threatRoot)) {
-        const pageLabel = cleanLabel(context && context.page_name) || 'Threat Insight';
-        const tabLabel = cleanLabel(context && context.tab_name);
-        const prefix = tabLabel ? `${pageLabel} - ${tabLabel}` : pageLabel;
-        const chartWord = /[\u3400-\u9fff]/.test(prefix) ? '圖表' : 'Chart';
         const period = text(threatRoot.querySelector('.left_1'));
         const chartBlocks = Array.from(threatRoot.querySelectorAll('.chart-block'))
             .filter(block => visible(block) && block.querySelector('canvas,svg,.stack-chart'));
@@ -114,7 +111,8 @@ VISUAL_SECTIONS_SCRIPT = r"""
             const semanticTitle = explicitTitle || (
                 labels.length === 1 && labels[0].length <= 60 ? labels[0] : ''
             );
-            const title = semanticTitle || `${prefix} - ${chartWord} ${index + 1}`;
+            if (!semanticTitle) return;
+            const title = semanticTitle;
             const panel = container.closest('.right,.bottom,.query-behaviors') || container;
             const tableColumns = Array.from(panel.querySelectorAll('table thead th'))
                 .map(text);
@@ -138,6 +136,11 @@ VISUAL_SECTIONS_SCRIPT = r"""
 
     // Generic fallback for other pages with charts. Limit extraction to the
     // nearest semantic panel and never treat raw chart values as instructions.
+    document.querySelectorAll('.view-chart > .title').forEach(titleNode => {
+        if (!visible(titleNode) || titleNode.closest('.bulletin')) return;
+        add(text(titleNode), '', 'chart');
+    });
+
     document.querySelectorAll('canvas,svg').forEach(graphic => {
         if (!visible(graphic)) return;
         if (graphic.closest('.chart-block') && threatRoot) return;

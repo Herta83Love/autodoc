@@ -82,6 +82,9 @@ FORM_SCRIPT = """
             const item = control.closest(
                 '.operation-conf-item,.form-group,.field-group,.input-group'
             );
+            const block = item && item.closest('.operation-conf-block');
+            const sectionNode = block && block.querySelector(':scope > .title');
+            const section = sectionNode ? (sectionNode.innerText || '').trim() : '';
             let label = '';
             if (item) {
                 const labelNode = Array.from(
@@ -103,6 +106,7 @@ FORM_SCRIPT = """
                     .map(option => (option.textContent || '').trim()).filter(Boolean)
                 : [];
             return {
+                section,
                 label,
                 internal_name: control.name || control.id || '',
                 type: (control.type || control.tagName).toLowerCase(),
@@ -291,6 +295,27 @@ async def _restore_state(frame, before):
     return False
 
 
+def _distinguish_address_prefix(fields):
+    """Keep an address and its prefix length as two fields.
+
+    Secondary IP forms label both the address box and the /24 selector as Address.
+    """
+
+    previous_label = ""
+    distinguished = []
+    for field in fields or []:
+        copied = dict(field)
+        label = str(copied.get("label") or "").strip()
+        options = [str(option).strip() for option in copied.get("options") or []]
+        control_type = str(copied.get("type") or "").lower()
+        prefix_choice = any(option.startswith("/") for option in options)
+        if label and label == previous_label and (prefix_choice or control_type == "select-one" or control_type == "select"):
+            copied["label"] = "Prefix" if label[:1].isascii() else "前綴"
+        previous_label = label
+        distinguished.append(copied)
+    return distinguished
+
+
 async def explore_safe_actions(
     frame,
     actions,
@@ -345,7 +370,7 @@ async def explore_safe_actions(
                     "type": form.get("kind", "page"),
                     "title": form.get("title", ""),
                     "screenshots": capture.get("paths", []),
-                    "fields": form.get("fields", []),
+                    "fields": _distinguish_address_prefix(form.get("fields", [])),
                 })
             finally:
                 cleanup_screenshot_capture(capture)

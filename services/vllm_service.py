@@ -433,7 +433,9 @@ def image_to_base64(image_path):
 
 
 INTERNAL_FIELD_PATTERN = re.compile(r"^[a-z][A-Za-z0-9_]*(?:\[\])?$")
-CAMEL_CASE_PATTERN = re.compile(r"^[a-z]+(?:[A-Z][A-Za-z0-9]*)+$")
+CAMEL_CASE_PATTERN = re.compile(
+    r"^[a-z]+(?:[A-Z][a-z0-9]+)(?:[A-Z][a-z0-9]*)*$"
+)
 
 
 def is_public_field_label(value):

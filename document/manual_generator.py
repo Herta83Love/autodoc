@@ -2104,24 +2104,6 @@ def generate_docx(
                         ),
                         language
                     )
-                    add_interaction_sections(
-                        document,
-                        page,
-                        section.get("interaction_sections", []),
-                        language,
-                    )
-                    print(
-                        page.get(
-                            "actions",
-                            []
-                        )
-                    )
-                    print(
-                        section.get(
-                            "button_descriptions",
-                            []
-                        )
-                    )
                     for heading_key, key in [
                         ("overview", "overview"),
                         ("business_value", "business_value"),
@@ -2157,6 +2139,13 @@ def generate_docx(
                             document.add_paragraph(
                                 str(data)
                             )
+
+                    add_interaction_sections(
+                        document,
+                        page,
+                        section.get("interaction_sections", []),
+                        language,
+                    )
 
                     manual_notes = get_page_notes(
                         page,

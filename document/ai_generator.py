@@ -192,6 +192,18 @@ def get_tab_structure_signature(page):
             }
             for action in page.get("actions", [])
         ],
+        # Titles distinguish IPv4 and IPv6 add forms that otherwise share the
+        # same field names and would be published as only the first tab.
+        "interaction_flows": [
+            {
+                "title": flow.get("title", ""),
+                "fields": [
+                    field.get("label", "")
+                    for field in flow.get("fields") or []
+                ],
+            }
+            for flow in page.get("interaction_flows") or []
+        ],
     }
     if page.get("visual_sections"):
         structure["visual_sections"] = page["visual_sections"]
@@ -444,10 +456,15 @@ def normalize_grounded_result(result, page):
         label = str(detail.get("label") or "").strip()
         if not is_public_field_label(label):
             continue
+        kind = str(detail.get("kind") or "").strip()
+        source = "table" if kind == "table" else (
+            "display" if kind == "display" else "form"
+        )
         allowed_fields.append({
             "name": f"{section}－{label}" if section else label,
             "label": label,
-            "source": "form",
+            "source": source,
+            "options": detail.get("options") or [],
         })
 
     for section in page.get("detail_sections") or []:
@@ -524,6 +541,14 @@ def normalize_grounded_result(result, page):
                 page.get("language", "zh-TW"),
             )
         filtered_sections.append(f"{title}：{description}")
+    for detail in page.get("field_details") or []:
+        section = str(detail.get("section") or "").strip()
+        if not section or section in filtered_sections_by_name:
+            continue
+        filtered_sections_by_name[section] = section
+        filtered_sections.append(
+            f"{section}：{_fallback_page_section_description(section, page.get('language', 'zh-TW'))}"
+        )
     result["page_sections"] = filtered_sections
 
     valid_action_ids = {
@@ -573,11 +598,8 @@ def normalize_grounded_result(result, page):
     interaction_sections = []
     for action_id, flow in flows_by_id.items():
         item = model_interactions.get(action_id, {})
-        allowed_labels = {
-            str(field.get("label") or "").strip()
-            for field in flow.get("fields") or []
-            if is_public_field_label(field.get("label"))
-        }
+        display_fields = _interaction_display_fields(flow.get("fields") or [])
+        allowed_labels = {field["label"] for field in display_fields}
         descriptions_by_label = {}
         for description in item.get("field_descriptions") or []:
             text = str(description or "").strip()
@@ -586,14 +608,9 @@ def normalize_grounded_result(result, page):
                 descriptions_by_label.setdefault(name, text)
 
         field_descriptions = []
-        emitted_labels = set()
-        for field in flow.get("fields") or []:
-            label = str(field.get("label") or "").strip()
-            if label not in allowed_labels or label in emitted_labels:
-                continue
-            emitted_labels.add(label)
+        for field in display_fields:
             field_descriptions.append(
-                descriptions_by_label.get(label)
+                descriptions_by_label.get(field["label"])
                 or _fallback_interaction_field_description(
                     field,
                     page.get("language", "zh-TW"),
@@ -618,22 +635,94 @@ def normalize_grounded_result(result, page):
     return result
 
 
+def _interaction_display_fields(fields):
+    """Keep one public name for consecutive copies of the same control.
+
+    Forwarder forms repeat Primary and Secondary under both IPv4 and IPv6.
+    Those copies stay distinct because a different field sits between them.
+    Extra copies of one address box, with nothing between them, stay as one field.
+    """
+
+    labels = [str(field.get("label") or "").strip() for field in fields]
+    counts = {}
+    for label in labels:
+        if label:
+            counts[label] = counts.get(label, 0) + 1
+    displayed = []
+    seen = set()
+    last_unique = ""
+    prefix_by_label = {}
+    for field, label in zip(fields, labels):
+        if not label or not is_public_field_label(label):
+            continue
+        section = str(field.get("section") or "").strip()
+        if section and is_public_field_label(section):
+            display = f"{section}－{label}"
+        elif counts[label] == 1:
+            last_unique = label
+            display = label
+        else:
+            previous_prefix = prefix_by_label.get(label)
+            if previous_prefix is None or previous_prefix == last_unique:
+                display = label
+            elif last_unique:
+                display = f"{last_unique}－{label}"
+            else:
+                display = label
+            prefix_by_label[label] = last_unique
+        if display in seen:
+            continue
+        seen.add(display)
+        copied = dict(field)
+        copied["label"] = display
+        displayed.append(copied)
+    return displayed
+
+
+def _fallback_page_section_description(section, language="zh-TW"):
+    english = str(language).lower().startswith("en")
+    if english:
+        return f"Shows the {section} information on this page."
+    return f"顯示此頁面的「{section}」內容。"
+
+
 def _fallback_page_field_description(field, language="zh-TW"):
     """Guarantee coverage for every visible form or expanded-record field."""
 
     name = str(field.get("name") or "").strip()
     label = str(field.get("label") or name).strip()
-    detail_field = field.get("source") == "record_detail"
+    source = field.get("source")
+    options = [
+        str(option).strip()
+        for option in field.get("options") or []
+        if str(option).strip()
+    ]
     english = str(language).lower().startswith("en")
 
     if english:
-        if detail_field:
+        if source == "record_detail":
             return f"{name}: Displays the {label} value for the selected record."
-        return f"{name}: Sets or displays the {label} value."
+        if source == "table":
+            return f"{name}: Column in the table on this page."
+        if source == "display":
+            text = f"{name}: Displays the {label} value."
+        else:
+            text = f"{name}: Sets or displays the {label} value."
+        if options and len(options) <= 12:
+            text += f" Options: {', '.join(options)}."
+        return text
 
-    if detail_field:
+    if source == "record_detail":
         return f"{name}：顯示所選記錄的「{label}」資訊。"
-    return f"{name}：設定或顯示「{label}」的內容。"
+    if source == "table":
+        return f"{name}：此頁面表格中的欄位。"
+    if source == "display":
+        text = f"{name}：顯示「{label}」的內容。"
+    else:
+        text = f"{name}：設定或顯示「{label}」的內容。"
+    if options and len(options) <= 12:
+        text += f"可選項目包括：{'、'.join(options)}。"
+    return text
 
 
 def _fallback_visual_section_description(section, language="zh-TW"):
