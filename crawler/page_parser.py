@@ -80,15 +80,35 @@ async def analyze_page(
             return node ? (node.innerText || '').trim() : '';
         };
 
+        // SENTRY hides the checkbox for both controls. #mazi-switch is an
+        // on/off toggle. .mazi-switch-pick is a two-choice selector such as
+        // Type: Exact Match / Wildcard Match. Document the visible widget.
+        const switchWidget = control => control.closest(
+            '[id="mazi-switch"], .mazi-switch-pick'
+        );
+        const switchOptions = widget => {
+            const values = [];
+            widget.querySelectorAll('p').forEach(node => {
+                const value = (node.innerText || '').replace(/\\s+/g, ' ').trim();
+                if (value && !values.includes(value)) values.push(value);
+            });
+            return values;
+        };
+
         return Array.from(document.querySelectorAll('input,select,textarea'))
-            .filter(control => control.type !== 'hidden' && visibleInLayout(control))
+            .filter(control => {
+                if (control.type === 'hidden') return false;
+                const widget = switchWidget(control);
+                return visibleInLayout(widget || control);
+            })
             .map(control => {
+                const widget = switchWidget(control);
                 const item = control.closest('.operation-conf-item');
                 const block = control.closest('.operation-conf-block');
                 const section = directText(block, '.title');
                 let label = directText(item, '.field');
 
-                if (!label && control.id) {
+                if (!label && control.id && !widget) {
                     const associated = document.querySelector(
                         `label[for="${CSS.escape(control.id)}"]`
                     );
@@ -103,7 +123,9 @@ async def analyze_page(
                     || (control.getAttribute('aria-label') || '').trim();
 
                 let options = [];
-                if (control.tagName === 'SELECT') {
+                if (widget) {
+                    options = switchOptions(widget);
+                } else if (control.tagName === 'SELECT') {
                     options = Array.from(control.options)
                         .map(option => (option.textContent || '').trim())
                         .filter(Boolean);

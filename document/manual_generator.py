@@ -1922,12 +1922,9 @@ def add_introduction(
 
 def add_back_cover(document, config, language="zh-TW"):
 
-    back_cover = get_localized_config(config, "back_cover", language)
-    publication = get_localized_config(config, "publication", language)
-
     logo_p = document.add_paragraph()
     logo_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    logo_p.paragraph_format.space_after = Pt(110)
+    logo_p.paragraph_format.space_after = Pt(0)
 
     if LOGO_PATH.exists():
         logo_p.add_run().add_picture(
@@ -1935,42 +1932,9 @@ def add_back_cover(document, config, language="zh-TW"):
             width=Inches(1.65)
         )
 
-    brand_p = document.add_paragraph()
-    brand_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    brand_p.paragraph_format.space_after = Pt(10)
-    brand_run = brand_p.add_run("SENTRY PDNS")
-    set_run_font(
-        brand_run,
-        size=28,
-        color=BRAND_BLUE,
-        bold=True
-    )
-
-    thanks_p = document.add_paragraph()
-    thanks_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    thanks_p.paragraph_format.space_after = Pt(36)
-    thanks_run = thanks_p.add_run(back_cover["thank_you"])
-    set_run_font(thanks_run, size=14, color=TEXT_BLACK)
-
-    support_p = document.add_paragraph()
-    support_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    support_run = support_p.add_run(back_cover["support_label"])
-    set_run_font(support_run, size=10, color=MUTED_GRAY, bold=True)
-
-    link_p = document.add_paragraph()
-    link_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    link_p.paragraph_format.space_after = Pt(110)
-    link_run = link_p.add_run(publication["support_url"])
-    set_run_font(link_run, size=10.5, color=BRAND_BLUE)
-
-    sentry_p = document.add_paragraph()
-    sentry_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    sentry_p.paragraph_format.space_after = Pt(16)
-    sentry_run = sentry_p.add_run("SENTRY")
-    set_run_font(sentry_run, size=46, color=PALE_BLUE, bold=True)
-
     copyright_p = document.add_paragraph()
     copyright_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    copyright_p.paragraph_format.space_before = Cm(18)
     copyright_run = copyright_p.add_run(
         config["footer"]["copyright"]
     )

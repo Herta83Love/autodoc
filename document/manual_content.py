@@ -226,8 +226,8 @@ def apply_manual_content(page, generated_content):
     # A later crawl may discover a previously hidden chart, record field, or
     # form action. Keep human-edited YAML authoritative for known items while
     # appending newly discovered structured items so crawler improvements are
-    # visible immediately. Running sync_manual_content.py afterwards writes
-    # those additions into YAML for future editing.
+    # visible immediately. main.py writes those additions into YAML when the
+    # crawl finishes, so they can be edited before the next document build.
     for field in (
         "button_descriptions",
         "interaction_sections",

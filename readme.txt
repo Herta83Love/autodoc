@@ -178,13 +178,13 @@ output/manual_content/zh-TW.yaml
 
 `menu:.../tab:...` 、`action_id` 和縮排用於程式對應資料，請勿修改。若只要調整手冊文字，修改描述類欄位即可。
 
-重新爬取或增加頁面後，執行：
+`python3 main.py` 完成爬取後會自動寫入這兩份 YAML，並保留既有人工修改。不需要再執行 `scripts/sync_manual_content.py`。
+
+只有確定要把所有內容重設成目前 AI／Cache 初稿時，才另外執行：
 
 bash:
 
-python3 scripts/sync_manual_content.py
-
-此指令只會加入缺少的頁面，預設不覆蓋既有人工修改。只有確定要把所有內容重設成目前 AI／Cache 初稿時，才使用 `--overwrite`。
+python3 scripts/sync_manual_content.py --overwrite
 
 個別頁面的人工注意事項維護在各語言 YAML 的 `page_notes`；沒有設定的頁面不會顯示注意事項區塊。
 
@@ -192,7 +192,7 @@ python3 scripts/sync_manual_content.py
 
 爬蟲會讀取頁面上圖表、指標卡的標題與官方說明，並寫入 Metadata 的 `visual_sections`。對於會在點選資料列後顯示明細面板的頁面，爬蟲只會開啟一筆具代表性的記錄，擷取其明細欄位與截圖，再關閉面板；結果寫入 `detail_sections`。這個流程只執行讀取與展開，不會儲存、套用或刪除資料。
 
-新爬取的圖表與明細欄位會自動加入文件內容，同時保留 `output/manual_content/*.yaml` 中已有的人工修改。完整爬取後再執行 `python3 scripts/sync_manual_content.py`，即可將新發現的說明項目寫入 YAML，供後續直接編輯。
+新爬取的圖表與明細欄位會自動加入文件內容，同時保留 `output/manual_content/*.yaml` 中已有的人工修改。`main.py` 結束時會把新發現的說明項目寫入 YAML，供後續直接編輯。
 
 ## 完整執行：重新爬取並產生文件
 
@@ -206,6 +206,8 @@ python3 main.py
 完整流程會啟動瀏覽器、登入 SENTRY、執行爬蟲、更新 `output` 內的資料，並產生：
 
  
+output/manual_content/en.yaml
+output/manual_content/zh-TW.yaml
 output/SENTRY_Manual_en.docx
 output/SENTRY_Manual_zh-TW.docx
    

@@ -56,8 +56,9 @@ CONTENT_FILE_HEADERS = {
 # - Keep the existing indentation, action_id values, and page identifiers.
 # - Use [] for an intentionally empty list, '' for empty text, and null for no tab.
 # - Quote a value when it contains YAML-sensitive characters and parsing fails.
-# - Run this script after a new crawl. Existing human edits are preserved unless
-#   --overwrite is explicitly supplied.
+# - main.py writes this file after each crawl and preserves existing edits.
+#   Run this script with --overwrite only to replace those edits with the
+#   current AI/cache draft.
 
 """,
     "zh-TW": """# 產生繁體中文手冊時使用的可人工編輯內容。
@@ -98,8 +99,8 @@ CONTENT_FILE_HEADERS = {
 # - 請保留原有縮排、action_id 與頁面識別碼。
 # - 故意保留空清單時使用 []，空文字使用 ''，沒有頁籤時使用 null。
 # - 若內容含有 YAML 特殊字元而無法讀取，請將整段文字加上引號。
-# - 完成新一次爬取後執行此程式。除非明確加上 --overwrite，
-#   否則不會覆蓋已有的人工修改。
+# - main.py 每次爬取完成後會寫入此檔，並保留已有的人工修改。
+#   只有要把內容重設成目前 AI／Cache 初稿時，才對此程式加上 --overwrite。
 
 """,
 }

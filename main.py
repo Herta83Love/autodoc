@@ -38,7 +38,12 @@ from document.manual_generator import (
 ) 
 
 from document.manual_content import (
+    load_manual_config,
     load_manual_content
+)
+
+from scripts.sync_manual_content import (
+    sync as sync_manual_content
 )
 
 from utils.language_pairing import (
@@ -196,6 +201,12 @@ async def run():
                     indent=2
                 )
 
+        # YAML 必須在文件產生前寫入。產生器會套用這些內容，且不會覆蓋既有人工修改。
+        print("\n正在同步可編輯的手冊 YAML...")
+        sync_manual_content()
+        load_manual_config.cache_clear()
+
+        for code, metadata in all_metadata.items():
             generate_manual(
                 metadata,
                 output_path=f"output/manual_{code}.md",

@@ -58,25 +58,47 @@ FORM_SCRIPT = """
     const titleNode = root.querySelector(
         '.modal-title,.dialog-title,.title,h1,h2,h3'
     );
+    // SENTRY hides the checkbox for both controls. #mazi-switch is an on/off
+    // toggle. .mazi-switch-pick is a two-choice selector such as Type.
+    const switchWidget = control => control.closest(
+        '[id="mazi-switch"], .mazi-switch-pick'
+    );
+    const switchOptions = widget => {
+        const values = [];
+        widget.querySelectorAll('p').forEach(node => {
+            const value = (node.innerText || '').replace(/\\s+/g, ' ').trim();
+            if (value && !values.includes(value)) values.push(value);
+        });
+        return values;
+    };
     const fields = Array.from(root.querySelectorAll('input,select,textarea'))
-        .filter(control => control.type !== 'hidden' && visible(control))
+        .filter(control => {
+            if (control.type === 'hidden') return false;
+            const widget = switchWidget(control);
+            return visible(widget || control);
+        })
         .map(control => {
+            const widget = switchWidget(control);
             const item = control.closest(
                 '.operation-conf-item,.form-group,.field-group,.input-group'
             );
             let label = '';
             if (item) {
-                const labelNode = item.querySelector('.field,label,.label,.sub_title');
+                const labelNode = Array.from(
+                    item.querySelectorAll('.field,.label,.sub_title,label')
+                ).find(node => !widget || !widget.contains(node));
                 if (labelNode) label = (labelNode.innerText || '').trim();
             }
-            if (!label && control.id) {
+            if (!label && control.id && !widget) {
                 const associated = document.querySelector(
                     `label[for="${CSS.escape(control.id)}"]`
                 );
                 if (associated) label = (associated.innerText || '').trim();
             }
             label = label || (control.getAttribute('aria-label') || '').trim();
-            const options = control.tagName === 'SELECT'
+            const options = widget
+                ? switchOptions(widget)
+                : control.tagName === 'SELECT'
                 ? Array.from(control.options)
                     .map(option => (option.textContent || '').trim()).filter(Boolean)
                 : [];
@@ -104,15 +126,58 @@ FORM_SCRIPT = """
 """
 
 
+# These controls write or reset the live configuration. 套用 is the SENTRY
+# button that commits DNS and system settings immediately.
+_COMMIT_LABELS = {
+    "apply",
+    "套用",
+    "save",
+    "儲存",
+    "submit",
+    "確認",
+    "confirm",
+    "default",
+    "預設",
+}
+_COMMIT_CLASSES = {"btn-confirm", "btn-default"}
+
+
+def _is_commit_label(value):
+    text = re.sub(r"\s+", " ", str(value or "")).strip().casefold()
+    return text in _COMMIT_LABELS
+
+
 def _is_safe_add_action(action):
     classes = str(action.get("button_class") or "").lower().split()
     icon = str(action.get("icon") or "").lower()
-    label = str(action.get("label") or "").lower()
+    label = str(action.get("label") or action.get("text") or "").strip()
+    if (
+        _is_commit_label(label)
+        or _is_commit_label(action.get("aria"))
+        or _is_commit_label(action.get("title"))
+        or _COMMIT_CLASSES.intersection(classes)
+    ):
+        return False
     return (
         "plus" in classes
         or "fa-plus" in icon
-        or label in {"add", "new", "新增", "建立"}
+        or label.casefold() in {"add", "new", "新增", "建立"}
     )
+
+
+async def _commits_settings(button):
+    """Return True when this live control would change saved settings."""
+
+    try:
+        text = await button.inner_text()
+        aria = await button.get_attribute("aria-label")
+        title = await button.get_attribute("title")
+        classes = (await button.get_attribute("class") or "").lower().split()
+    except Exception:
+        return True
+    if _COMMIT_CLASSES.intersection(classes):
+        return True
+    return any(_is_commit_label(value) for value in (text, aria, title))
 
 
 def _decode_state(value):
@@ -179,11 +244,12 @@ async def _restore_state(frame, before):
 
     for text in ("Cancel", "Close", "取消", "關閉"):
         try:
-            locator = frame.get_by_text(text, exact=True)
+            locator = frame.get_by_role("button", name=text, exact=True)
             for index in range(await locator.count()):
                 item = locator.nth(index)
-                if await item.is_visible():
-                    await item.click()
+                if not await item.is_visible() or await _commits_settings(item):
+                    continue
+                await item.click()
                 if await _wait_for_restored_state(frame, before, timeout_ms=1200):
                     return True
         except Exception:
@@ -258,6 +324,9 @@ async def explore_safe_actions(
         try:
             button = frame.locator("button").nth(dom_index)
             await button.scroll_into_view_if_needed(timeout=2000)
+            if await _commits_settings(button):
+                print(f"略過會寫入設定的按鈕：{page_name} {action_id}")
+                continue
             await button.click(timeout=3000)
             changed = await _wait_for_state_change(frame, before)
             if not changed:
